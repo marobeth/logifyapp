@@ -1,0 +1,132 @@
+<template>
+  <div class="page" data-name="cambiarstatus">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+      	<div class="left">
+        <a href="#" class="link back">
+         <i class="material-icons">chevron_left</i>
+          <span class="if-not-md"></span>
+        </a>
+        </div>
+      <div class="title">Cambiar Status</div>
+      <div class="right">
+        <a href="#" data-panel="right" class="panel-open">
+         <i class="material-icons">menu</i>
+          <span class="if-not-md"></span>
+        </a>
+        </div>
+    </div>
+  </div>
+  <div class="page-content">
+    <div class="block-title">Información de la guía:</div>
+    <div class="block">
+      <div class="block">
+        <ul id="lista_multiples_guias"></ul>
+      </div>
+    	<div id="info_guia">
+	    	<h1 id="num_guia"></h1>
+	    	<div id="cont_paquete"></div>
+	    </div>
+    </div>
+    <input type="hidden" id="num_gias">
+    <div class="list no-hairlines-md">
+      <ul>
+        <li>
+          <div class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Seleccione el Status:</div>
+              <div class="item-input-wrap">
+                <select id="status">
+                  	<option value="">Seleccione</option>
+          					<option value="2">Recolectado</option>
+          					<option value="3">En Ruta</option>
+          					<option value="4">Entregado</option>
+          					<option value="5">Incidencia</option>
+          					<option value="6">Devuelto</option>
+          					<option value="7">Ocurre</option>
+          					<option value="8">En Almacén</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="mostrar_recolectado mostrar_entregado mostrar_incidencia ocultar_campos">
+          <div class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label"></div>
+              <div class="item-input-wrap">
+                  <a id="takePhoto" class="col button button-fill">Foto 1</a>
+                  <canvas id="myCanvas"></canvas>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="mostrar_recolectado mostrar_entregado mostrar_incidencia ocultar_campos">
+          <div class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label"></div>
+              <div class="item-input-wrap">
+                  <a id="takePhoto2" class="col button button-fill">Foto 2</a>
+                  <canvas id="myCanvas2"></canvas>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="mostrar_recolectado mostrar_entregado ocultar_campos">
+          <div class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label"></div>
+              <div class="item-input-wrap">
+                <input id="persona_recibe" type="text" placeholder="Nombre de quien recibe / entrega"/>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="mostrar_incidencia ocultar_campos">
+          <div class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label"></div>
+              <div class="item-input-wrap">
+                <select name="incidencia" id="incidencia">
+                  <option value="">Seleccione la incidencia</option>
+                  <option value="1">Domicilio abandonado</option>
+                  <option value="2">Domicilio equivocado</option>
+                  <option value="3">Destinatario rechaza</option>
+                  <option value="4">Destinatario cambió de domicilio</option>
+                  <option value="5">No hay respuesta en el domicilio</option>
+                  <option value="6">Domicilio inexistente</option>
+                  <option value="7">Número equivocado</option>
+                  <option value="8">Destinatario Falleció</option>
+                  <option value="9">Zona de alto riesgo</option>
+                  <option value="10">Otro</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="mostrar_recolectado mostrar_entregado mostrar_incidencia mostrar_devuelto ocultar_campos">
+          <div class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Comentarios</div>
+              <div class="item-input-wrap">
+                <input id="comentarios" type="text" placeholder="Comentarios"/>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="block">
+            <div class="row">
+              <a id="btn_cambiar_status" class="col button button-fill">Cambiar Status</a>
+              <p>&nbsp;</p>
+            </div>
+          </div>
+        </li>
+    	</ul>
+	</div>
+  </div>
+</div>
+</template>
+<script>
+  export default {};
+</script>

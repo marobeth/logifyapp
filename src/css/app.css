@@ -1,0 +1,79 @@
+/* iOS Cordova Tweak */
+.device-cordova.device-ios {
+  height: 100vh;
+}
+
+/* Left Panel right border when it is visible by breakpoint */
+.panel-left.panel-visible-by-breakpoint:before {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 1px;
+  background: rgba(0,0,0,0.1);
+  content: '';
+  z-index: 6000;
+}
+
+/* Hide navbar link which opens left panel when it is visible by breakpoint */
+.panel-left.panel-visible-by-breakpoint ~ .view .navbar .panel-open[data-panel="left"] {
+  display: none;
+}
+
+/*
+  Extra borders for main view and left panel for iOS theme when it behaves as panel (before breakpoint size)
+*/
+.ios .panel-left:not(.panel-visible-by-breakpoint).panel-active ~ .view-main:before,
+.ios .panel-left:not(.panel-visible-by-breakpoint).panel-closing ~ .view-main:before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 1px;
+  background: rgba(0,0,0,0.1);
+  content: '';
+  z-index: 6000;
+}
+
+
+div[data-name=home]{
+  background: url(../static/images/bg.jpg);background-size: cover
+}
+.overlay_home{
+  background: #0009;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0
+}
+#logo_home{margin:100px auto 30px auto; width: 100px; display: block}
+.tac{text-align: center}
+#btn_iniciar_sesion{
+  width: 150px !important;
+  display: block;
+  margin: 0 auto;
+  background: #00bcd4 !important;
+  border: 1px solid #00bcd4;
+}
+.button{
+  background: #00bcd4 !important;
+  border: 1px solid #00bcd4;
+}
+#input_username{color: #fff}
+#input_password{/*color: #fff*/}
+#input_username::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #fff;
+} 
+#input_password::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #fff;
+}
+
+#myCanvas{width: 100%; margin-top: 10px; display: none}
+#myCanvas2{width: 100%;; margin-top: 10px; display: none}
+.ocultar_campos{display: none}
+#testigoreal1{width: 100%; margin-top: 10px}
+#testigoreal2{width: 100%; margin-top: 10px}
+#titulo_testigos{display: none}
+
+
