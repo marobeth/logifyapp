@@ -165,6 +165,9 @@ function onDeviceReady() {
 	setTimeout(function(){ cordova.plugins.backgroundMode.enable(); }, 3000);
 }
 
+
+
+
 var resize_image = function(img,canvas,max_width,max_height){
 	var ctx = canvas.getContext("2d")
 	var canvasCopy = document.createElement("canvas")
@@ -415,6 +418,7 @@ $$(document).on('page:init', '.page[data-name="checkin"]', function (e) {
 
 $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
 	var num_guias = app.view.main.router.currentRoute.params.numGuia;
+	alert(num_guias);
 	num_guias = num_guias.split("|");
 	if(num_guias.length==1){
 		$$('#num_gias').val(num_guias);
