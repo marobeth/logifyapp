@@ -6,6 +6,7 @@ import CheckinPage from '../pages/checkin.f7.html';
 import CambiarStatusPage from '../pages/cambiarstatus.f7.html';
 import EscanearPage from '../pages/escanear.f7.html';
 import ConsultarPage from '../pages/consultar.f7.html';
+//import ResetpassPage from '../pages/resetpass.f7.html';
 
 
 import NotFoundPage from '../pages/404.f7.html';

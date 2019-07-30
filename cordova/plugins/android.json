@@ -37,10 +37,28 @@
     },
     "com.darktalker.cordova.screenshot": {
       "PACKAGE_NAME": "com.graphicsandcode.logify"
+    },
+    "phonegap-plugin-image-capture": {
+      "PACKAGE_NAME": "com.graphicsandcode.logify"
+    },
+    "cordova-plugin-media": {
+      "PACKAGE_NAME": "com.graphicsandcode.logify"
+    },
+    "cordova-plugin-file-transfer": {
+      "PACKAGE_NAME": "com.graphicsandcode.logify"
+    },
+    "cordova-plugin-inappbrowser": {
+      "PACKAGE_NAME": "com.graphicsandcode.logify"
     }
   },
   "dependent_plugins": {
     "cordova-plugin-file": {
+      "PACKAGE_NAME": "com.graphicsandcode.logify"
+    },
+    "es6-promise-plugin": {
+      "PACKAGE_NAME": "com.graphicsandcode.logify"
+    },
+    "phonegap-plugin-media-stream": {
       "PACKAGE_NAME": "com.graphicsandcode.logify"
     }
   }

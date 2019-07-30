@@ -330,6 +330,77 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       "merges": [
         "navigator.screenshot"
       ]
+    },
+    {
+      "id": "es6-promise-plugin.Promise",
+      "file": "plugins/es6-promise-plugin/www/promise.js",
+      "pluginId": "es6-promise-plugin",
+      "runs": true
+    },
+    {
+      "id": "phonegap-plugin-media-stream.MediaDevices",
+      "file": "plugins/phonegap-plugin-media-stream/www/MediaDevices.js",
+      "pluginId": "phonegap-plugin-media-stream",
+      "clobbers": [
+        "navigator.mediaDevices"
+      ]
+    },
+    {
+      "id": "phonegap-plugin-media-stream.MediaStream",
+      "file": "plugins/phonegap-plugin-media-stream/www/MediaStream.js",
+      "pluginId": "phonegap-plugin-media-stream",
+      "clobbers": [
+        "MediaStream"
+      ]
+    },
+    {
+      "id": "phonegap-plugin-image-capture.ImageCapture",
+      "file": "plugins/phonegap-plugin-image-capture/www/ImageCapture.js",
+      "pluginId": "phonegap-plugin-image-capture",
+      "clobbers": [
+        "ImageCapture"
+      ]
+    },
+    {
+      "id": "cordova-plugin-media.MediaError",
+      "file": "plugins/cordova-plugin-media/www/MediaError.js",
+      "pluginId": "cordova-plugin-media",
+      "clobbers": [
+        "window.MediaError"
+      ]
+    },
+    {
+      "id": "cordova-plugin-media.Media",
+      "file": "plugins/cordova-plugin-media/www/Media.js",
+      "pluginId": "cordova-plugin-media",
+      "clobbers": [
+        "window.Media"
+      ]
+    },
+    {
+      "id": "cordova-plugin-file-transfer.FileTransferError",
+      "file": "plugins/cordova-plugin-file-transfer/www/FileTransferError.js",
+      "pluginId": "cordova-plugin-file-transfer",
+      "clobbers": [
+        "window.FileTransferError"
+      ]
+    },
+    {
+      "id": "cordova-plugin-file-transfer.FileTransfer",
+      "file": "plugins/cordova-plugin-file-transfer/www/FileTransfer.js",
+      "pluginId": "cordova-plugin-file-transfer",
+      "clobbers": [
+        "window.FileTransfer"
+      ]
+    },
+    {
+      "id": "cordova-plugin-inappbrowser.inappbrowser",
+      "file": "plugins/cordova-plugin-inappbrowser/www/inappbrowser.js",
+      "pluginId": "cordova-plugin-inappbrowser",
+      "clobbers": [
+        "cordova.InAppBrowser.open",
+        "window.open"
+      ]
     }
   ];
   module.exports.metadata = {
@@ -343,6 +414,13 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
     "cordova-plugin-whitelist": "1.3.3",
     "cordova-plugin-wkwebview-engine": "1.1.4",
     "phonegap-plugin-barcodescanner": "8.0.1",
-    "com.darktalker.cordova.screenshot": "0.1.6"
+    "com.darktalker.cordova.screenshot": "0.1.6",
+    "es6-promise-plugin": "4.2.2",
+    "cordova-plugin-compat": "1.2.0",
+    "phonegap-plugin-media-stream": "1.2.1",
+    "phonegap-plugin-image-capture": "1.1.2",
+    "cordova-plugin-media": "5.0.3",
+    "cordova-plugin-file-transfer": "1.7.1",
+    "cordova-plugin-inappbrowser": "3.1.0"
   };
 });

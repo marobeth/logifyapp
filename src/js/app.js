@@ -13,8 +13,9 @@ import cordovaApp from './cordova-app.js';
 import routes from './routes.js';
 
 //var URL_WS = "http://192.168.10.51/api.logify.com.mx/";
-var URL_WS = "https://api.logify.com.mx/";
-//var URL_WS = "https://desarrollo.api.logify.com.mx/";
+//var URL_WS = "https://api.logify.com.mx/";
+var URL_WS = "https://desarrollo.api.logify.com.mx/";
+//var URL_WS = "http://localhost:8888/api.logify.com.mx/";
 
 /* TRADUCIR STATUS */
 function traducirStatus(status){
@@ -111,6 +112,8 @@ function errorHandler(error){
 	console.log(error);
 }
 
+
+/*
 function screenshot(){
 	 navigator.screenshot.URI(function(error,res){
 		if(error){
@@ -127,17 +130,30 @@ function screenshot(){
 	        		correo : localStorage.getItem('correo'),
 	        		screenshot : res.URI,
 	        	},function(data){},function(error){}, 'json'
-	        )
+	        );
 	    }
 	},50);
 }
-
+*/
 function enviarUbicacion(){
 	getLocation();
 	app.request.setup({
 		headers: {
 			'apikey': localStorage.getItem('apikey')     
-		}
+		},beforeSend: function () {
+	        app.preloader.show();
+	    },
+      	complete: function () {
+        	app.preloader.hide();
+        }, 
+        error : function(){
+	    	//si el error es un error 401 (not authorized)
+	    	localStorage.clear(); //quita todas las variables de local storage
+			app.preloader.hide(); // esconde el spinner
+			app.dialog.alert('Tu sesión expiró, inicia sesión de nuevo');
+			window.location.reload(); // recarga la página (y te va a mandar a la página de login)
+		},
+        timeout: 5000
 	});
 	app.request.postJSON(
 		URL_WS + 'location',
@@ -150,7 +166,7 @@ function enviarUbicacion(){
 		},function(error){
 		}, 
 		'json'
-    )
+    );
 }
 
 /* GEOLOCATION */
@@ -169,28 +185,32 @@ function onDeviceReady() {
 
 
 var resize_image = function(img,canvas,max_width,max_height){
-	var ctx = canvas.getContext("2d")
-	var canvasCopy = document.createElement("canvas")
-	var copyContext = canvasCopy.getContext("2d")
-	var ratio = 1
+	var ctx = canvas.getContext("2d");
+	var canvasCopy = document.createElement("canvas");
+	var copyContext = canvasCopy.getContext("2d");
+	var ratio = 1;
 	if(img.width > max_width){
-		ratio = max_width / img.width
+		ratio = max_width / img.width;
 	}else if(img.height > max_height){
-		ratio = max_height / img.height
+		ratio = max_height / img.height;
 	}
-	canvasCopy.width = img.width
-	canvasCopy.height = img.height
-	copyContext.drawImage(img, 0, 0)
-	canvas.width = img.width * ratio
-	canvas.height = img.height * ratio
-	ctx.drawImage(canvasCopy, 0, 0, canvasCopy.width, canvasCopy.height, 0, 0, canvas.width, canvas.height)
+	canvasCopy.width = img.width;
+	canvasCopy.height = img.height;
+	copyContext.drawImage(img, 0, 0);
+	canvas.width = img.width * ratio;
+	canvas.height = img.height * ratio;
+	ctx.drawImage(canvasCopy, 0, 0, canvasCopy.width, canvasCopy.height, 0, 0, canvas.width, canvas.height);
 }
 
-
+/**
+ * Cargar img desde camara
+ * @param canvas
+ */
 function imageCapture() {
 	var options = {limit: 1};
 	navigator.device.capture.captureImage(onSuccess, onError, options);
 }
+
 
 function onError(error) {
 	//app.dialog.alert('Error code: ' + error.code, null, 'Capture Error');
@@ -203,7 +223,7 @@ function onSuccess(mediaFiles) {
 	img.src = mediaFiles[0].fullPath;
 	img.onload = function() {
 		resize_image(this,canvas,800,1200);
-	}
+	};
 }
 
 function imageCapture2() {
@@ -222,7 +242,125 @@ function onSuccess2(mediaFiles) {
 	img.src = mediaFiles[0].fullPath;
 	img.onload = function() {
 		resize_image(this,canvas,800,1200);
-	}
+	};
+}
+
+/**
+ * Cargar desde Camara
+ * @param idCanvas
+ */
+function openCamera(idCanvas){
+	var pictureSource=navigator.camera.PictureSourceType;
+	var destinationType=navigator.camera.DestinationType;
+	var srcType = pictureSource.CAMERA;
+	navigator.device.capture.captureImage(function onSuccess(mediaFiles) {
+	//navigator.camera.getPicture(function onSuccess(mediaFiles) {
+		$$('#'+idCanvas).show();
+		var canvas = $$('#'+idCanvas)[0];
+		var canva=document.getElementById(idCanvas);
+		var con=canva.getContext('2d');
+		var img = new Image();
+		img.onload = function() {
+			canva.width = img.width / 4;
+			canva.height = img.height / 4;
+			con.drawImage(img, 0, 0, img.width, img.height, 0, 0, canva.width, canva.height);
+		};
+		img.src = mediaFiles[0].fullPath;
+		$$('#'+idCanvas).data( "foto1",1);
+		navigator.camera.cleanup();
+	}, function cameraError(error) {
+		console.debug("No se puede obtener una foto: " + error, "app");
+
+	},{
+		limit: 1,
+		quality: 50,
+		targetWidth: 800,
+		targetHeight: 1200,
+		destinationType: destinationType.DATA_URL,
+		encodingType: navigator.camera.EncodingType.PNG,
+		sourceType: srcType 
+		});
+}
+/**
+ * Cargar desde galeria
+ * @param idCanvas
+ */
+function openFilePicker(idCanvas) {
+	var pictureSource=navigator.camera.PictureSourceType;
+	var destinationType=navigator.camera.DestinationType;
+	var srcType = pictureSource.SAVEDPHOTOALBUM;
+
+	navigator.camera.getPicture(function cameraSuccess(imageURI) {
+		$$('#'+idCanvas).show();
+		var canvas = $$('#'+idCanvas);
+		var canvass=document.getElementById(idCanvas);
+		var context=canvass.getContext('2d');
+		var img =new Image();
+		img.onload = function() {
+		    	canvass.width = img.width / 4;
+		        canvass.height = img.height / 4;
+		        context.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvass.width, canvass.height);
+		};
+		img.src = imageURI;
+		$$('#'+idCanvas).data( "foto1",1);
+	}, function cameraError(error) {
+		console.debug("No se puede obtener una foto: " + error, "app");
+
+	}, { 
+		quality: 50,
+		targetWidth: 800,
+        targetHeight: 1200,
+		destinationType: destinationType.FILE_URI,
+		sourceType: srcType 
+		});
+}
+/**
+ * Apikey
+ * @param correo
+ * @param pass
+ */
+function ValidateApikey(correo,pass){
+	//console.log('entre');
+	if(correo !='' && pass !=''){
+	    app.request.setup({
+	        headers: {
+	            'email': correo,
+	            'pass': pass
+	        },
+	        beforeSend: function () {
+	            app.preloader.show();
+	        },
+	      	complete: function () {
+	        	app.preloader.hide();
+	        }, 
+	        error: function(){
+              	app.preloader.hide();
+				app.dialog.alert('Error: ¡Opps! ¡Inténtalo de nuevo, datos incorrectos!');
+            },
+	        timeout: 5000
+	    });
+	    var UrlWs=(URL_WS+'login');
+		app.request.postJSON(UrlWs, { correo:correo, pass: pass }, function (data) {
+			localStorage.setItem('auth', true);
+			localStorage.setItem('apikey', data[0].apikey);
+			localStorage.setItem('userid', data[0].user_id);
+			localStorage.setItem('avatar', data[0].avatar);
+			localStorage.setItem('nombre', data[0].nombre);
+			localStorage.setItem('paterno', data[0].paterno);
+			localStorage.setItem('correo', data[0].correo);
+
+			if(localStorage.getItem('apikey') != ""){
+			 	app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
+			 }else{
+			 	app.preloader.hide();
+				app.dialog.alert('Error: Datos incorrectos');
+			}
+		});
+
+	}else{
+		app.preloader.hide();
+		app.dialog.alert('Error: Completa todos los campos');
+	}	
 }
 
 
@@ -272,41 +410,19 @@ var app = new Framework7({
   		if (f7.device.cordova) {
         // Init cordova APIs (see cordova-app.js)
         cordovaApp.init(f7);
-    }
-},
-},
+	   		}
+		},
+	},
 });
 
 
 $$('#btn_iniciar_sesion').on('click', function () {
-		app.preloader.show();
-		var username = $$('#input_username').val();
-		var password = $$('#input_password').val();
-		app.request.setup({
-			headers: {
-				'email': username,
-				'pass' : password
-			}
-		});
-		app.request.postJSON(
-			URL_WS+'login',
-			function (data) {
-				app.preloader.hide();
-				localStorage.setItem('auth', true);
-				localStorage.setItem('apikey', data[0].apikey);
-				localStorage.setItem('userid', data[0].user_id);
-				localStorage.setItem('avatar', data[0].avatar);
-				localStorage.setItem('nombre', data[0].nombre);
-				localStorage.setItem('paterno', data[0].paterno);
-				localStorage.setItem('correo', data[0].correo);
-				app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
-				
-			},function(data){
-				app.preloader.hide();
-				app.dialog.alert('Error: Datos incorrectos');
-			}
-		);
-	});
+	//app.preloader.show();
+	var username = $$('#input_username').val();
+	var password = $$('#input_password').val();
+
+	ValidateApikey(username,password);
+});
 
 $$(document).on('page:init', '.page[data-name="inicio"]', function (e) {
 	$$('#nombre_usuario').html(localStorage.getItem('nombre')+' '+localStorage.getItem('paterno'));
@@ -314,35 +430,18 @@ $$(document).on('page:init', '.page[data-name="inicio"]', function (e) {
 
 $$(document).on('page:init', '.page[data-name="home"]', function (e) {
 	$$('#btn_iniciar_sesion').on('click', function () {
-		app.preloader.show();
+		//app.preloader.show();
 		var username = $$('#input_username').val();
 		var password = $$('#input_password').val();
-		app.request.setup({
-			headers: {
-				'email': username,
-				'pass' : password
-			}
-		});
-		app.request.postJSON(
-			URL_WS+'login',
-			function (data) {
-				app.preloader.hide();
-				localStorage.setItem('auth', true);
-				localStorage.setItem('apikey', data[0].apikey);
-				localStorage.setItem('userid', data[0].user_id);
-				localStorage.setItem('avatar', data[0].avatar);
-				localStorage.setItem('nombre', data[0].nombre);
-				localStorage.setItem('paterno', data[0].paterno);
-				localStorage.setItem('correo', data[0].correo);
-				app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
-				
-			},function(data){
-				app.preloader.hide();
-				app.dialog.alert('Error: Datos incorrectos');
-			}
-		);
+
+		ValidateApikey(username,password);
 	});
+
+	$$('#btn_olvide').on('click', function () {
+		cordova.InAppBrowser.open('https://admin.logify.com.mx/restablecer-contrasena', '_blank', 'location=yes');
+	});	
 });
+
 $$(document).on('page:afterin', '.page[data-name="home"]', function (e) {
 	if(localStorage.getItem('auth')=='true'){
 		app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
@@ -352,14 +451,14 @@ $$(document).on('page:afterin', '.page[data-name="home"]', function (e) {
 
 $$(document).on('page:init', '.page[data-name="logout"]', function (e) {
 	localStorage.clear();
+	app.preloader.hide();
 	window.location.reload();
 });
-
-
 
 $$(document).on('page:reinit', '.page[data-name="checkin"]', function (e) {
 	$$('#btn_buscar_sucursal').click();
 });
+
 $$(document).on('page:init', '.page[data-name="checkin"]', function (e) {
 	$$('#btn_buscar_sucursal').on('click', function () {
 		if($$('#input_num_sucursal_checkin').val()==""){
@@ -415,23 +514,39 @@ $$(document).on('page:init', '.page[data-name="checkin"]', function (e) {
 
 });
 
+//Cambiar de estatus
 
 $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
 	var num_guias = app.view.main.router.currentRoute.params.numGuia;
-	alert(num_guias);
+	//alert(num_guias);
 	num_guias = num_guias.split("|");
 	if(num_guias.length==1){
 		$$('#num_gias').val(num_guias);
-		app.preloader.show();
-		Framework7.request.setup({
-			headers: {
+		//app.preloader.show();
+		app.request.setup({
+		    headers: {
 				'apikey': localStorage.getItem('apikey')     
-			}
-		});
+			},
+		    beforeSend: function () {
+		      app.preloader.show();
+		    },
+		    complete: function(){
+		      app.preloader.hide();
+		    },
+		    error : function(){
+		    	//si el error es un error 401 (not authorized)
+		    	localStorage.clear(); //quita todas las variables de local storage
+				app.preloader.hide(); // esconde el spinner
+				app.dialog.alert('Tu sesión expiró, inicia sesión de nuevo');
+				window.location.reload(); // recarga la página (y te va a mandar a la página de login)
+		    },
+		    timeout : 5000
+		 });
+
 		app.request.get(
 			URL_WS+'consulta/'+num_guias[0], 
 			function (data) {
-				console.log(data['guia'][0].num_guia);
+				//console.log(data['guia'][0].num_guia);
 				$$('#num_guia').html(data['guia'][0].num_guia);
 				if(data['guia'][0].branch_number=='0004'){
 					var ouput_parsear_billetes = '';
@@ -469,34 +584,117 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
 		var new_num_guias = new_num_guias.substr(0, new_num_guias.length-1);
 		$$('#num_gias').val(new_num_guias);
 	}
-	$$('#takePhoto').on('click', function (e) {
-		var permissions = cordova.plugins.permissions;
-		permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
-		function error() {
-			app.dialog.alert('Necesitas permiso de: WRITE_EXTERNAL_STORAGE ');
-		}
-		function success( status ) {
-			if( !status.hasPermission ){
-				error();
-			}else{
-				imageCapture();
+	// Vertical Buttons
+	$$('.open-foto-1').on('click', function () {
+		app.dialog.create({
+			title: 'Foto 1',
+			text: 'Elegir opcion:',
+			buttons: [
+				{
+					text: 'Camara',
+					cssClass:'id_camara'
+				},
+				{
+					text: 'Galeria',
+					cssClass:'id_galeria'
+				},
+				{
+					text: 'Cancelar',
+					cssClass:'id_cancelar'
+				},
+			],
+			verticalButtons: true,
+		}).open();
+		$$('.id_camara').on('click', function (e) {
+			var permissions = cordova.plugins.permissions;
+			permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
+			function error() {
+				app.dialog.alert('Necesitas permiso de: WRITE_EXTERNAL_STORAGE ');
 			}
-		}
-	});
-	$$('#takePhoto2').on('click', function (e) {
-		var permissions = cordova.plugins.permissions;
-		permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
-		function error() {
-			app.dialog.alert('Necesitas permiso de: WRITE_EXTERNAL_STORAGE ');
-		}
-		function success( status ) {
-			if( !status.hasPermission ){
-				error();
-			}else{
-				imageCapture2();
+			function success( status ) {
+				if( !status.hasPermission ){
+					error();
+				}else{
+					openCamera('myCanvas');
+				}
 			}
-		}
+		});
+
+		$$('.id_cancelar').on('click', function (e) {
+			app.dialog.close();
+		});
+
+		$$('.id_galeria').on('click', function (e) {
+			var permissions = cordova.plugins.permissions;
+			permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
+			function error() {
+				app.dialog.alert('Necesitas permiso de: WRITE_EXTERNAL_STORAGE ');
+			}
+			function success( status ) {
+				if( !status.hasPermission ){
+					error();
+				}else{
+					openFilePicker('myCanvas');
+				}
+			}
+		});
 	});
+
+	$$('.open-foto-2').on('click', function () {
+		app.dialog.create({
+			title: 'Foto 2',
+			text: 'Elegir opcion:',
+			buttons: [
+				{
+					text: 'Camara',
+					cssClass:'id_camara_2'
+				},
+				{
+					text: 'Galeria',
+					cssClass:'id_galeria_2'
+				},
+				{
+					text: 'Cancelar',
+					cssClass:'id_cancelar_2'
+				},
+			],
+			verticalButtons: true,
+		}).open();
+		$$('.id_camara_2').on('click', function (e) {
+			var permissions = cordova.plugins.permissions;
+			permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
+			function error() {
+				app.dialog.alert('Necesitas permiso de: WRITE_EXTERNAL_STORAGE ');
+			}
+			function success( status ) {
+				if( !status.hasPermission ){
+					error();
+				}else{
+					openCamera('myCanvas2');
+				}
+			}
+		});
+
+		$$('.id_cancelar_2').on('click', function (e) {
+			app.dialog.close();
+		});
+
+		$$('.id_galeria_2').on('click', function (e) {
+			var permissions = cordova.plugins.permissions;
+			permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
+			function error() {
+				app.dialog.alert('Necesitas permiso de: WRITE_EXTERNAL_STORAGE ');
+			}
+			function success( status ) {
+				if( !status.hasPermission ){
+					error();
+				}else{
+					openFilePicker('myCanvas2');
+				}
+			}
+		});
+	});
+
 	$$('#status').on('change', function (e) {
 		var status = $$(this).val();
 		switch(status) {
@@ -537,6 +735,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         break;
     	}
 	});
+
 	$$('#btn_cambiar_status').on('click', function (e) {
 		var latitud = $$('#latitud').val();
 		var longitud = $$('#longitud').val();
@@ -547,11 +746,24 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
 			app.dialog.alert('Seleccione un status');
 			break;
 			case '2':
-				var canvas1 = $$('#myCanvas')[0];
-				var foto1 = canvas1.toDataURL();
-				var canvas2 = $$('#myCanvas2')[0];
-				var foto2 = canvas2.toDataURL();
+				//Recolectado
+				var statusFoto=$$('#myCanvas').data("foto1");
+				var statusFoto2=$$('#myCanvas2').data("foto1");
 				var persona_recibe = $$('#persona_recibe').val();
+				
+				if(statusFoto!=0){
+					var canvas1 = $$('#myCanvas')[0];
+		        	var foto1 = canvas1.toDataURL();
+				}else{
+					foto1='';
+				}
+				if(statusFoto2!=0){
+					var canvas2 = $$('#myCanvas2')[0];
+		        	var foto2 = canvas2.toDataURL();
+				}else{
+					foto2='';
+				}
+				
 				if(foto1=="" || foto2=="" || persona_recibe == ""){
 					app.dialog.alert('La foto 1, la foto 2 y la persona que recibe / entrega son obligatorios');
 				}else{
@@ -563,11 +775,23 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
 			break;
 			case '4':
 	        	//Entregado
-		        var canvas1 = $$('#myCanvas')[0];
-		        var foto1 = canvas1.toDataURL();
-		        var canvas2 = $$('#myCanvas2')[0];
-		        var foto2 = canvas2.toDataURL();
-		        var persona_recibe = $$('#persona_recibe').val();
+		   		var statusFoto=$$('#myCanvas').data("foto1");
+				var statusFoto2=$$('#myCanvas2').data("foto1");
+				var persona_recibe = $$('#persona_recibe').val();
+				
+				if(statusFoto!=0){
+					var canvas1 = $$('#myCanvas')[0];
+		        	var foto1 = canvas1.toDataURL();
+				}else{
+					foto1='';
+				}
+				if(statusFoto2!=0){
+					var canvas2 = $$('#myCanvas2')[0];
+		        	var foto2 = canvas2.toDataURL();
+				}else{
+					foto2='';
+				}
+		        
 		        if(foto1=="" || foto2=="" || persona_recibe == ""){
 		        	app.dialog.alert('La foto 1, la foto 2 y la persona que recibe / entrega son obligatorios');
 		        }else{
@@ -576,11 +800,23 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
 	        break;
 	        case '5':
 		        //Incidencia
-		        var canvas1 = $$('#myCanvas')[0];
-		        var foto1 = canvas1.toDataURL();
-		        var canvas2 = $$('#myCanvas2')[0];
-		        var foto2 = canvas2.toDataURL();
-		        var incidencia = $$('#incidencia').val();
+		        var statusFoto=$$('#myCanvas').data("foto1");
+				var statusFoto2=$$('#myCanvas2').data("foto1");
+				var incidencia = $$('#incidencia').val();
+				
+				if(statusFoto!=0){
+					var canvas1 = $$('#myCanvas')[0];
+		        	var foto1 = canvas1.toDataURL();
+				}else{
+					foto1='';
+				}
+				if(statusFoto2!=0){
+					var canvas2 = $$('#myCanvas2')[0];
+		        	var foto2 = canvas2.toDataURL();
+				}else{
+					foto2='';
+				}
+		        
 		        if(foto1=="" || foto2=="" || incidencia == ""){
 		        	app.dialog.alert('La foto 1, la foto 2 y la incidencia son obligatorios');
 		        }else{
@@ -600,44 +836,59 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
 	        validado = true;
 	        break;
    		}
-    if(validado==true){
-    	var canvas1 = $$('#myCanvas')[0];
-    	var foto1 = canvas1.toDataURL();
-    	var canvas2 = $$('#myCanvas2')[0];
-    	var foto2 = canvas2.toDataURL();
-    	var persona_recibe = $$('#persona_recibe').val();
-    	var incidencia = $$('#incidencia').val();
-    	var comentarios = $$('#comentarios').val();
-        // hacer request:
-        app.preloader.show();
-        app.request.setup({
-        	headers: {
-        		'apikey': localStorage.getItem('apikey')     
-        	}
-        });
-        app.request.postJSON(
-        	URL_WS + 'changestatus/'+$$('#num_gias').val(),
-        	{ 
-        		status : status,
-        		latlong : latitud+','+longitud,
-        		foto1 : foto1,
-        		foto2 : foto2,
-        		persona_recibe : persona_recibe,
-        		comentarios : comentarios
-        	},
-        	function(data){
-        		app.preloader.hide();
-				app.dialog.alert("Datos guardados correctamente",function(){
-					$$('#btn_buscar_sucursal').click();
-				});
-        		app.views.main.router.back();
-        	},function(error){
-        		app.preloader.hide();
-        	}, 
-        	'json'
-        )
-    }
-});
+	    if(validado==true){
+	    	var canvas1 = $$('#myCanvas')[0];
+	    	var foto1 = canvas1.toDataURL();
+	    	var canvas2 = $$('#myCanvas2')[0];
+	    	var foto2 = canvas2.toDataURL();
+	    	var persona_recibe = $$('#persona_recibe').val();
+	    	var incidencia = $$('#incidencia').val();
+	    	var comentarios = $$('#comentarios').val();
+
+	        // hacer request:
+	        //app.preloader.show();
+            app.request.setup({
+                    headers: {
+                        'apikey': localStorage.getItem('apikey')
+                    },
+                    beforeSend: function () {
+                      app.preloader.show();
+                    },
+                    complete: function(){
+                      app.preloader.hide();
+                    },
+				    error : function(){
+				    	//si el error es un error 401 (not authorized)
+				    	localStorage.clear(); //quita todas las variables de local storage
+						app.preloader.hide(); // esconde el spinner
+						app.dialog.alert('Tu sesión expiró, inicia sesión de nuevo');
+						window.location.reload(); // recarga la página (y te va a mandar a la página de login)
+				    },
+                    timeout : 5000
+                });
+	        app.request.postJSON(
+	        	URL_WS + 'changestatus/'+$$('#num_gias').val(),
+	        	{ 
+	        		status : status,
+	        		latlong : latitud+','+longitud,
+	        		foto1 : foto1,
+	        		foto2 : foto2,
+	        		persona_recibe : persona_recibe,
+	        		comentarios : comentarios
+	        	},
+	        	function(data){
+	        		app.preloader.hide();
+					app.dialog.alert("Datos guardados correctamente",function(){
+						$$('#btn_buscar_sucursal').click();
+					});
+	        		app.views.main.router.back();
+	        	},function(error){
+	        		app.preloader.hide();
+	        	}, 
+	        	'json'
+	        );
+	    }
+	});
 });
 
 $$(document).on('page:init', '.page[data-name="escanear"]', function (e) {
@@ -681,6 +932,7 @@ $$(document).on('page:init', '.page[data-name="escanear"]', function (e) {
   		);
 	});
 });
+
 $$(document).on('page:init', '.page[data-name="consultar"]', function (e) {
 	$$('#btn_escanear_consulta').on('click', function () {
 		cordova.plugins.barcodeScanner.scan(
