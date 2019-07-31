@@ -13,9 +13,9 @@ import cordovaApp from './cordova-app.js';
 import routes from './routes.js';
 
 //var URL_WS = "http://192.168.10.51/api.logify.com.mx/";
-//var URL_WS = "https://api.logify.com.mx/";
-var URL_WS = "https://desarrollo.api.logify.com.mx/";
-//var URL_WS = "http://localhost:8888/api.logify.com.mx/";
+var URL_WS = "https://api.logify.com.mx/";
+//var URL_WS = "https://desarrollo.api.logify.com.mx/";
+
 
 /* TRADUCIR STATUS */
 function traducirStatus(status){
@@ -146,13 +146,6 @@ function enviarUbicacion(){
       	complete: function () {
         	app.preloader.hide();
         }, 
-        error : function(){
-	    	//si el error es un error 401 (not authorized)
-	    	localStorage.clear(); //quita todas las variables de local storage
-			app.preloader.hide(); // esconde el spinner
-			app.dialog.alert('Tu sesión expiró, inicia sesión de nuevo');
-			window.location.reload(); // recarga la página (y te va a mandar a la página de login)
-		},
         timeout: 5000
 	});
 	app.request.postJSON(
@@ -202,10 +195,7 @@ var resize_image = function(img,canvas,max_width,max_height){
 	ctx.drawImage(canvasCopy, 0, 0, canvasCopy.width, canvasCopy.height, 0, 0, canvas.width, canvas.height);
 }
 
-/**
- * Cargar img desde camara
- * @param canvas
- */
+
 function imageCapture() {
 	var options = {limit: 1};
 	navigator.device.capture.captureImage(onSuccess, onError, options);
@@ -261,8 +251,8 @@ function openCamera(idCanvas){
 		var con=canva.getContext('2d');
 		var img = new Image();
 		img.onload = function() {
-			canva.width = img.width / 4;
-			canva.height = img.height / 4;
+			canva.width = img.width / 6;
+			canva.height = img.height / 6;
 			con.drawImage(img, 0, 0, img.width, img.height, 0, 0, canva.width, canva.height);
 		};
 		img.src = mediaFiles[0].fullPath;
@@ -297,8 +287,8 @@ function openFilePicker(idCanvas) {
 		var context=canvass.getContext('2d');
 		var img =new Image();
 		img.onload = function() {
-		    	canvass.width = img.width / 4;
-		        canvass.height = img.height / 4;
+		    	canvass.width = img.width / 2;
+		        canvass.height = img.height / 2;
 		        context.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvass.width, canvass.height);
 		};
 		img.src = imageURI;
@@ -321,26 +311,16 @@ function openFilePicker(idCanvas) {
  */
 function ValidateApikey(correo,pass){
 	//console.log('entre');
-	if(correo !='' && pass !=''){
-	    app.request.setup({
-	        headers: {
-	            'email': correo,
-	            'pass': pass
-	        },
-	        beforeSend: function () {
-	            app.preloader.show();
-	        },
-	      	complete: function () {
-	        	app.preloader.hide();
-	        }, 
-	        error: function(){
-              	app.preloader.hide();
-				app.dialog.alert('Error: ¡Opps! ¡Inténtalo de nuevo, datos incorrectos!');
-            },
-	        timeout: 5000
-	    });
-	    var UrlWs=(URL_WS+'login');
-		app.request.postJSON(UrlWs, { correo:correo, pass: pass }, function (data) {
+	app.request.setup({
+		headers: {
+			'email': correo,
+			'pass' : pass
+		}
+	});
+	app.request.postJSON(
+		URL_WS+'login',
+		function (data) {
+			app.preloader.hide();
 			localStorage.setItem('auth', true);
 			localStorage.setItem('apikey', data[0].apikey);
 			localStorage.setItem('userid', data[0].user_id);
@@ -348,19 +328,13 @@ function ValidateApikey(correo,pass){
 			localStorage.setItem('nombre', data[0].nombre);
 			localStorage.setItem('paterno', data[0].paterno);
 			localStorage.setItem('correo', data[0].correo);
-
-			if(localStorage.getItem('apikey') != ""){
-			 	app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
-			 }else{
-			 	app.preloader.hide();
-				app.dialog.alert('Error: Datos incorrectos');
-			}
-		});
-
-	}else{
-		app.preloader.hide();
-		app.dialog.alert('Error: Completa todos los campos');
-	}	
+			app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
+			
+		},function(data){
+			app.preloader.hide();
+			app.dialog.alert('Error: Datos incorrectos');
+		}
+	);	
 }
 
 
