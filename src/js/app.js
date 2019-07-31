@@ -170,8 +170,8 @@ function onDeviceReady() {
 	//cordova.plugins.backgroundMode.enable();
 	//cordova.plugins.backgroundMode.setEnabled(true);
 	getLocation();
-	setInterval(enviarUbicacion, 10000);
-	setTimeout(function(){ cordova.plugins.backgroundMode.enable(); }, 3000);
+	//setInterval(enviarUbicacion, 10000);
+	//setTimeout(function(){ cordova.plugins.backgroundMode.enable(); }, 3000);
 }
 
 
