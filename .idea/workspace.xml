@@ -3,6 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="232bfe81-5379-4a5a-8314-3fb762c606de" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cordova/config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/config.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cordova/www/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/www/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/home.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/home.f7.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -31,20 +36,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/pages/cambiarstatus.f7.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="435">
-              <caret line="74" column="61" selection-start-line="74" selection-start-column="61" selection-end-line="74" selection-end-column="61" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/js/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="509">
-              <caret line="766" column="17" selection-start-line="766" selection-start-column="17" selection-end-line="766" selection-end-column="17" />
+            <state relative-caret-position="720">
+              <caret line="48" column="18" lean-forward="true" selection-start-line="48" selection-start-column="18" selection-end-line="48" selection-end-column="18" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
                 <element signature="e#192#218#0" expanded="true" />
@@ -53,14 +49,28 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/cordova/config.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="60">
+              <caret line="4" column="46" lean-forward="true" selection-start-line="4" selection-start-column="46" selection-end-line="4" selection-end-column="46" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/pages/home.f7.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="390">
+              <caret line="26" column="47" selection-start-line="26" selection-start-column="33" selection-end-line="26" selection-end-column="47" />
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Entregado</find>
-      <find>lista_billetes</find>
-      <find>output_billetes</find>
-      <find>Foto 1</find>
       <find>takePhoto</find>
       <find>Choose</find>
       <find>originalImg</find>
@@ -87,6 +97,10 @@
       <find>capturePhotoEdi</find>
       <find>smallImage</find>
       <find>capturePhoto</find>
+      <find>apikey</find>
+      <find>error : function(){</find>
+      <find>error : function()</find>
+      <find>'apikey': localStorage.getItem('apikey')</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/cordova</dir>
@@ -99,9 +113,9 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/index.html" />
-        <option value="$PROJECT_DIR$/cordova/config.xml" />
         <option value="$PROJECT_DIR$/src/pages/cambiarstatus.f7.html" />
         <option value="$PROJECT_DIR$/src/js/app.js" />
+        <option value="$PROJECT_DIR$/cordova/config.xml" />
       </list>
     </option>
   </component>
@@ -128,7 +142,22 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="logifyapp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="logifyapp" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="logifyapp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="logifyapp" type="462c0819:PsiDirectoryNode" />
+              <item name="cordova" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
       <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
@@ -191,12 +220,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="55676000" />
+    <option name="totallyTimeSpent" value="56744000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1281" y="-257" width="1919" height="989" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19712307" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.11720831" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -320,13 +350,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cordova/config.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="697">
-          <caret line="88" column="13" selection-start-line="88" selection-start-column="13" selection-end-line="88" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.dom.d.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="312">
@@ -336,8 +359,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/js/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="509">
-          <caret line="766" column="17" selection-start-line="766" selection-start-column="17" selection-end-line="766" selection-end-column="17" />
+        <state relative-caret-position="720">
+          <caret line="48" column="18" lean-forward="true" selection-start-line="48" selection-start-column="18" selection-end-line="48" selection-end-column="18" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
             <element signature="e#192#218#0" expanded="true" />
@@ -349,6 +372,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="435">
           <caret line="74" column="61" selection-start-line="74" selection-start-column="61" selection-end-line="74" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cordova/config.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="46" lean-forward="true" selection-start-line="4" selection-start-column="46" selection-end-line="4" selection-end-column="46" />
         </state>
       </provider>
     </entry>
