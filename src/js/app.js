@@ -440,7 +440,26 @@ $$(document).on('page:init', '.page[data-name="checkin"]', function (e) {
         if ($$('#input_num_sucursal_checkin').val() == "") {
             app.dialog.alert('Escriba el número de sucursal');
         } else {
-            app.preloader.show();
+             app.request.setup({
+                headers: {
+                    'apikey': localStorage.getItem('apikey')
+                },
+                beforeSend: function () {
+                    app.preloader.show();
+                },
+                complete: function () {
+                    app.preloader.hide();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    if (jqXHR.status === 401) {
+                        localStorage.clear(); //quita todas las variables de local storage
+                        app.preloader.hide(); // esconde el spinner
+                        //app.dialog.alert('Tu sesión expiró, inicia sesión de nuevo');
+                        window.location.reload(); // recarga la página (y te va a mandar a la página de login)
+                    }
+                },
+                timeout: 5000
+            });
             app.request.get(
                 URL_WS + 'consulta_material_sucursal/' + $$('#input_num_sucursal_checkin').val(),
                 function (data) {
@@ -499,6 +518,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
     if (num_guias.length == 1) {
         $$('#num_gias').val(num_guias);
         //app.preloader.show();
+        //alert(localStorage.getItem('apikey'));
         app.request.setup({
             headers: {
                 'apikey': localStorage.getItem('apikey')
@@ -513,8 +533,10 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 if (jqXHR.status === 401) {
                     localStorage.clear(); //quita todas las variables de local storage
                     app.preloader.hide(); // esconde el spinner
-                    //app.dialog.alert('Tu sesión expiró, inicia sesión de nuevo');
-                    window.location.reload(); // recarga la página (y te va a mandar a la página de login)
+                    //app.dialog.alert('Tu sesión expiró, inicia sesión de nuevo','Aviso');
+                    window.location.reload();
+                }else{
+                    app.dialog.alert('Hubo un error, inténtelo de nuevo','Error');
                 }
             },
             timeout: 5000
@@ -546,9 +568,6 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                     $$('#cont_paquete').append(data['guia'][0].ids_tokens);
                 }
                 app.preloader.hide();
-            },
-            function (error) {
-                console.log(error)
             },
             'json'
         );
