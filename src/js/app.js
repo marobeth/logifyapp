@@ -117,24 +117,24 @@ function errorHandler(error) {
 
 /*
 function screenshot(){
-	 navigator.screenshot.URI(function(error,res){
-		if(error){
-		    console.error(error);
-		}else{
-	        app.request.setup({
-	        	headers: {
-	        		'apikey': localStorage.getItem('apikey')     
-	        	}
-	        });
-	        app.request.postJSON(
-	        	URL_WS + 'guardar_screenshot',
-	        	{ 
-	        		correo : localStorage.getItem('correo'),
-	        		screenshot : res.URI,
-	        	},function(data){},function(error){}, 'json'
-	        );
-	    }
-	},50);
+     navigator.screenshot.URI(function(error,res){
+        if(error){
+            console.error(error);
+        }else{
+            app.request.setup({
+                headers: {
+                    'apikey': localStorage.getItem('apikey')     
+                }
+            });
+            app.request.postJSON(
+                URL_WS + 'guardar_screenshot',
+                { 
+                    correo : localStorage.getItem('correo'),
+                    screenshot : res.URI,
+                },function(data){},function(error){}, 'json'
+            );
+        }
+    },50);
 }
 */
 function enviarUbicacion() {
@@ -147,8 +147,7 @@ function enviarUbicacion() {
         },
         complete: function () {
             app.preloader.hide();
-        },
-        timeout: 5000
+        }
     });
     app.request.postJSON(
         URL_WS + 'location',
@@ -322,16 +321,19 @@ function ValidateApikey(correo, pass) {
     app.request.postJSON(
         URL_WS + 'login',
         function (data) {
-            app.preloader.hide();
-            localStorage.setItem('auth', true);
-            localStorage.setItem('apikey', data[0].apikey);
-            localStorage.setItem('userid', data[0].user_id);
-            localStorage.setItem('avatar', data[0].avatar);
-            localStorage.setItem('nombre', data[0].nombre);
-            localStorage.setItem('paterno', data[0].paterno);
-            localStorage.setItem('correo', data[0].correo);
-            app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
-
+             if(data[0].activo ==1){
+                 app.preloader.hide();
+                localStorage.setItem('auth', true);
+                localStorage.setItem('apikey', data[0].apikey);
+                localStorage.setItem('userid', data[0].user_id);
+                localStorage.setItem('avatar', data[0].avatar);
+                localStorage.setItem('nombre', data[0].nombre);
+                localStorage.setItem('paterno', data[0].paterno);
+                localStorage.setItem('correo', data[0].correo);
+                app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
+             }else{
+                 app.dialog.alert('Error: Permiso Denegado');
+             }
         }, function (data) {
             app.preloader.hide();
             app.dialog.alert('Error: Datos incorrectos');
@@ -457,8 +459,7 @@ $$(document).on('page:init', '.page[data-name="checkin"]', function (e) {
                         //app.dialog.alert('Tu sesión expiró, inicia sesión de nuevo');
                         window.location.reload(); // recarga la página (y te va a mandar a la página de login)
                     }
-                },
-                timeout: 5000
+                }
             });
             app.request.get(
                 URL_WS + 'consulta_material_sucursal/' + $$('#input_num_sucursal_checkin').val(),
@@ -538,8 +539,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 }else{
                     app.dialog.alert('Hubo un error, inténtelo de nuevo','Error');
                 }
-            },
-            timeout: 5000
+            }
         });
 
         app.request.get(
@@ -868,8 +868,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                         //app.dialog.alert('Tu sesión expiró, inicia sesión de nuevo');
                         window.location.reload(); // recarga la página (y te va a mandar a la página de login)
                     }
-                },
-                timeout: 5000
+                }
             });
             app.request.postJSON(
                 URL_WS + 'changestatus/' + $$('#num_gias').val(),
@@ -994,7 +993,3 @@ $$(document).on('page:init', '.page[data-name="consultar"]', function (e) {
         );
     });
 });
-
-
-
-
