@@ -1,23 +1,23 @@
 /* iOS Cordova Tweak */
 .device-cordova.device-ios {
-  height: 100vh;
+    height: 100vh;
 }
 
 /* Left Panel right border when it is visible by breakpoint */
 .panel-left.panel-visible-by-breakpoint:before {
-  position: absolute;
-  right: 0;
-  top: 0;
-  height: 100%;
-  width: 1px;
-  background: rgba(0,0,0,0.1);
-  content: '';
-  z-index: 6000;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 1px;
+    background: rgba(0, 0, 0, 0.1);
+    content: '';
+    z-index: 6000;
 }
 
 /* Hide navbar link which opens left panel when it is visible by breakpoint */
 .panel-left.panel-visible-by-breakpoint ~ .view .navbar .panel-open[data-panel="left"] {
-  display: none;
+    display: none;
 }
 
 /*
@@ -25,65 +25,188 @@
 */
 .ios .panel-left:not(.panel-visible-by-breakpoint).panel-active ~ .view-main:before,
 .ios .panel-left:not(.panel-visible-by-breakpoint).panel-closing ~ .view-main:before {
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 1px;
-  background: rgba(0,0,0,0.1);
-  content: '';
-  z-index: 6000;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 1px;
+    background: rgba(0, 0, 0, 0.1);
+    content: '';
+    z-index: 6000;
 }
 
 
-div[data-name=home]{
-  background: url(../static/images/bg.jpg);background-size: cover
+div[data-name=home] {
+    background: url(../static/images/bg.jpg);
+    background-size: cover
 }
-.overlay_home{
-  background: #0009;
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0
+
+.overlay_home {
+    background: #0009;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0
 }
-#logo_home{margin:100px auto 30px auto; width: 100px; display: block}
-.tac{text-align: center}
-#btn_iniciar_sesion{
-  width: 150px !important;
-  display: block;
-  margin: 0 auto;
-  background: #00bcd4 !important;
-  border: 1px solid #00bcd4;
+
+#logo_home {
+    margin: 100px auto 30px auto;
+    width: 100px;
+    display: block
 }
-.button{
-  background: #00bcd4 !important;
-  border: 1px solid #00bcd4;
+
+.tac {
+    text-align: center
 }
-#input_username{color: #fff}
-#input_password{/*color: #fff*/}
+
+#btn_iniciar_sesion {
+    width: 150px !important;
+    display: block;
+    margin: 0 auto;
+    background: #00bcd4 !important;
+    border: 1px solid #00bcd4;
+}
+
+.button {
+    background: #00bcd4 !important;
+    border: 1px solid #00bcd4;
+}
+
+#input_username {
+    color: #fff
+}
+
+#input_password { /*color: #fff*/
+}
+
 #input_username::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: #fff;
-} 
+    color: #fff;
+}
+
 #input_password::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: #fff;
+    color: #fff;
 }
 
-#myCanvas{width: 100%; margin-top: 10px; display: none}
-#myCanvas2{width: 100%;; margin-top: 10px; display: none}
-.ocultar_campos{display: none}
-#testigoreal1{width: 100%; margin-top: 10px}
-#testigoreal2{width: 100%; margin-top: 10px}
-#titulo_testigos{display: none}
-.button.open-foto-1{color:#fff;}
-.button.open-foto-2{color:#fff;}
-.btn_olvide_div{text-align: right;margin-right: 20px;}
-#btn_olvide{color:#D1D1D1;text-align: right;}
-
-div[data-name=resetpass]{
-  background: url(../static/images/bg.jpg);background-size: cover
+#myCanvas {
+    width: 100%;
+    margin-top: 10px;
+    display: none
 }
 
-input#input_password.inputColor.input-with-value{
-  color: #fff;
+#myCanvas2 {
+    width: 100%;;
+    margin-top: 10px;
+    display: none
+}
+
+.ocultar_campos {
+    display: none
+}
+
+#testigoreal1 {
+    width: 100%;
+    margin-top: 10px
+}
+
+#testigoreal2 {
+    width: 100%;
+    margin-top: 10px
+}
+
+#titulo_testigos {
+    display: none
+}
+
+.button.open-foto-1 {
+    color: #fff;
+}
+
+.button.open-foto-2 {
+    color: #fff;
+}
+
+.btn_olvide_div {
+    text-align: right;
+    margin-right: 20px;
+}
+
+#btn_olvide {
+    color: #D1D1D1;
+    text-align: right;
+}
+
+div[data-name=resetpass] {
+    background: url(../static/images/bg.jpg);
+    background-size: cover
+}
+
+input#input_password.inputColor.input-with-value {
+    color: #fff;
+}
+
+.icon.f7-icons.color-gray {
+    font-size: 20px;
+}
+
+.icon.f7-icons.color-verde {
+    color: #4caf50;
+}
+.icon.f7-icons.color-azull {
+    color: #007aff;
+}
+
+.material-icons.color-gray {
+    color: #8e8e93;
+}
+
+.material-icons.color-verde {
+    color: #4caf50;
+}
+
+.spacio {
+    padding-right: 12px;
+    text-align: left;
+}
+
+form#myGastos.list ul:after {
+    /*background-color: none;*/
+    background-color: initial;
+}
+
+.label-cell.colors {
+    color: #ff1e0e;
+}
+
+.cmrStyle {
+  color: #54a1c4;
+  font-size: 14px;
+}
+.cmrStylelink {
+    color: #54a1c4;
+    font-size: 14px;
+    padding: 15px;
+    width: 50%;
+    word-wrap: break-word;
+}
+#myCanvasGastos {
+    width: 100%;
+    margin-top: 10px;
+    display: none
+}
+
+#mediaColocar img{
+    width: 30%;
+    text-align: center;
+}
+
+#viewLinkIMG,#viewLinkPDF,#viewLinkXML{
+    cursor: none;
+}
+
+#peridoGastos{
+    color: #c09853;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+    padding: 5px;
 }

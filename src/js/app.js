@@ -12,10 +12,10 @@ import cordovaApp from './cordova-app.js';
 // Import Routes
 import routes from './routes.js';
 
-//var URL_WS = "http://192.168.10.51/api.logify.com.mx/";
-var URL_WS = "https://api.logify.com.mx/";
-//var URL_WS = "https://desarrollo.api.logify.com.mx/";
 
+//var URL_WS = "http://192.168.10.51/api.logify.com.mx/";
+//var URL_WS = "https://api.logify.com.mx/";
+var URL_WS = "https://desarrollo.api.logify.com.mx/";
 
 /* TRADUCIR STATUS */
 function traducirStatus(status) {
@@ -321,19 +321,19 @@ function ValidateApikey(correo, pass) {
     app.request.postJSON(
         URL_WS + 'login',
         function (data) {
-             if(data[0].activo ==1){
-                 app.preloader.hide();
+            if (data[0].activo == 1) {
+                app.preloader.hide();
                 localStorage.setItem('auth', true);
                 localStorage.setItem('apikey', data[0].apikey);
                 localStorage.setItem('userid', data[0].user_id);
                 localStorage.setItem('avatar', data[0].avatar);
                 localStorage.setItem('nombre', data[0].nombre);
                 localStorage.setItem('paterno', data[0].paterno);
-                localStorage.setItem('correo', data[0].correo);
+                localStorage.setItem('email', data[0].email);
                 app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
-             }else{
-                 app.dialog.alert('Error: Permiso Denegado');
-             }
+            } else {
+                app.dialog.alert('Error: Permiso Denegado');
+            }
         }, function (data) {
             app.preloader.hide();
             app.dialog.alert('Error: Datos incorrectos');
@@ -341,6 +341,211 @@ function ValidateApikey(correo, pass) {
     );
 }
 
+/**
+ * DateActual
+ * @param iddate
+ */
+function DateActual(iddate) {
+    var fecha = new Date();
+    var mes = fecha.getMonth() + 1;
+    var dia = fecha.getDate();
+    var ano = fecha.getFullYear();
+    if (dia < 10) {
+        dia = '0' + dia;
+    }
+    if (mes < 10) {
+        mes = '0' + mes;
+    }
+    document.getElementById(iddate).value = ano + "-" + mes + "-" + dia;
+}
+
+/**
+ * DateActual
+ * @param iddate
+ */
+function DatePeriodo() {
+    var fecha = new Date();
+    var fecha2 = new Date();
+    var diasemanal=fecha.getDay();
+    var masdias=6-diasemanal;
+    var menosdias=6-masdias;
+    fecha.setDate(fecha.getDate() + masdias);
+    var fechay = fecha.getFullYear();
+    var fecham = fecha.getMonth() + 1;
+    var fechad = fecha.getDate();
+    fecha2.setDate(fecha2.getDate() - menosdias);
+    var fecha2y = fecha2.getFullYear();
+    var fecha2m = fecha2.getMonth() + 1;
+    var fecha2d = fecha2.getDate();
+    var peridoGastos=fecha2y+'-'+fecha2m+'-'+fecha2d+' - ' +fechay+'-'+fecham+'-'+fechad;
+    $$('#peridoGastos').html(peridoGastos);
+}
+/**
+ * DateActual
+ * @param date
+ */
+function DateValidarPeriodo(dateGasto) {
+    var AceptPeriodo;
+    var fagregar= new Date(dateGasto.replace(/-/g, '\/'));
+    var factual=new Date();
+    var fecha= new Date();
+    var fecha2= new Date();
+    var diasemanal=fecha.getDay();
+    var masdias=6-diasemanal;
+    var menosdias=6-masdias;
+    fecha.setDate(fecha.getDate() + masdias);
+    fecha2.setDate(fecha2.getDate() - menosdias);
+    if(fagregar >=fecha2 && fagregar<=factual){
+        AceptPeriodo=1;
+    }else{
+        AceptPeriodo=0;
+    }
+    return AceptPeriodo;
+}
+
+/**
+ * DateGasto
+ * @param DateGasto
+ */
+function DateGasto(CById, DateGasto) {
+    document.getElementById(CById).value = DateGasto;
+}
+
+function RsltsGastos(valor) {
+    app.request.get(
+        URL_WS + 'api/v2/gastos',
+        function (data) {
+            var gatosConceptos = '';
+            gatosConceptos += '<option value="">Seleccionar</option>';
+            data.forEach(function (gasto, index) {
+                if (gasto.id == valor && gasto.id != '') {
+                    var Eselected = 'selected';
+                } else {
+                    var Eselected = '';
+                }
+                gatosConceptos += '<option value="' + gasto.id + '"' + Eselected + '>' + gasto.concepto + '</option>';
+            });
+            $$('#ConceptoGasto').html(gatosConceptos);
+        },
+        function (error) {
+            console.log(error);
+        },
+        'json'
+    );
+}
+
+function RsltsPrvdr(valor) {
+    app.request.get(
+        URL_WS + 'api/v2/proveedor-operador/',
+        function (data) {
+            var proveedorrs = '';
+            var Eselected;
+            proveedorrs += '<option value="">Seleccionar</option>';
+            data.forEach(function (proveedor, index) {
+                if (proveedor.id == valor) {
+                    Eselected = 'selected';
+                } else {
+                    Eselected = '';
+                }
+                proveedorrs += '<option value="' + proveedor.id + '"' + Eselected + '>' + proveedor.nombre + '</option>';
+            });
+            $$('#OprProve').html(proveedorrs);
+        },
+        function (error) {
+            console.log(error);
+        },
+        'json'
+    );
+}
+
+function RsltsMonto(CById, monto) {
+    document.getElementById(CById).value = monto;
+}
+
+function RsltsComentario(CById, concepto, coment) {
+    if (concepto == 12) {
+        $$("#Gcomentario").show();
+        document.getElementById(CById).value = coment;
+    }
+}
+
+function RsltsTpComprobante(CById, valor) {
+    var TpoCmprbnt = '';
+    var lista = ['Seleccionar', 'Nota', 'Factura', 'Recibo', 'Ticket'];
+    lista.forEach(function (element, index) {
+        if (index == valor) {
+            var Eselected = 'selected';
+        } else {
+            var Eselected = '';
+        }
+        TpoCmprbnt += '<option value="' + index + '"' + Eselected + '>' + element + '</option>';
+    });
+    $$('#TpoCmprbnt').html(TpoCmprbnt);
+}
+
+function RsltsFotoComprobante(CById, valor) {
+    if (valor === undefined || valor === null || valor === '' ) {
+        $$('#'+CById).data("status", 0);
+        $$('#'+CById).html('');
+    }else{
+        $$('#'+CById).data("status", 1);
+        $$('#'+CById).html('<img src="' + valor + '"/>');
+    }
+}
+
+function RsltsPDFComprobante(CById, valor) {
+    if (valor === undefined || valor === null || valor === '') {
+        $$('#pdfColocar').html('');
+    }else{
+        $$('#' + CById).data("status", 1);
+        $$('#pdfColocar').data("file", valor);
+        var splits = valor.split(['/']);
+        splits=splits.pop ();
+        $$('#pdfColocar').html(splits);
+    }
+}
+
+function RsltsXMLComprobante(CById, valor) {
+    if (valor === undefined || valor === null || valor === '') {
+        $$('#xmlColocar').html('');
+    }else{
+        $$('#' + CById).data("status", 1);
+        $$('#xmlColocar').data("file", valor);
+        var splits = valor.split(['/']);
+        splits=splits.pop ();
+        $$('#xmlColocar').html(splits);
+    }
+}
+
+function convertToBase64(CById, CById2, type) {
+    var selectedFile = document.getElementById(CById).files;
+    var path = selectedFile[0].name;
+    var path_splitted = path.split('.');
+
+    if (path_splitted[1] == type) {
+        if (selectedFile.length > 0) {
+            var fileToLoad = selectedFile[0];
+            var fileReader = new FileReader();
+            var base64;
+            fileReader.onload = function (fileLoadedEvent) {
+                base64 = fileLoadedEvent.target.result;
+                $$('#' + CById2).data("file", base64);
+                $$('#' + CById2).data("status", 1);
+            };
+            fileReader.readAsDataURL(fileToLoad);
+        }
+    } else {
+        app.dialog.alert("El formato del archivo no corresponde "+ type);
+    }
+}
+
+function validateMonto(valor) {
+    var RE = /^\d*(\.\d{1})?\d{0,1}$/;
+    if (RE.test(valor)) {
+    } else {
+        app.dialog.alert("El formato del monto no corresponde Ej. 120.00 ó 23.65");
+    }
+}
 
 var app = new Framework7({
     root: '#app', // App root element
@@ -442,7 +647,7 @@ $$(document).on('page:init', '.page[data-name="checkin"]', function (e) {
         if ($$('#input_num_sucursal_checkin').val() == "") {
             app.dialog.alert('Escriba el número de sucursal');
         } else {
-             app.request.setup({
+            app.request.setup({
                 headers: {
                     'apikey': localStorage.getItem('apikey')
                 },
@@ -536,8 +741,8 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                     app.preloader.hide(); // esconde el spinner
                     //app.dialog.alert('Tu sesión expiró, inicia sesión de nuevo','Aviso');
                     window.location.reload();
-                }else{
-                    app.dialog.alert('Hubo un error, inténtelo de nuevo','Error');
+                } else {
+                    app.dialog.alert('Hubo un error, inténtelo de nuevo', 'Error');
                 }
             }
         });
@@ -584,7 +789,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
     $$('.open-foto-1').on('click', function () {
         app.dialog.create({
             title: 'Foto 1',
-            text: 'Elegir opcion:',
+            text: 'Elegir opción:',
             buttons: [
                 {
                     text: 'Camara',
@@ -643,7 +848,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
     $$('.open-foto-2').on('click', function () {
         app.dialog.create({
             title: 'Foto 2',
-            text: 'Elegir opcion:',
+            text: 'Elegir opción:',
             buttons: [
                 {
                     text: 'Camara',
@@ -759,13 +964,13 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                     var canvas1 = $$('#myCanvas')[0];
                     var foto1 = canvas1.toDataURL();
                 } else {
-                    foto1 = '';
+                    var foto1 = '';
                 }
                 if (statusFoto2 != 0) {
                     var canvas2 = $$('#myCanvas2')[0];
                     var foto2 = canvas2.toDataURL();
                 } else {
-                    foto2 = '';
+                    var foto2 = '';
                 }
 
                 if (foto1 == "" || foto2 == "" || persona_recibe == "") {
@@ -787,13 +992,13 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                     var canvas1 = $$('#myCanvas')[0];
                     var foto1 = canvas1.toDataURL();
                 } else {
-                    foto1 = '';
+                    var foto1 = '';
                 }
                 if (statusFoto2 != 0) {
                     var canvas2 = $$('#myCanvas2')[0];
                     var foto2 = canvas2.toDataURL();
                 } else {
-                    foto2 = '';
+                    var foto2 = '';
                 }
 
                 if (foto1 == "" || foto2 == "" || persona_recibe == "") {
@@ -818,7 +1023,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                     var canvas2 = $$('#myCanvas2')[0];
                     var foto2 = canvas2.toDataURL();
                 } else {
-                    foto2 = '';
+                    var foto2 = '';
                 }
 
                 if (foto1 == "" || foto2 == "" || incidencia == "") {
@@ -992,4 +1197,590 @@ $$(document).on('page:init', '.page[data-name="consultar"]', function (e) {
             }
         );
     });
+});
+
+/**
+** Control Gastos
+**/
+$$(document).on('page:init', '.page[data-name="hojagastos"]', function (e) {
+    DateActual('calendardefault');
+    app.calendar.create({
+        inputEl: '.calendardefault',
+        dateFormat: 'yyyy-mm-dd',
+        rangePicker: true,
+    });
+    var id_operador = localStorage.getItem('userid');
+    var periodo = $$('#calendardefault').val();
+    //console.log(periodo);
+
+    app.request.get(
+        URL_WS + 'api/v2/consultar/gastos-operador/' + id_operador + '/' + periodo + '/' + periodo,
+        function (data) {
+            var gatosConsulta = '';
+            if (data != '') {
+                data.forEach(function (cslt_gsto_opr, index) {
+                    var fotoExit = cslt_gsto_opr.foto_comprobante;
+                    var pdfExit = cslt_gsto_opr.pdf_comprobante;
+                    var xmlExit = cslt_gsto_opr.xml_comprobante;
+                    if (fotoExit === undefined || fotoExit === null || fotoExit === '') {
+                        var colorFoto = '';
+                    } else {
+                        var colorFoto = ' color-verde';
+                    }
+                    if (pdfExit === undefined || pdfExit === null || pdfExit === '') {
+                        var colorPDF = '';
+                    } else {
+                        var colorPDF = ' color-verde';
+                    }
+                    if (xmlExit === undefined || xmlExit === null || xmlExit === '') {
+                        var colorXML = ' color-gray';
+                    } else {
+                        var colorXML = ' color-verde';
+                    }
+                    gatosConsulta += '<tr><td class="label-cell">' + cslt_gsto_opr.concepto + '</td><td class="numeric-cell">' + cslt_gsto_opr.monto + '</td><td class="actions-cell"><a href="/editgastos/' + cslt_gsto_opr.id + '" class="link icon-only" id="btn_edit_gastos"><i class="icon f7-icons color-azul">compose</i></a><a href="/deletegastos/' + cslt_gsto_opr.id + '" class="link icon-only" id="btn_delete_gastos"><i class="icon f7-icons color-azul">trash</i></a><a href="#" class="link icon-only" id="viewLinkIMG"><i class="material-icons' + colorFoto + '">photo</i></a><a href="#" class="link icon-only" id="viewLinkPDF"><i class="material-icons ' + colorPDF + '">picture_as_pdf</i></a><a href="#" class="link icon-only" id="viewLinkXML"><i class="icon f7-icons ' + colorXML + '">document_fill</i></a></td></tr>';
+                });
+            } else {
+                gatosConsulta += '<tr><td class="label-cell"></td><td class="label-cell colors" colspan="3">No hay Información</td></tr>';
+            }
+            $$('#tbcoperadores').html(gatosConsulta);
+        },
+        function (error) {
+            console.log(error);
+        },
+        'json'
+    );
+
+    $$('#btn_search_gastos').on('click', function (e) {
+        var periodo = $$('#calendardefault').val();
+        var splits = periodo.split([' - ']);
+        var periodo1 = splits[0];
+        var periodo2 = splits[1];
+        if (periodo2 === undefined || periodo2 === null) {
+            var periodo1 = periodo;
+            var periodo2 = periodo;
+        }
+
+        app.request.get(
+            URL_WS + 'api/v2/consultar/gastos-operador/' + id_operador + '/' + periodo1 + '/' + periodo2,
+            function (data) {
+                var gatosConsulta = '';
+                if (data != '') {
+                    data.forEach(function (cslt_gsto_opr, index) {
+                        var fotoExit = cslt_gsto_opr.foto_comprobante;
+                        var pdfExit = cslt_gsto_opr.pdf_comprobante;
+                        var xmlExit = cslt_gsto_opr.xml_comprobante;
+
+                        if (fotoExit === undefined || fotoExit === null || fotoExit === '') {
+                            var colorFoto = '';
+                        } else {
+                            var colorFoto = ' color-verde';
+                        }
+                        if (pdfExit === undefined || pdfExit === null || pdfExit === '') {
+                            var colorPDF = '';
+                        } else {
+                            var colorPDF = ' color-verde';
+                        }
+                        if (xmlExit === undefined || xmlExit === null || xmlExit === '') {
+                            var colorXML = ' color-gray';
+                        } else {
+                            var colorXML = ' color-verde';
+                        }
+                        gatosConsulta += '<tr><td class="label-cell">' + cslt_gsto_opr.concepto + '</td><td class="numeric-cell">' + cslt_gsto_opr.monto + '</td><td class="actions-cell"><a href="/editgastos/' + cslt_gsto_opr.id + '" class="link icon-only" id="btn_edit_gastos"><i class="icon f7-icons color-azul">compose</i></a><a href="/deletegastos/' + cslt_gsto_opr.id + '" class="link icon-only" id="btn_delete_gastos"><i class="icon f7-icons color-azul">trash</i></a><a href="#" class="link icon-only"><i class="material-icons' + colorFoto + '">photo</i></a><a href="#" class="link icon-only"><i class="material-icons ' + colorPDF + '">picture_as_pdf</i></a><a href="#" class="link icon-only"><i class="icon f7-icons ' + colorXML + '">document_fill</i></a></td></tr>';
+                    });
+                } else {
+                    gatosConsulta += '<tr><td class="label-cell"></td><td class="label-cell colors" colspan="3">No hay Información</td></tr>';
+                }
+
+                $$('#tbcoperadores').html(gatosConsulta);
+            },
+            function (error) {
+                console.log(error);
+            },
+            'json'
+        );
+    });
+
+    $$('#btn_add_gastos').on('click', function (e) {
+        app.views.main.router.navigate('/addgastos/', {reloadCurrent: false});
+    });
+
+    $$('#btn_delete_gastos').on('click', function (e) {
+        app.views.main.router.navigate('/deletegastos/', {reloadCurrent: false});
+    });
+
+
+});
+
+$$(document).on('page:init', '.page[data-name="addgastos"]', function (e) {
+    $$("#Gcomentario").hide();
+    DateActual('fgasto');
+    app.calendar.create({
+        inputEl: '.fgasto',
+        dateFormat: 'yyyy-mm-dd'
+    });
+
+    RsltsGastos('');
+    RsltsPrvdr('');
+    DatePeriodo();
+
+    $$('#fgasto').on('change', function () {
+        var dateGasto = $$('#fgasto').val();
+        var VPeriodo=DateValidarPeriodo(dateGasto);
+        if(VPeriodo==0){
+            app.dialog.alert("La fecha no debe superar al día actual y semanas anteriores.");
+        }
+    });
+
+    $$('#openFotoGasto').on('click', function () {
+        app.dialog.create({
+            title: 'Comprobate',
+            text: 'Elegir opción:',
+            buttons: [
+                {
+                    text: 'Camara',
+                    cssClass: 'id_cmpbnt_camara'
+                },
+                {
+                    text: 'Galeria',
+                    cssClass: 'id_cmpbnt_galeria'
+                },
+                {
+                    text: 'Cancelar',
+                    cssClass: 'id_cmpbnt_cancelar'
+                },
+            ],
+            verticalButtons: true,
+        }).open();
+        $$('.id_cmpbnt_camara').on('click', function (e) {
+            var permissions = cordova.plugins.permissions;
+            permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
+
+            function error() {
+                app.dialog.alert('Necesitas permiso de: WRITE_EXTERNAL_STORAGE ');
+            }
+
+            function success(status) {
+                if (!status.hasPermission) {
+                    error();
+                } else {
+                    openCamera('myCanvasGastos');
+                }
+            }
+        });
+
+        $$('.id_cmpbnt_cancelar').on('click', function (e) {
+            app.dialog.close();
+        });
+
+        $$('.id_cmpbnt_galeria').on('click', function (e) {
+            var permissions = cordova.plugins.permissions;
+            permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
+
+            function error() {
+                app.dialog.alert('Necesitas permiso de: WRITE_EXTERNAL_STORAGE ');
+            }
+
+            function success(status) {
+                if (!status.hasPermission) {
+                    error();
+                } else {
+                    openFilePicker('myCanvasGastos');
+                }
+            }
+        });
+    });
+
+    $$('#ConceptoGasto').on('change', function () {
+        var ConceptoGasto = $$('#ConceptoGasto').val();
+        if (ConceptoGasto == 12) {
+            $$("#Gcomentario").show();
+        } else {
+            $$("#Gcomentario").hide();
+        }
+    });
+
+    $$('#PFDGastos').on('change', function () {
+        convertToBase64('PFDGastos', 'pdfColocar', 'pdf');
+    });
+
+    $$('#XMLGastos').on('change', function () {
+        convertToBase64('XMLGastos', 'xmlColocar', 'xml');
+    });
+
+    $$('#btn_form_add_gastos').on('click', function (e) {
+        var id_operador = localStorage.getItem('userid');
+        var fgasto = $$('#fgasto').val();
+        var ConceptoGasto = $$('#ConceptoGasto').val();
+        var comentario = $$('#comentario').val();
+        var OprProve = $$('#OprProve').val();
+        var monto = $$('#monto').val();
+        var TpoCmprbnt = $$('#TpoCmprbnt').val();
+        var FotoStatus = $$('#myCanvasGastos').data("foto1");
+        var PDFStatus = $$('#pdfColocar').data("status");
+        var XMLStatus = $$('#xmlColocar').data("status");
+        var periodo=DateValidarPeriodo(fgasto);
+
+        validateMonto(monto);
+
+        if (FotoStatus == 0) {
+            var FotoGastos = '';
+        } else {
+            var cnvsGasto = $$('#myCanvasGastos')[0];
+            var FotoGastos = cnvsGasto.toDataURL();
+        }
+
+        if (PDFStatus == 0) {
+            var PFDGastos = '';
+        } else {
+            var PFDGastos = $$('#pdfColocar').data("file");
+        }
+
+        if (XMLStatus == 0) {
+            var XMLGastos = '';
+        } else {
+            var XMLGastos = $$('#xmlColocar').data("file");
+        }
+
+        if(periodo == 0){
+            app.dialog.alert("La fecha esta fuera de período");
+        } else if (id_operador == '') {
+            app.dialog.alert("Operador no existe");
+        } else if (ConceptoGasto == '') {
+            app.dialog.alert("El campo de Concepto esta vácio");
+        } else if (OprProve == '') {
+            app.dialog.alert("El campo de Proveedor esta vácio");
+        } else if (monto == '') {
+            app.dialog.alert("El campo de Monto esta vácio");
+        } else if (TpoCmprbnt == '' || TpoCmprbnt == 0) {
+            app.dialog.alert("El campo de Tipo de Comprobante esta vácio");
+        } else if (FotoStatus == 0 ) {
+            app.dialog.alert("El campo Foto del Comprobante esta vácio");
+        }  else {
+            app.request.setup({
+                headers: {
+                    'apikey': localStorage.getItem('apikey')
+                },
+                beforeSend: function () {
+                    app.preloader.show();
+                },
+                complete: function () {
+                    app.preloader.hide();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    if (jqXHR.status === 401) {
+                        localStorage.clear();
+                        app.preloader.hide();
+                        window.location.reload();
+                    }
+                }
+            });
+
+            app.request.postJSON(
+                URL_WS + 'api/v2/gastos-operador/' + id_operador,
+                {
+                    id_operador: id_operador,
+                    id_concepto: ConceptoGasto,
+                    id_proveedor: OprProve,
+                    monto: monto,
+                    tipo_comprobante: TpoCmprbnt,
+                    fecha_gasto: fgasto,
+                    comentarios: comentario,
+                    foto_comprobante: FotoGastos,
+                    pdf_comprobante: PFDGastos,
+                    xml_comprobante: XMLGastos
+                },
+                function (data) {
+                    app.dialog.alert("El gasto se agrego correctamente");
+                    app.views.main.router.navigate('/hojagastos/', {reloadCurrent: false});
+                }, function (error) {
+                    console.log(error);
+                },
+                'json'
+            );
+        }
+    });
+
+});
+
+$$(document).on('page:init', '.page[data-name="editgastos"]', function (e) {
+    var idGasto = app.view.main.router.currentRoute.params.idGasto;
+    $$("#Gcomentario").hide();
+    $$('#ConceptoGasto').on('change', function () {
+        var ConceptoGasto = $$('#ConceptoGasto').val();
+        if (ConceptoGasto == 12) {
+            $$("#Gcomentario").show();
+        } else {
+            $$("#Gcomentario").hide();
+        }
+    });
+
+    $$('#openFotoGasto').on('click', function () {
+        app.dialog.create({
+            title: 'Comprobate',
+            text: 'Elegir opción:',
+            buttons: [
+                {
+                    text: 'Camara',
+                    cssClass: 'id_cmpbnt_camara'
+                },
+                {
+                    text: 'Galeria',
+                    cssClass: 'id_cmpbnt_galeria'
+                },
+                {
+                    text: 'Cancelar',
+                    cssClass: 'id_cmpbnt_cancelar'
+                },
+            ],
+            verticalButtons: true,
+        }).open();
+
+        $$('.id_cmpbnt_camara').on('click', function (e) {
+            var permissions = cordova.plugins.permissions;
+            permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
+
+            function error() {
+                app.dialog.alert('Necesitas permiso de: WRITE_EXTERNAL_STORAGE ');
+            }
+
+            function success(status) {
+                if (!status.hasPermission) {
+                    error();
+                } else {
+                    openCamera('myCanvasGastos');
+                }
+            }
+        });
+
+        $$('.id_cmpbnt_cancelar').on('click', function (e) {
+            app.dialog.close();
+        });
+
+        $$('.id_cmpbnt_galeria').on('click', function (e) {
+            var permissions = cordova.plugins.permissions;
+            permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
+
+            function error() {
+                app.dialog.alert('Necesitas permiso de: WRITE_EXTERNAL_STORAGE ');
+            }
+
+            function success(status) {
+                if (!status.hasPermission) {
+                    error();
+                } else {
+                    openFilePicker('myCanvasGastos');
+                }
+            }
+        });
+
+    });
+    $$('#PFDGastos').on('change', function () {
+        convertToBase64('PFDGastos', 'pdfColocar', 'pdf');
+    });
+    $$('#pdfColocar').on('click', function () {
+        var PDFStatus = $$('#pdfColocar').data("file");
+        cordova.InAppBrowser.open(PDFStatus, '_system', 'location=yes');
+    });
+    $$('#XMLGastos').on('change', function () {
+        convertToBase64('XMLGastos', 'xmlColocar', 'xml');
+    });
+    $$('#xmlColocar').on('click', function () {
+        var XMLStatus = $$('#xmlColocar').data("file");
+        cordova.InAppBrowser.open(XMLStatus, '_blank', 'location=yes');
+    });
+
+    app.request.get(
+        URL_WS + 'api/v2/consultar-gasto/' + idGasto,
+        function (data) {
+            data.forEach(function (Oprgasto, index) {
+                DateGasto('fgasto', Oprgasto.fecha_gasto);
+                RsltsGastos(Oprgasto.id_concepto);
+                RsltsPrvdr(Oprgasto.id_proveedor);
+                RsltsComentario('comentario', Oprgasto.id_concepto, Oprgasto.comentarios);
+                RsltsMonto('monto', Oprgasto.monto);
+                RsltsTpComprobante('TpoCmprbnt', Oprgasto.tipo_comprobante);
+                RsltsFotoComprobante('mediaColocar', Oprgasto.foto_comprobante);
+                RsltsPDFComprobante('PFDGastos', Oprgasto.pdf_comprobante);
+                RsltsXMLComprobante('XMLGastos', Oprgasto.xml_comprobante);
+            });
+        },
+        function (error) {
+            console.log(error);
+        },
+        'json'
+    );
+
+    $$('#btn_form_add_gastos').on('click', function (e) {
+        var id_operador = localStorage.getItem('userid');
+        var fgasto = $$('#fgasto').val();
+        var ConceptoGasto = $$('#ConceptoGasto').val();
+        var comentario = $$('#comentario').val();
+        var OprProve = $$('#OprProve').val();
+        var monto = $$('#monto').val();
+        var TpoCmprbnt = $$('#TpoCmprbnt').val();
+        var FotoStatus = $$('#mediaColocar').data("status");
+        var FotoStatusCanvas = $$('#myCanvasGastos').data("foto1");
+        var PDFStatus = $$('#pdfColocar').data("status");
+        var XMLStatus = $$('#xmlColocar').data("status");
+
+        validateMonto(monto);
+
+        if (FotoStatusCanvas == 1) {
+            var cnvsGasto = $$('#myCanvasGastos')[0];
+            var FotoGastos = cnvsGasto.toDataURL();
+        }else{
+            var FotoGastos = '';
+        }
+
+        if (PDFStatus == 0) {
+            var PFDGastos = '';
+        } else {
+            var PFDGastos = $$('#pdfColocar').data("file");
+        }
+
+        if (XMLStatus == 0) {
+            var XMLGastos = '';
+        } else {
+            var XMLGastos = $$('#xmlColocar').data("file");
+        }
+
+        if (id_operador == '') {
+            app.dialog.alert("Operador no existe");
+        } else if (ConceptoGasto == '') {
+            app.dialog.alert("El campo de Concepto esta vácio");
+        } else if (OprProve == '') {
+            app.dialog.alert("El campo de Proveedor esta vácio");
+        } else if (monto == '') {
+            app.dialog.alert("El campo de Monto esta vácio");
+        } else if (TpoCmprbnt == '' || TpoCmprbnt == 0) {
+            app.dialog.alert("El campo de Tipo de Comprobante esta vácio");
+        } else if (FotoStatus == 0 ) {
+            app.dialog.alert("El campo Foto del Comprobante esta vácio");
+        }  else {
+
+            if (ConceptoGasto != 12) {
+                comentario = '';
+            }
+            app.request.setup({
+                headers: {
+                    'apikey': localStorage.getItem('apikey')
+                },
+                beforeSend: function () {
+                    app.preloader.show();
+                },
+                complete: function () {
+                    app.preloader.hide();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    if (jqXHR.status === 401) {
+                        localStorage.clear();
+                        app.preloader.hide();
+                        window.location.reload();
+                    }
+                }
+            });
+            app.request.postJSON(
+                URL_WS + 'api/v2/editar/gastos-operador/' + idGasto,
+                {
+                    id_operador: id_operador,
+                    id_concepto: ConceptoGasto,
+                    id_proveedor: OprProve,
+                    monto: monto,
+                    tipo_comprobante: TpoCmprbnt,
+                    fecha_gasto: fgasto,
+                    comentarios: comentario,
+                    foto_comprobante: FotoGastos,
+                    pdf_comprobante: PFDGastos,
+                    xml_comprobante: XMLGastos
+                },
+                function (data) {
+                    app.dialog.alert("Los cambios se agrego correctamente");
+                    app.views.main.router.navigate('/hojagastos/', {reloadCurrent: false});
+                }, function (error) {
+                    console.log(error);
+                },
+                'json'
+            );
+        }
+    });
+
+});
+
+$$(document).on('page:init', '.page[data-name="addproveedor"]', function (e) {
+    $$('#btn_add_proveedor').on('click', function (e) {
+        var name_proveedor = $$('#nameprvdr').val();
+        if (name_proveedor != '') {
+            name_proveedor = name_proveedor.toUpperCase();
+            app.request.setup({
+                headers: {
+                    'apikey': localStorage.getItem('apikey')
+                },
+                beforeSend: function () {
+                    app.preloader.show();
+                },
+                complete: function () {
+                    app.preloader.hide();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    if (jqXHR.status === 401) {
+                        localStorage.clear();
+                        app.preloader.hide();
+                        window.location.reload();
+                    }
+                }
+            });
+
+            app.request.postJSON(
+                URL_WS + 'api/v2/proveedor-operador/nuevo',
+                {
+                    nombre: name_proveedor
+                },
+                function (data) {
+                    app.dialog.alert("El proveedor  se  agrego correctamente");
+                    app.views.main.router.navigate('/addgastos/', {reloadCurrent: false});
+                }, function (error) {
+                    console.log(error);
+                },
+                'json'
+            );
+        } else {
+            app.dialog.alert("El campo del proveedor esta vacío");
+        }
+    });
+});
+
+$$(document).on('page:init', '.page[data-name="deletegastos"]', function (e) {
+    var idGasto = app.view.main.router.currentRoute.params.idGasto;
+    app.request.setup({
+        headers: {
+            'apikey': localStorage.getItem('apikey')
+        },
+        beforeSend: function () {
+            app.preloader.show();
+        },
+        complete: function () {
+            app.preloader.hide();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            if (jqXHR.status === 401) {
+                localStorage.clear();
+                app.preloader.hide();
+                window.location.reload();
+            }
+        }
+    });
+
+    app.request.postJSON(
+        URL_WS + 'api/v2/eliminar/gastos-operador/' + idGasto,
+        {
+            id: idGasto
+        },
+        function (data) {
+            app.views.main.router.navigate('/hojagastos/', {reloadCurrent: false});
+            app.dialog.alert("El Gasto se elimino correctamente");
+        }, function (error) {
+            console.log(error);
+        },
+        'json'
+    );
 });
