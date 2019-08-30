@@ -186,7 +186,7 @@ form#myGastos.list ul:after {
     color: #54a1c4;
     font-size: 14px;
     padding: 15px;
-    width: 50%;
+    width: 80%;
     word-wrap: break-word;
 }
 #myCanvasGastos {
