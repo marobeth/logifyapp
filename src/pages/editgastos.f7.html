@@ -38,7 +38,7 @@
                                 <div class="item-inner">
                                     <div class="item-title item-label">Proveedor</div>
                                     <div class="item-input-wrap">
-                                        <select name="OprProve" id="OprProve"></select>
+                                        <input type="text" placeholder="OXXO" name="OprProve" id="OprProve" data-idPrvdr="">
                                     </div>
                                 </div>
                             </div>
@@ -54,7 +54,7 @@
                         <li>
                             <div class="item-content item-input">
                                 <div class="item-inner">
-                                    <div class="item-title item-label">Concepto</div>
+                                    <div class="item-title item-label">Tipo de Concepto de Gasto</div>
                                     <div class="item-input-wrap">
                                         <select name="ConceptoGasto" id="ConceptoGasto">
                                         </select>
@@ -65,9 +65,31 @@
                         <li id="Gcomentario">
                             <div class="item-content item-input">
                                 <div class="item-inner">
-                                    <div class="item-title item-label">Comentario</div>
+                                    <div class="item-title item-label">Concepto</div>
                                     <div class="item-input-wrap">
                                         <textarea name="comentario" id="comentario"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li id="kmi">
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Kilometraje Inicial</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" id="kminicial" name="kminicial"
+                                               placeholder="Fecha de Gastos">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li id="kmf">
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Kilometraje Final</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" id="kmfinal" name="kmfinal"
+                                               placeholder="Fecha de Gastos">
                                     </div>
                                 </div>
                             </div>
@@ -96,6 +118,16 @@
                         <li>
                             <div class="item-content item-input">
                                 <div class="item-inner">
+                                    <div class="item-title item-label">Folio o No. del Comprobante</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" name="numticket" id="numticket">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
                                     <div class="item-title item-label">Subir Comprobante<a id="openFotoGasto"><i
                                             class="icon f7-icons color-gray"> photo_camera </i></a></div>
                                     <div id="mediaColocar" data-status="0"></div>
@@ -112,7 +144,7 @@
                                             class="material-icons color-gray">picture_as_pdf</i></div>
                                     <div class="item-input-wrap">
                                         <input type="file" name="PFDGastos" id="PFDGastos" placeholder="PFDGastos">
-                                        <div class="list links-list">
+                                        <div class="list links-list" id="pdfhrf">
                                             <ul>
                                                 <li class="cmrStyle">
                                                     <a href="#">
@@ -133,7 +165,7 @@
                                             class="icon f7-icons color-gray">document_fill</i></div>
                                     <div class="item-input-wrap">
                                         <input type="file" name="XMLGastos" id="XMLGastos" placeholder="XMLGastos">
-                                        <div class="list links-list">
+                                        <div class="list links-list" id="xmlhrf">
                                             <ul>
                                                 <li class="cmrStyle">
                                                     <a href="#">
@@ -143,6 +175,16 @@
                                                 </li>
                                             </ul>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li id="Gobservaciones">
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Observaciones</div>
+                                    <div class="item-input-wrap">
+                                        <textarea name="observaciones" id="observaciones"></textarea>
                                     </div>
                                 </div>
                             </div>

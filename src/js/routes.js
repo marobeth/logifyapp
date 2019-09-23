@@ -11,7 +11,6 @@ import EditGastosPage from '../pages/editgastos.f7.html';
 import DeleteGastosPage from '../pages/deletegastos.f7.html';
 import AddProvdorPage from '../pages/addproveedor.f7.html';
 
-
 import NotFoundPage from '../pages/404.f7.html';
 
 var routes = [

@@ -18,8 +18,6 @@
             </div>
         </div>
         <div class="page-content">
-            <div class="block-title"></div>
-            <div class="block">En este periodo <span id="peridoGastos"></span> puedes capturar tus gastos.</div>
             <div class="list no-hairlines-md">
                 <form class="list" id="myGastos">
                     <ul>
@@ -28,7 +26,8 @@
                                 <div class="item-inner">
                                     <div class="item-title item-label">Fecha Gasto</div>
                                     <div class="item-input-wrap">
-                                        <input type="text" id="fgasto" name="fgasto" class="fgasto" placeholder="Fecha de Gastos"
+                                        <input type="text" id="fgasto" name="fgasto" class="fgasto"
+                                               placeholder="Fecha de Gastos"
                                                readonly required>
                                     </div>
                                 </div>
@@ -39,7 +38,7 @@
                                 <div class="item-inner">
                                     <div class="item-title item-label">Proveedor</div>
                                     <div class="item-input-wrap">
-                                        <select name="OprProve" id="OprProve"></select>
+                                        <input type="text" placeholder="OXXO" name="OprProve" id="OprProve" data-idPrvdr="">
                                     </div>
                                 </div>
                             </div>
@@ -47,14 +46,15 @@
                         <li>
                             <div class="list links-list">
                                 <ul>
-                                    <li class="cmrStyle"><a href="/addproveedor/" class="cmrStyle">Agregar Proveedor</a></li>
+                                    <li class="cmrStyle"><a href="/addproveedor/" class="cmrStyle">Agregar Proveedor</a>
+                                    </li>
                                 </ul>
                             </div>
                         </li>
                         <li>
                             <div class="item-content item-input">
                                 <div class="item-inner">
-                                    <div class="item-title item-label">Concepto</div>
+                                    <div class="item-title item-label">Tipo de Concepto de Gasto</div>
                                     <div class="item-input-wrap">
                                         <select name="ConceptoGasto" id="ConceptoGasto">
                                         </select>
@@ -65,9 +65,31 @@
                         <li id="Gcomentario">
                             <div class="item-content item-input">
                                 <div class="item-inner">
-                                    <div class="item-title item-label">Comentario</div>
+                                    <div class="item-title item-label">Concepto</div>
                                     <div class="item-input-wrap">
-                                        <textarea name="comentario" id="comentario"></textarea>
+                                        <textarea name="comentario" id="comentario" placeholder="Que tipo de concepto?"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li id="kmi">
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Kilometraje Inicial</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" id="kminicial" name="kminicial"
+                                               placeholder="Fecha de Gastos">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li id="kmf">
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Kilometraje Final</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" id="kmfinal" name="kmfinal"
+                                               placeholder="Fecha de Gastos">
                                     </div>
                                 </div>
                             </div>
@@ -101,8 +123,21 @@
                         <li>
                             <div class="item-content item-input">
                                 <div class="item-inner">
-                                    <div class="item-title item-label">Subir Comprobante<a id="openFotoGasto"><i
-                                            class="icon f7-icons color-gray"> photo_camera </i></a></div>
+                                    <div class="item-title item-label">Folio o No. del Comprobante</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" name="numticket" id="numticket" placeholder="245645">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Subir Comprobante
+                                        <a id="openFotoGasto" class="openFotoGasto">
+                                            <i class="icon f7-icons color-gray"> photo_camera_fill</i>
+                                        </a>
+                                    </div>
                                     <div class="item-input-wrap">
                                         <canvas id="myCanvasGastos" data-foto1="0"></canvas>
                                     </div>
@@ -116,6 +151,8 @@
                                             class="material-icons color-gray">picture_as_pdf</i></div>
                                     <div class="item-input-wrap">
                                         <input type="file" name="PFDGastos" id="PFDGastos" placeholder="PFDGastos">
+                                        <div id="pdfColocar" class="pdfColocar cmrStylelink"
+                                             data-file="0" data-status="0"></div>
                                     </div>
                                 </div>
                             </div>
@@ -127,6 +164,18 @@
                                             class="icon f7-icons color-gray">document_fill</i></div>
                                     <div class="item-input-wrap">
                                         <input type="file" name="XMLGastos" id="XMLGastos" placeholder="XMLGastos">
+                                        <div id="xmlColocar" class="xmlColocar cmrStylelink"
+                                             data-file="0" data-status="0"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li id="Gobservaciones">
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Observaciones</div>
+                                    <div class="item-input-wrap">
+                                        <textarea name="observaciones" id="observaciones"></textarea>
                                     </div>
                                 </div>
                             </div>

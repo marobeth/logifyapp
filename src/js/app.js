@@ -1,9 +1,7 @@
 import $$ from 'dom7';
 import Framework7 from 'framework7/framework7.esm.bundle.js';
-
 // Import F7 Styles
 import 'framework7/css/framework7.bundle.css';
-
 // Import Icons and App Custom Styles
 import '../css/icons.css';
 import '../css/app.css';
@@ -12,12 +10,15 @@ import cordovaApp from './cordova-app.js';
 // Import Routes
 import routes from './routes.js';
 
+var URL_NEW_WS = "https://logisticus.logify.com.mx/";
+//var URL_NEW_WS = "https://desarrollo.logisticus.logify.com.mx/";
 
-//var URL_WS = "http://192.168.10.51/api.logify.com.mx/";
-//var URL_WS = "https://api.logify.com.mx/";
-var URL_WS = "https://desarrollo.api.logify.com.mx/";
 
-/* TRADUCIR STATUS */
+/**
+ *
+ * @param status
+ * @returns {string}
+ */
 function traducirStatus(status) {
     switch (status) {
         case '1':
@@ -26,34 +27,39 @@ function traducirStatus(status) {
         case '2':
             //Recolectado
             return 'Recolectado';
-            break;
+        // break;
         case '3':
             //En ruta
             return 'En Ruta';
-            break;
+        //break;
         case '4':
             //Entregado
             return 'Entregado';
-            break;
+        //break;
         case '5':
             //Incidencia
             return 'Incidencia';
-            break;
+        //break;
         case '6':
             //Devuelto
             return 'Devuelto';
-            break;
+        //break;
         case '7':
             //Ocurre
             return 'Ocurre';
-            break;
+        //break;
         case '8':
             //En almacén
             return 'En almacen';
-            break;
+        //break;
     }
 }
 
+/**
+ *
+ * @param num_guia
+ * @returns {string}
+ */
 function detectarProyecto(num_guia) {
     if (num_guia.includes('BCL1234')) {
         return "Tokens";
@@ -99,139 +105,38 @@ function detectarProyecto(num_guia) {
     }
 }
 
-/* GEOLOCATION */
-function getLocation() {
-    var geolocation = navigator.geolocation;
-    geolocation.getCurrentPosition(showLocation, errorHandler);
-}
+/**
+ *
+ * @param valor
+ * @returns {string}
+ */
+function incidenciaGuia(valor) {
+    var incidencia;
 
-function showLocation(position) {
-    $$('#latitud').val(position.coords.latitude);
-    $$('#longitud').val(position.coords.longitude);
-}
-
-function errorHandler(error) {
-    console.log(error);
-}
-
-
-/*
-function screenshot(){
-     navigator.screenshot.URI(function(error,res){
-        if(error){
-            console.error(error);
-        }else{
-            app.request.setup({
-                headers: {
-                    'apikey': localStorage.getItem('apikey')     
-                }
-            });
-            app.request.postJSON(
-                URL_WS + 'guardar_screenshot',
-                { 
-                    correo : localStorage.getItem('correo'),
-                    screenshot : res.URI,
-                },function(data){},function(error){}, 'json'
-            );
-        }
-    },50);
-}
-*/
-function enviarUbicacion() {
-    getLocation();
-    app.request.setup({
-        headers: {
-            'apikey': localStorage.getItem('apikey')
-        }, beforeSend: function () {
-            app.preloader.show();
-        },
-        complete: function () {
-            app.preloader.hide();
-        }
-    });
-    app.request.postJSON(
-        URL_WS + 'location',
-        {
-            latitud: $$('#latitud').val(),
-            longitud: $$('#longitud').val(),
-            id_usuario: localStorage.getItem('userid')
-        },
-        function (data) {
-        }, function (error) {
-        },
-        'json'
-    );
-}
-
-/* GEOLOCATION */
-
-document.addEventListener("deviceready", onDeviceReady, false);
-
-function onDeviceReady() {
-    //cordova.plugins.backgroundMode.enable();
-    //cordova.plugins.backgroundMode.setEnabled(true);
-    getLocation();
-    //setInterval(enviarUbicacion, 10000);
-    //setTimeout(function(){ cordova.plugins.backgroundMode.enable(); }, 3000);
-}
-
-
-var resize_image = function (img, canvas, max_width, max_height) {
-    var ctx = canvas.getContext("2d");
-    var canvasCopy = document.createElement("canvas");
-    var copyContext = canvasCopy.getContext("2d");
-    var ratio = 1;
-    if (img.width > max_width) {
-        ratio = max_width / img.width;
-    } else if (img.height > max_height) {
-        ratio = max_height / img.height;
+    if (valor == 1) {
+        incidencia = 'Domicilio abandonado';
+    } else if (valor == 2) {
+        incidencia = 'Domicilio equivocado';
+    } else if (valor == 3) {
+        incidencia = 'Destinatario rechaza';
+    } else if (valor == 4) {
+        incidencia = 'Destinatario cambió de domicilio';
+    } else if (valor == 5) {
+        incidencia = 'No hay respuesta en el domicilio';
+    } else if (valor == 6) {
+        incidencia = 'Domicilio inexistente';
+    } else if (valor == 7) {
+        incidencia = 'Número equivocado';
+    } else if (valor == 8) {
+        incidencia = 'Destinatario Falleció';
+    } else if (valor == 9) {
+        incidencia = 'Zona de alto riesgo';
+    } else if (valor == 10) {
+        incidencia = 'Otro';
+    } else {
+        incidencia = '';
     }
-    canvasCopy.width = img.width;
-    canvasCopy.height = img.height;
-    copyContext.drawImage(img, 0, 0);
-    canvas.width = img.width * ratio;
-    canvas.height = img.height * ratio;
-    ctx.drawImage(canvasCopy, 0, 0, canvasCopy.width, canvasCopy.height, 0, 0, canvas.width, canvas.height);
-}
-
-
-function imageCapture() {
-    var options = {limit: 1};
-    navigator.device.capture.captureImage(onSuccess, onError, options);
-}
-
-
-function onError(error) {
-    //app.dialog.alert('Error code: ' + error.code, null, 'Capture Error');
-}
-
-function onSuccess(mediaFiles) {
-    $$('#myCanvas').show();
-    var canvas = $$('#myCanvas')[0];
-    var img = new Image();
-    img.src = mediaFiles[0].fullPath;
-    img.onload = function () {
-        resize_image(this, canvas, 800, 1200);
-    };
-}
-
-function imageCapture2() {
-    var options = {limit: 1};
-    navigator.device.capture.captureImage(onSuccess2, onError2, options);
-}
-
-function onError2(error) {
-    //navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
-}
-
-function onSuccess2(mediaFiles) {
-    $$('#myCanvas2').show();
-    var canvas = $$('#myCanvas2')[0];
-    var img = new Image();
-    img.src = mediaFiles[0].fullPath;
-    img.onload = function () {
-        resize_image(this, canvas, 800, 1200);
-    };
+    return incidencia;
 }
 
 /**
@@ -243,9 +148,8 @@ function openCamera(idCanvas) {
     var destinationType = navigator.camera.DestinationType;
     var srcType = pictureSource.CAMERA;
     navigator.device.capture.captureImage(function onSuccess(mediaFiles) {
-        //navigator.camera.getPicture(function onSuccess(mediaFiles) {
         $$('#' + idCanvas).show();
-        var canvas = $$('#' + idCanvas)[0];
+        /*var canvas = $$('#' + idCanvas)[0];*/
         var canva = document.getElementById(idCanvas);
         var con = canva.getContext('2d');
         var img = new Image();
@@ -282,7 +186,7 @@ function openFilePicker(idCanvas) {
 
     navigator.camera.getPicture(function cameraSuccess(imageURI) {
         $$('#' + idCanvas).show();
-        var canvas = $$('#' + idCanvas);
+        /*var canvas = $$('#' + idCanvas);*/
         var canvass = document.getElementById(idCanvas);
         var context = canvass.getContext('2d');
         var img = new Image();
@@ -314,22 +218,27 @@ function ValidateApikey(correo, pass) {
     //console.log('entre');
     app.request.setup({
         headers: {
-            'email': correo,
-            'pass': pass
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
         }
     });
     app.request.postJSON(
-        URL_WS + 'login',
+        URL_NEW_WS + 'api/login',
+        {
+            'email': correo,
+            'pass': pass
+        },
         function (data) {
-            if (data[0].activo == 1) {
+            if (data.activo == 1) {
                 app.preloader.hide();
                 localStorage.setItem('auth', true);
-                localStorage.setItem('apikey', data[0].apikey);
-                localStorage.setItem('userid', data[0].user_id);
-                localStorage.setItem('avatar', data[0].avatar);
-                localStorage.setItem('nombre', data[0].nombre);
-                localStorage.setItem('paterno', data[0].paterno);
-                localStorage.setItem('email', data[0].email);
+                localStorage.setItem('apikey', data.apikey);
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('userid', data.user_id);
+                localStorage.setItem('avatar', data.avatar);
+                localStorage.setItem('nombre', data.nombre);
+                localStorage.setItem('paterno', data.paterno);
+                localStorage.setItem('email', data.email);
                 app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
             } else {
                 app.dialog.alert('Error: Permiso Denegado');
@@ -359,49 +268,6 @@ function DateActual(iddate) {
     document.getElementById(iddate).value = ano + "-" + mes + "-" + dia;
 }
 
-/**
- * DateActual
- * @param iddate
- */
-function DatePeriodo() {
-    var fecha = new Date();
-    var fecha2 = new Date();
-    var diasemanal=fecha.getDay();
-    var masdias=6-diasemanal;
-    var menosdias=6-masdias;
-    fecha.setDate(fecha.getDate() + masdias);
-    var fechay = fecha.getFullYear();
-    var fecham = fecha.getMonth() + 1;
-    var fechad = fecha.getDate();
-    fecha2.setDate(fecha2.getDate() - menosdias);
-    var fecha2y = fecha2.getFullYear();
-    var fecha2m = fecha2.getMonth() + 1;
-    var fecha2d = fecha2.getDate();
-    var peridoGastos=fecha2y+'-'+fecha2m+'-'+fecha2d+' - ' +fechay+'-'+fecham+'-'+fechad;
-    $$('#peridoGastos').html(peridoGastos);
-}
-/**
- * DateActual
- * @param date
- */
-function DateValidarPeriodo(dateGasto) {
-    var AceptPeriodo;
-    var fagregar= new Date(dateGasto.replace(/-/g, '\/'));
-    var factual=new Date();
-    var fecha= new Date();
-    var fecha2= new Date();
-    var diasemanal=fecha.getDay();
-    var masdias=6-diasemanal;
-    var menosdias=6-masdias;
-    fecha.setDate(fecha.getDate() + masdias);
-    fecha2.setDate(fecha2.getDate() - menosdias);
-    if(fagregar >=fecha2 && fagregar<=factual){
-        AceptPeriodo=1;
-    }else{
-        AceptPeriodo=0;
-    }
-    return AceptPeriodo;
-}
 
 /**
  * DateGasto
@@ -411,17 +277,34 @@ function DateGasto(CById, DateGasto) {
     document.getElementById(CById).value = DateGasto;
 }
 
+/**
+ *
+ * @param valor
+ * @constructor
+ */
 function RsltsGastos(valor) {
+    var Eselected;
+    app.request.setup({
+        headers: {
+            'Authorization': "bearer " + localStorage.getItem('token')
+        }, beforeSend: function () {
+            app.preloader.show();
+        },
+        complete: function () {
+            app.preloader.hide();
+        }
+    });
+
     app.request.get(
-        URL_WS + 'api/v2/gastos',
+        URL_NEW_WS + 'api/v2/gastos',
         function (data) {
             var gatosConceptos = '';
             gatosConceptos += '<option value="">Seleccionar</option>';
             data.forEach(function (gasto, index) {
                 if (gasto.id == valor && gasto.id != '') {
-                    var Eselected = 'selected';
+                    Eselected = 'selected';
                 } else {
-                    var Eselected = '';
+                    Eselected = '';
                 }
                 gatosConceptos += '<option value="' + gasto.id + '"' + Eselected + '>' + gasto.concepto + '</option>';
             });
@@ -434,22 +317,33 @@ function RsltsGastos(valor) {
     );
 }
 
-function RsltsPrvdr(valor) {
+/**
+ *
+ * @param CById
+ * @param valor
+ * @constructor
+ */
+function NmPrvdr(CById, valor) {
+    app.request.setup({
+        headers: {
+            'Authorization': "bearer " + localStorage.getItem('token')
+        },
+        beforeSend: function () {
+            app.preloader.show();
+        },
+        complete: function () {
+            app.preloader.hide();
+        }
+    });
+
     app.request.get(
-        URL_WS + 'api/v2/proveedor-operador/',
+        URL_NEW_WS + 'api/v2/proveedor-operador-nombre/' + valor,
         function (data) {
-            var proveedorrs = '';
-            var Eselected;
-            proveedorrs += '<option value="">Seleccionar</option>';
-            data.forEach(function (proveedor, index) {
-                if (proveedor.id == valor) {
-                    Eselected = 'selected';
-                } else {
-                    Eselected = '';
-                }
-                proveedorrs += '<option value="' + proveedor.id + '"' + Eselected + '>' + proveedor.nombre + '</option>';
+            data.forEach(function (val, index) {
+                console.log(val);
+                document.getElementById(CById).value = val.nombre;
+                $$('#' + CById).data('idPrvdr', val.id);
             });
-            $$('#OprProve').html(proveedorrs);
         },
         function (error) {
             console.log(error);
@@ -458,65 +352,193 @@ function RsltsPrvdr(valor) {
     );
 }
 
+/**
+ *
+ * @param valor
+ * @constructor
+ */
+function RsltsPrvdr(valor) {
+    var autocompleteProveedor = app.autocomplete.create({
+        inputEl: '#OprProve',
+        openIn: 'dropdown',
+        preloader: true,
+        valueProperty: 'nombre',
+        textProperty: 'nombre',
+        limit: 20,
+        typeahead: true,
+        dropdownPlaceholderText: 'Buscar Proveedores',
+        source: function (query, render) {
+            var autocomplete = this;
+            var results = [];
+            if (query.length === 0) {
+                render(results);
+                return;
+            }
+            autocomplete.preloaderShow();
+            app.request.setup({
+                headers: {
+                    'Authorization': "bearer " + localStorage.getItem('token')
+                },
+                beforeSend: function () {
+                    app.preloader.show();
+                },
+                complete: function () {
+                    app.preloader.hide();
+                }
+            });
+
+            app.request({
+                url: URL_NEW_WS + 'api/v2/buscar/proveedor-operador/' + query,
+                method: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].nombre === query) {
+                            //console.log(data[i].id + '**' + data[i].nombre);
+                            $$('#OprProve').data('idPrvdr', data[i].id);
+                        }
+                        if (data[i].nombre.toLowerCase().indexOf(query.toLowerCase()) === 0) results.push(data[i]);
+                    }
+                    autocomplete.preloaderHide();
+                    render(results);
+                }
+            });
+        }
+    });
+}
+
+/**
+ * @param CById
+ * @param monto
+ * @constructor
+ */
 function RsltsMonto(CById, monto) {
     document.getElementById(CById).value = monto;
 }
 
-function RsltsComentario(CById, concepto, coment) {
+/**
+ *
+ * @param CById
+ * @param num
+ * @constructor
+ */
+function RsltsNum(CById, num) {
+    document.getElementById(CById).value = num;
+}
+
+/**
+ *
+ * @param CById
+ * @param observaciones
+ * @constructor
+ */
+function RsltsObservaciones(CById, observaciones) {
+    document.getElementById(CById).value = observaciones;
+}
+
+/**
+ *
+ * @param CById
+ * @param concepto
+ * @param coment
+ * @param kminicial
+ * @param kmfinal
+ * @constructor
+ */
+function RsltsConcepto(CById, concepto, coment, kminicial, kmfinal) {
     if (concepto == 12) {
         $$("#Gcomentario").show();
-        document.getElementById(CById).value = coment;
+        document.getElementById('comentario').value = coment;
+    }
+    if (concepto == 3) {
+        $$("#kmi").show();
+        $$("#kmf").show();
+        document.getElementById('kminicial').value = kminicial;
+        document.getElementById('kmfinal').value = kmfinal;
     }
 }
 
+/**
+ *
+ * @param CById
+ * @param valor
+ * @constructor
+ */
 function RsltsTpComprobante(CById, valor) {
-    var TpoCmprbnt = '';
+    var TpoCmprbnt;
+    var Eselected;
     var lista = ['Seleccionar', 'Nota', 'Factura', 'Recibo', 'Ticket'];
     lista.forEach(function (element, index) {
         if (index == valor) {
-            var Eselected = 'selected';
+            Eselected = 'selected';
         } else {
-            var Eselected = '';
+            Eselected = '';
         }
         TpoCmprbnt += '<option value="' + index + '"' + Eselected + '>' + element + '</option>';
     });
     $$('#TpoCmprbnt').html(TpoCmprbnt);
 }
 
+/**
+ *
+ * @param CById
+ * @param valor
+ * @constructor
+ */
 function RsltsFotoComprobante(CById, valor) {
-    if (valor === undefined || valor === null || valor === '' ) {
-        $$('#'+CById).data("status", 0);
-        $$('#'+CById).html('');
-    }else{
-        $$('#'+CById).data("status", 1);
-        $$('#'+CById).html('<img src="' + valor + '"/>');
+    if (valor == undefined || valor == null || valor == '') {
+        $$('#' + CById).data("status", 0);
+        $$('#' + CById).html('');
+    } else {
+        $$('#' + CById).data("status", 1);
+        $$('#' + CById).html('<img src="' + valor + '"/>');
     }
 }
 
+/**
+ *
+ * @param CById
+ * @param valor
+ * @constructor
+ */
 function RsltsPDFComprobante(CById, valor) {
-    if (valor === undefined || valor === null || valor === '') {
+    if (valor == undefined || valor == null || valor == '') {
         $$('#pdfColocar').html('');
-    }else{
+        $$('#pdfhrf').hide();
+    } else {
         $$('#' + CById).data("status", 1);
         $$('#pdfColocar').data("file", valor);
         var splits = valor.split(['/']);
-        splits=splits.pop ();
+        splits = splits.pop();
         $$('#pdfColocar').html(splits);
     }
 }
 
+/**
+ *
+ * @param CById
+ * @param valor
+ * @constructor
+ */
 function RsltsXMLComprobante(CById, valor) {
     if (valor === undefined || valor === null || valor === '') {
         $$('#xmlColocar').html('');
-    }else{
+        $$('#xmlhrf').hide();
+    } else {
         $$('#' + CById).data("status", 1);
         $$('#xmlColocar').data("file", valor);
         var splits = valor.split(['/']);
-        splits=splits.pop ();
+        splits = splits.pop();
         $$('#xmlColocar').html(splits);
     }
 }
 
+/**
+ *
+ * @param CById
+ * @param CById2
+ * @param type
+ */
 function convertToBase64(CById, CById2, type) {
     var selectedFile = document.getElementById(CById).files;
     var path = selectedFile[0].name;
@@ -535,10 +557,14 @@ function convertToBase64(CById, CById2, type) {
             fileReader.readAsDataURL(fileToLoad);
         }
     } else {
-        app.dialog.alert("El formato del archivo no corresponde "+ type);
+        app.dialog.alert("El formato del archivo no corresponde " + type);
     }
 }
 
+/**
+ *
+ * @param valor
+ */
 function validateMonto(valor) {
     var RE = /^\d*(\.\d{1})?\d{0,1}$/;
     if (RE.test(valor)) {
@@ -546,6 +572,7 @@ function validateMonto(valor) {
         app.dialog.alert("El formato del monto no corresponde Ej. 120.00 ó 23.65");
     }
 }
+
 
 var app = new Framework7({
     root: '#app', // App root element
@@ -621,7 +648,7 @@ $$(document).on('page:init', '.page[data-name="home"]', function (e) {
     });
 
     $$('#btn_olvide').on('click', function () {
-        cordova.InAppBrowser.open('https://admin.logify.com.mx/restablecer-contrasena', '_blank', 'location=yes');
+        cordova.InAppBrowser.open('https://logisticus.logify.com.mx/restablecer-contrasena', '_blank', 'location=yes');
     });
 });
 
@@ -630,7 +657,6 @@ $$(document).on('page:afterin', '.page[data-name="home"]', function (e) {
         app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
     }
 });
-
 
 $$(document).on('page:init', '.page[data-name="logout"]', function (e) {
     localStorage.clear();
@@ -649,7 +675,7 @@ $$(document).on('page:init', '.page[data-name="checkin"]', function (e) {
         } else {
             app.request.setup({
                 headers: {
-                    'apikey': localStorage.getItem('apikey')
+                    'Authorization': "bearer " + localStorage.getItem('token')
                 },
                 beforeSend: function () {
                     app.preloader.show();
@@ -658,16 +684,16 @@ $$(document).on('page:init', '.page[data-name="checkin"]', function (e) {
                     app.preloader.hide();
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    if (jqXHR.status === 401) {
-                        localStorage.clear(); //quita todas las variables de local storage
-                        app.preloader.hide(); // esconde el spinner
-                        //app.dialog.alert('Tu sesión expiró, inicia sesión de nuevo');
-                        window.location.reload(); // recarga la página (y te va a mandar a la página de login)
+                    console.log(jqXHR);
+                    if (jqXHR.status === 404) {
+                        localStorage.clear();
+                        app.preloader.hide();
+                        window.location.reload();
                     }
                 }
             });
             app.request.get(
-                URL_WS + 'consulta_material_sucursal/' + $$('#input_num_sucursal_checkin').val(),
+                URL_NEW_WS + 'api/v2/consulta_material_sucursal/' + $$('#input_num_sucursal_checkin').val(),
                 function (data) {
                     var data_tienda = data[0][0];
                     var data_billetes = data[1];
@@ -699,9 +725,20 @@ $$(document).on('page:init', '.page[data-name="checkin"]', function (e) {
                     });
                     $$('#lista_mkt').html(output_mkt);
 
-                    $$('#nombre_tienda').html(data_tienda.nombre);
-                    $$('#edo_mun_tienda').html(data_tienda.estado + ' ' + data_tienda.municipio);
-                    $$('#direccion_tienda').html(data_tienda.calle + ' ' + data_tienda.no_ext + ' ' + data_tienda.colonia);
+                    if (data_tienda.nombre != undefined) {
+                        $$('#nombre_tienda').html(data_tienda.nombre);
+                    }
+
+                    if (data_tienda.nombre != undefined && data_tienda.municipio != undefined) {
+                        $$('#edo_mun_tienda').html(data_tienda.estado + ' ' + data_tienda.municipio);
+                    }
+
+                    if (data_tienda.colonia != undefined) {
+                        $$('#direccion_tienda').html(data_tienda.calle + ' ' + data_tienda.no_ext + ' ' + data_tienda.colonia);
+                    } else {
+                        $$('#direccion_tienda').html(data_tienda.calle + ' ' + data_tienda.no_ext);
+
+                    }
                     app.preloader.hide();
                 },
                 function (error) {
@@ -723,11 +760,9 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
     num_guias = num_guias.split("|");
     if (num_guias.length == 1) {
         $$('#num_gias').val(num_guias);
-        //app.preloader.show();
-        //alert(localStorage.getItem('apikey'));
         app.request.setup({
             headers: {
-                'apikey': localStorage.getItem('apikey')
+                'Authorization': "bearer " + localStorage.getItem('token')
             },
             beforeSend: function () {
                 app.preloader.show();
@@ -736,25 +771,22 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 app.preloader.hide();
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                if (jqXHR.status === 401) {
-                    localStorage.clear(); //quita todas las variables de local storage
-                    app.preloader.hide(); // esconde el spinner
-                    //app.dialog.alert('Tu sesión expiró, inicia sesión de nuevo','Aviso');
+                if (jqXHR.status === 404) {
+                    localStorage.clear();
+                    app.preloader.hide();
                     window.location.reload();
-                } else {
-                    app.dialog.alert('Hubo un error, inténtelo de nuevo', 'Error');
                 }
             }
         });
 
         app.request.get(
-            URL_WS + 'consulta/' + num_guias[0],
+            URL_NEW_WS + 'api/v2/consulta/' + num_guias[0],
             function (data) {
                 //console.log(data['guia'][0].num_guia);
                 $$('#num_guia').html(data['guia'][0].num_guia);
-                if (data['guia'][0].branch_number == '0004') {
+                if (data['guia'][0].proyecto == '0004') {
                     var ouput_parsear_billetes = '';
-                    var parsear_billetes = data['guia'][0].cont_paquete.split("|");
+                    var parsear_billetes = data['guia'][0].contenido_paquete.split("|");
                     parsear_billetes.forEach(function (v, i) {
                         var parsear_billetes2 = v.split(': ');
                         if (parsear_billetes2[1] > 0) {
@@ -767,10 +799,10 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                     });
                     $$('#cont_paquete').html(ouput_parsear_billetes);
                 }
-                if (data['guia'][0].branch_number == '0003' || data['guia'][0].branch_number == '0006') {
-                    $$('#cont_paquete').html(data['guia'][0].cont_paquete);
+                if (data['guia'][0].proyecto == '0003' || data['guia'][0].proyecto == '0006') {
+                    $$('#cont_paquete').html(data['guia'][0].contenido_paquete);
                     $$('#cont_paquete').append('<br>');
-                    $$('#cont_paquete').append(data['guia'][0].ids_tokens);
+                    //$$('#cont_paquete').append(data['guia'][0].ids_tokens);
                 }
                 app.preloader.hide();
             },
@@ -946,6 +978,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
     });
 
     $$('#btn_cambiar_status').on('click', function (e) {
+        var idoperador = localStorage.getItem('userid');
         var latitud = $$('#latitud').val();
         var longitud = $$('#longitud').val();
         var status = $$('#status').val();
@@ -1012,6 +1045,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 var statusFoto = $$('#myCanvas').data("foto1");
                 var statusFoto2 = $$('#myCanvas2').data("foto1");
                 var incidencia = $$('#incidencia').val();
+                incidencia = incidenciaGuia(incidencia);
 
                 if (statusFoto != 0) {
                     var canvas1 = $$('#myCanvas')[0];
@@ -1052,13 +1086,16 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
             var foto2 = canvas2.toDataURL();
             var persona_recibe = $$('#persona_recibe').val();
             var incidencia = $$('#incidencia').val();
+            incidencia = incidenciaGuia(incidencia);
             var comentarios = $$('#comentarios').val();
-
-            // hacer request:
-            //app.preloader.show();
+            if (incidencia != '' && comentarios == '') {
+                comentarios = incidencia;
+            } else if (incidencia != '' && comentarios != '') {
+                comentarios = incidencia + ' ' + comentarios;
+            }
             app.request.setup({
                 headers: {
-                    'apikey': localStorage.getItem('apikey')
+                    'Authorization': "bearer " + localStorage.getItem('token')
                 },
                 beforeSend: function () {
                     app.preloader.show();
@@ -1067,23 +1104,23 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                     app.preloader.hide();
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    if (jqXHR.status === 401) {
-                        localStorage.clear(); //quita todas las variables de local storage
-                        app.preloader.hide(); // esconde el spinner
-                        //app.dialog.alert('Tu sesión expiró, inicia sesión de nuevo');
-                        window.location.reload(); // recarga la página (y te va a mandar a la página de login)
+                    if (jqXHR.status === 404) {
+                        localStorage.clear();
+                        app.preloader.hide();
+                        window.location.reload();
                     }
                 }
             });
             app.request.postJSON(
-                URL_WS + 'changestatus/' + $$('#num_gias').val(),
+                URL_NEW_WS + 'api/v2/changestatus/' + $$('#num_gias').val(),
                 {
                     status: status,
-                    latlong: latitud + ',' + longitud,
+                    //latlong: latitud + ',' + longitud,
                     foto1: foto1,
                     foto2: foto2,
                     persona_recibe: persona_recibe,
-                    comentarios: comentarios
+                    comentarios: comentarios,
+                    idoperador: idoperador
                 },
                 function (data) {
                     app.preloader.hide();
@@ -1149,17 +1186,35 @@ $$(document).on('page:init', '.page[data-name="consultar"]', function (e) {
                 if (!result.cancelled) {
                     var num_guia = result.text;
                     $$('#num_guia_consulta').html(num_guia);
+                    app.request.setup({
+                        headers: {
+                            'Authorization': "bearer " + localStorage.getItem('token')
+                        },
+                        beforeSend: function () {
+                            app.preloader.show();
+                        },
+                        complete: function () {
+                            app.preloader.hide();
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            if (jqXHR.status === 404) {
+                                localStorage.clear();
+                                app.preloader.hide();
+                                window.location.reload();
+                            }
+                        }
+                    });
                     app.request.get(
-                        URL_WS + 'guideinfo/' + num_guia,
+                        URL_NEW_WS + 'api/v2/guideinfo/' + num_guia,
                         function (data) {
                             $$('#status_guia_consulta').html(traducirStatus(data[0].status));
                             $$('#espacio_proyecto').html(detectarProyecto(num_guia));
-                            $$('#espacio_destinatario').html(data[0].nombre_dest + ' ' + data[0].paterno_dest + ' ' + data[0].materno_dest + '<br>' + data[0].edo_dest + ' ' + data[0].mun_dest + ' ' + data[0].asent_dest);
-                            $$('#testigoreal1').attr('src', URL_WS + data[0].foto1);
-                            $$('#testigoreal2').attr('src', URL_WS + data[0].foto2);
+                            $$('#espacio_destinatario').html(data[0].nombre_dest + ' ' + data[0].estado_dest + ' ' + data[0].municipio_dest + ' ' + data[0].colonia_dest);
+                            $$('#testigoreal1').attr('src', data[0].foto1);
+                            $$('#testigoreal2').attr('src', data[0].foto2);
                             if (detectarProyecto(num_guia) == 'PPF') {
                                 var ouput_parsear_billetes = '';
-                                var parsear_billetes = data[0].cont_paquete.split("|");
+                                var parsear_billetes = data[0].contenido_paquete.split("|");
                                 parsear_billetes.forEach(function (v, i) {
                                     var parsear_billetes2 = v.split(': ');
                                     if (parsear_billetes2[1] > 0) {
@@ -1172,9 +1227,9 @@ $$(document).on('page:init', '.page[data-name="consultar"]', function (e) {
                                 });
                                 $$('#cont_paquete').html(ouput_parsear_billetes);
                             } else {
-                                $$('#cont_paquete').html(data[0].cont_paquete);
+                                $$('#cont_paquete').html(data[0].contenido_paquete);
                                 $$('#cont_paquete').append('<br>');
-                                $$('#cont_paquete').append('Lote/id/etc: ' + data[0].ids_tokens);
+                                $$('#cont_paquete').append('Lote/id/etc: ' + data[0].lote);
                             }
 
                         },
@@ -1200,21 +1255,26 @@ $$(document).on('page:init', '.page[data-name="consultar"]', function (e) {
 });
 
 /**
-** Control Gastos
-**/
+ ** Control Gastos
+ **/
 $$(document).on('page:init', '.page[data-name="hojagastos"]', function (e) {
     DateActual('calendardefault');
-    app.calendar.create({
-        inputEl: '.calendardefault',
-        dateFormat: 'yyyy-mm-dd',
-        rangePicker: true,
-    });
     var id_operador = localStorage.getItem('userid');
     var periodo = $$('#calendardefault').val();
-    //console.log(periodo);
+
+    app.request.setup({
+        headers: {
+            'Authorization': "bearer " + localStorage.getItem('token')
+        }, beforeSend: function () {
+            app.preloader.show();
+        },
+        complete: function () {
+            app.preloader.hide();
+        }
+    });
 
     app.request.get(
-        URL_WS + 'api/v2/consultar/gastos-operador/' + id_operador + '/' + periodo + '/' + periodo,
+        URL_NEW_WS + 'api/v2/consultar/gastos-operador/' + id_operador + '/' + periodo + '/' + periodo,
         function (data) {
             var gatosConsulta = '';
             if (data != '') {
@@ -1250,56 +1310,6 @@ $$(document).on('page:init', '.page[data-name="hojagastos"]', function (e) {
         'json'
     );
 
-    $$('#btn_search_gastos').on('click', function (e) {
-        var periodo = $$('#calendardefault').val();
-        var splits = periodo.split([' - ']);
-        var periodo1 = splits[0];
-        var periodo2 = splits[1];
-        if (periodo2 === undefined || periodo2 === null) {
-            var periodo1 = periodo;
-            var periodo2 = periodo;
-        }
-
-        app.request.get(
-            URL_WS + 'api/v2/consultar/gastos-operador/' + id_operador + '/' + periodo1 + '/' + periodo2,
-            function (data) {
-                var gatosConsulta = '';
-                if (data != '') {
-                    data.forEach(function (cslt_gsto_opr, index) {
-                        var fotoExit = cslt_gsto_opr.foto_comprobante;
-                        var pdfExit = cslt_gsto_opr.pdf_comprobante;
-                        var xmlExit = cslt_gsto_opr.xml_comprobante;
-
-                        if (fotoExit === undefined || fotoExit === null || fotoExit === '') {
-                            var colorFoto = '';
-                        } else {
-                            var colorFoto = ' color-verde';
-                        }
-                        if (pdfExit === undefined || pdfExit === null || pdfExit === '') {
-                            var colorPDF = '';
-                        } else {
-                            var colorPDF = ' color-verde';
-                        }
-                        if (xmlExit === undefined || xmlExit === null || xmlExit === '') {
-                            var colorXML = ' color-gray';
-                        } else {
-                            var colorXML = ' color-verde';
-                        }
-                        gatosConsulta += '<tr><td class="label-cell">' + cslt_gsto_opr.concepto + '</td><td class="numeric-cell">' + cslt_gsto_opr.monto + '</td><td class="actions-cell"><a href="/editgastos/' + cslt_gsto_opr.id + '" class="link icon-only" id="btn_edit_gastos"><i class="icon f7-icons color-azul">compose</i></a><a href="/deletegastos/' + cslt_gsto_opr.id + '" class="link icon-only" id="btn_delete_gastos"><i class="icon f7-icons color-azul">trash</i></a><a href="#" class="link icon-only"><i class="material-icons' + colorFoto + '">photo</i></a><a href="#" class="link icon-only"><i class="material-icons ' + colorPDF + '">picture_as_pdf</i></a><a href="#" class="link icon-only"><i class="icon f7-icons ' + colorXML + '">document_fill</i></a></td></tr>';
-                    });
-                } else {
-                    gatosConsulta += '<tr><td class="label-cell"></td><td class="label-cell colors" colspan="3">No hay Información</td></tr>';
-                }
-
-                $$('#tbcoperadores').html(gatosConsulta);
-            },
-            function (error) {
-                console.log(error);
-            },
-            'json'
-        );
-    });
-
     $$('#btn_add_gastos').on('click', function (e) {
         app.views.main.router.navigate('/addgastos/', {reloadCurrent: false});
     });
@@ -1307,29 +1317,15 @@ $$(document).on('page:init', '.page[data-name="hojagastos"]', function (e) {
     $$('#btn_delete_gastos').on('click', function (e) {
         app.views.main.router.navigate('/deletegastos/', {reloadCurrent: false});
     });
-
-
 });
 
 $$(document).on('page:init', '.page[data-name="addgastos"]', function (e) {
     $$("#Gcomentario").hide();
+    $$("#kmi").hide();
+    $$("#kmf").hide();
     DateActual('fgasto');
-    app.calendar.create({
-        inputEl: '.fgasto',
-        dateFormat: 'yyyy-mm-dd'
-    });
-
     RsltsGastos('');
     RsltsPrvdr('');
-    DatePeriodo();
-
-    $$('#fgasto').on('change', function () {
-        var dateGasto = $$('#fgasto').val();
-        var VPeriodo=DateValidarPeriodo(dateGasto);
-        if(VPeriodo==0){
-            app.dialog.alert("La fecha no debe superar al día actual y semanas anteriores.");
-        }
-    });
 
     $$('#openFotoGasto').on('click', function () {
         app.dialog.create({
@@ -1392,6 +1388,13 @@ $$(document).on('page:init', '.page[data-name="addgastos"]', function (e) {
 
     $$('#ConceptoGasto').on('change', function () {
         var ConceptoGasto = $$('#ConceptoGasto').val();
+        if (ConceptoGasto == 3) {
+            $$("#kmi").show();
+            $$("#kmf").show();
+        } else {
+            $$("#kmi").hide();
+            $$("#kmf").hide();
+        }
         if (ConceptoGasto == 12) {
             $$("#Gcomentario").show();
         } else {
@@ -1411,14 +1414,18 @@ $$(document).on('page:init', '.page[data-name="addgastos"]', function (e) {
         var id_operador = localStorage.getItem('userid');
         var fgasto = $$('#fgasto').val();
         var ConceptoGasto = $$('#ConceptoGasto').val();
-        var comentario = $$('#comentario').val();
-        var OprProve = $$('#OprProve').val();
+        var concepto = $$('#comentario').val();
+        var OprProve = $$('#OprProve').data("idPrvdr");
         var monto = $$('#monto').val();
         var TpoCmprbnt = $$('#TpoCmprbnt').val();
+        var numticket = $$('#numticket').val();
         var FotoStatus = $$('#myCanvasGastos').data("foto1");
         var PDFStatus = $$('#pdfColocar').data("status");
         var XMLStatus = $$('#xmlColocar').data("status");
-        var periodo=DateValidarPeriodo(fgasto);
+        var kminicial = $$('#kminicial').val();
+        var kmfinal = $$('#kmfinal').val();
+        var observaciones = $$('#observaciones').val();
+        var comentario = $$('#comentario').val();
 
         validateMonto(monto);
 
@@ -1441,24 +1448,37 @@ $$(document).on('page:init', '.page[data-name="addgastos"]', function (e) {
             var XMLGastos = $$('#xmlColocar').data("file");
         }
 
-        if(periodo == 0){
-            app.dialog.alert("La fecha esta fuera de período");
+        if (fgasto == "") {
+            app.dialog.alert("El campo de Fecha esta vácio");
         } else if (id_operador == '') {
             app.dialog.alert("Operador no existe");
         } else if (ConceptoGasto == '') {
             app.dialog.alert("El campo de Concepto esta vácio");
+        } else if (ConceptoGasto == 12 && comentario == '') {
+            app.dialog.alert("Explicar en el campo concepto que tipo de concepto");
+        } else if (ConceptoGasto == 3 && kminicial == '') {
+            app.dialog.alert("El campo de kminicial esta vácio");
+        } else if (ConceptoGasto == 3 && kmfinal == '') {
+            app.dialog.alert("El campo de kmfinal esta vácio");
         } else if (OprProve == '') {
             app.dialog.alert("El campo de Proveedor esta vácio");
         } else if (monto == '') {
             app.dialog.alert("El campo de Monto esta vácio");
+        } else if (numticket == '') {
+            app.dialog.alert("El campo de No.Ticket o Folio esta vácio");
         } else if (TpoCmprbnt == '' || TpoCmprbnt == 0) {
             app.dialog.alert("El campo de Tipo de Comprobante esta vácio");
-        } else if (FotoStatus == 0 ) {
+        } else if (FotoStatus == 0) {
             app.dialog.alert("El campo Foto del Comprobante esta vácio");
-        }  else {
+        } else if (observaciones == "" && PDFStatus == 0) {
+            app.dialog.alert("¿Explicar bravemente porque no el archivo no se agrego PDF");
+        } else if (observaciones == "" && XMLStatus == 0) {
+            app.dialog.alert("¿Explicar bravemente porque no el archivo no se agrego XML");
+        } else {
+            console.log(FotoGastos+'**'+PFDGastos+'**'+XMLGastos+'**');
             app.request.setup({
                 headers: {
-                    'apikey': localStorage.getItem('apikey')
+                    'Authorization': "bearer " + localStorage.getItem('token')
                 },
                 beforeSend: function () {
                     app.preloader.show();
@@ -1467,7 +1487,7 @@ $$(document).on('page:init', '.page[data-name="addgastos"]', function (e) {
                     app.preloader.hide();
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    if (jqXHR.status === 401) {
+                    if (jqXHR.status === 404) {
                         localStorage.clear();
                         app.preloader.hide();
                         window.location.reload();
@@ -1475,19 +1495,24 @@ $$(document).on('page:init', '.page[data-name="addgastos"]', function (e) {
                 }
             });
 
+
             app.request.postJSON(
-                URL_WS + 'api/v2/gastos-operador/' + id_operador,
+                URL_NEW_WS + 'api/v2/gastos-operador/' + id_operador,
                 {
                     id_operador: id_operador,
                     id_concepto: ConceptoGasto,
+                    comentarios: concepto,
                     id_proveedor: OprProve,
                     monto: monto,
+                    num_comprobante: numticket,
                     tipo_comprobante: TpoCmprbnt,
                     fecha_gasto: fgasto,
-                    comentarios: comentario,
                     foto_comprobante: FotoGastos,
                     pdf_comprobante: PFDGastos,
-                    xml_comprobante: XMLGastos
+                    xml_comprobante: XMLGastos,
+                    observaciones: observaciones,
+                    kminicial: kminicial,
+                    kmfinal: kmfinal
                 },
                 function (data) {
                     app.dialog.alert("El gasto se agrego correctamente");
@@ -1503,10 +1528,21 @@ $$(document).on('page:init', '.page[data-name="addgastos"]', function (e) {
 });
 
 $$(document).on('page:init', '.page[data-name="editgastos"]', function (e) {
-    var idGasto = app.view.main.router.currentRoute.params.idGasto;
     $$("#Gcomentario").hide();
+    $$("#kmi").hide();
+    $$("#kmf").hide();
+    RsltsPrvdr('');
+    var idGasto = app.view.main.router.currentRoute.params.idGasto;
+
     $$('#ConceptoGasto').on('change', function () {
         var ConceptoGasto = $$('#ConceptoGasto').val();
+        if (ConceptoGasto == 3) {
+            $$("#kmi").show();
+            $$("#kmf").show();
+        } else {
+            $$("#kmi").hide();
+            $$("#kmf").hide();
+        }
         if (ConceptoGasto == 12) {
             $$("#Gcomentario").show();
         } else {
@@ -1574,6 +1610,7 @@ $$(document).on('page:init', '.page[data-name="editgastos"]', function (e) {
         });
 
     });
+
     $$('#PFDGastos').on('change', function () {
         convertToBase64('PFDGastos', 'pdfColocar', 'pdf');
     });
@@ -1588,20 +1625,32 @@ $$(document).on('page:init', '.page[data-name="editgastos"]', function (e) {
         var XMLStatus = $$('#xmlColocar').data("file");
         cordova.InAppBrowser.open(XMLStatus, '_blank', 'location=yes');
     });
-
+    app.request.setup({
+        headers: {
+            'Authorization': "bearer " + localStorage.getItem('token')
+        },
+        beforeSend: function () {
+            app.preloader.show();
+        },
+        complete: function () {
+            app.preloader.hide();
+        },
+    });
     app.request.get(
-        URL_WS + 'api/v2/consultar-gasto/' + idGasto,
+        URL_NEW_WS + 'api/v2/consultar-gasto/' + idGasto,
         function (data) {
             data.forEach(function (Oprgasto, index) {
                 DateGasto('fgasto', Oprgasto.fecha_gasto);
                 RsltsGastos(Oprgasto.id_concepto);
-                RsltsPrvdr(Oprgasto.id_proveedor);
-                RsltsComentario('comentario', Oprgasto.id_concepto, Oprgasto.comentarios);
+                NmPrvdr('OprProve', Oprgasto.id_proveedor);
+                RsltsConcepto('comentario', Oprgasto.id_concepto, Oprgasto.comentarios, Oprgasto.incil_klmtrj, Oprgasto.final_klmtrj);
                 RsltsMonto('monto', Oprgasto.monto);
+                RsltsNum('numticket', Oprgasto.num_comprobante);
                 RsltsTpComprobante('TpoCmprbnt', Oprgasto.tipo_comprobante);
                 RsltsFotoComprobante('mediaColocar', Oprgasto.foto_comprobante);
                 RsltsPDFComprobante('PFDGastos', Oprgasto.pdf_comprobante);
                 RsltsXMLComprobante('XMLGastos', Oprgasto.xml_comprobante);
+                RsltsObservaciones('observaciones', Oprgasto.observaciones);
             });
         },
         function (error) {
@@ -1611,25 +1660,38 @@ $$(document).on('page:init', '.page[data-name="editgastos"]', function (e) {
     );
 
     $$('#btn_form_add_gastos').on('click', function (e) {
+        //console.log("btn_form_add_gastos");
         var id_operador = localStorage.getItem('userid');
         var fgasto = $$('#fgasto').val();
         var ConceptoGasto = $$('#ConceptoGasto').val();
-        var comentario = $$('#comentario').val();
-        var OprProve = $$('#OprProve').val();
+        var concepto = $$('#comentario').val();
+        var OprProve = $$('#OprProve').data("idPrvdr");
         var monto = $$('#monto').val();
+        var numticket = $$('#numticket').val();
         var TpoCmprbnt = $$('#TpoCmprbnt').val();
-        var FotoStatus = $$('#mediaColocar').data("status");
-        var FotoStatusCanvas = $$('#myCanvasGastos').data("foto1");
+        var FotoStatus = $$('#myCanvasGastos').data("foto1");
+        //console.log(FotoStatus);
+        var FotoStatusBD = $$('#mediaColocar').data("status");
+        //console.log(FotoStatusBD);
         var PDFStatus = $$('#pdfColocar').data("status");
+        //console.log(PDFStatus);
+        var PDFStatusBD = $$('#PFDGastos').data("status");
+        //console.log(PDFStatusBD);
         var XMLStatus = $$('#xmlColocar').data("status");
+        //console.log(XMLStatus);
+        var XMLStatusBD = $$('#XMLGastos').data("status");
+        //console.log(XMLStatusBD);
+        var kminicial = $$('#kminicial').val();
+        var kmfinal = $$('#kmfinal').val();
+        var observaciones = $$('#observaciones').val();
 
         validateMonto(monto);
 
-        if (FotoStatusCanvas == 1) {
+        if (FotoStatus == 0 && FotoStatusBD == 1) {
+            var FotoGastos = '';
+        } else {
             var cnvsGasto = $$('#myCanvasGastos')[0];
             var FotoGastos = cnvsGasto.toDataURL();
-        }else{
-            var FotoGastos = '';
         }
 
         if (PDFStatus == 0) {
@@ -1644,26 +1706,39 @@ $$(document).on('page:init', '.page[data-name="editgastos"]', function (e) {
             var XMLGastos = $$('#xmlColocar').data("file");
         }
 
-        if (id_operador == '') {
+        if (fgasto == "") {
+            app.dialog.alert("El campo de Fecha esta vácio");
+        } else if (id_operador == '') {
             app.dialog.alert("Operador no existe");
         } else if (ConceptoGasto == '') {
             app.dialog.alert("El campo de Concepto esta vácio");
+        } else if (ConceptoGasto == 12 && comentario == '') {
+            app.dialog.alert("Explicar en el campo concepto que tipo de concepto");
+        } else if (ConceptoGasto == 3 && kminicial == '') {
+            app.dialog.alert("El campo de kminicial esta vácio");
+        } else if (ConceptoGasto == 3 && kmfinal == '') {
+            app.dialog.alert("El campo de kmfinal esta vácio");
         } else if (OprProve == '') {
             app.dialog.alert("El campo de Proveedor esta vácio");
         } else if (monto == '') {
             app.dialog.alert("El campo de Monto esta vácio");
         } else if (TpoCmprbnt == '' || TpoCmprbnt == 0) {
             app.dialog.alert("El campo de Tipo de Comprobante esta vácio");
-        } else if (FotoStatus == 0 ) {
+        } else if (numticket == '') {
+            app.dialog.alert("El campo de No.Tickeet o Folio esta vácio");
+        } else if (FotoStatus == 0 && FotoStatusBD == 0) {
             app.dialog.alert("El campo Foto del Comprobante esta vácio");
-        }  else {
-
+        } else if (observaciones == "" && PDFStatus == 0 && PDFStatusBD == 0) {
+            app.dialog.alert("¿Explicar bravemente porque no el archivo no se agrego PDF");
+        } else if (observaciones == "" && XMLStatus == 0 && XMLStatusBD == 0) {
+            app.dialog.alert("¿Explicar bravemente porque no el archivo no se agrego XML");
+        } else {
             if (ConceptoGasto != 12) {
-                comentario = '';
+                concepto = '';
             }
             app.request.setup({
                 headers: {
-                    'apikey': localStorage.getItem('apikey')
+                    'Authorization': "bearer " + localStorage.getItem('token')
                 },
                 beforeSend: function () {
                     app.preloader.show();
@@ -1672,38 +1747,43 @@ $$(document).on('page:init', '.page[data-name="editgastos"]', function (e) {
                     app.preloader.hide();
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    if (jqXHR.status === 401) {
+                    if (jqXHR.status === 404) {
                         localStorage.clear();
                         app.preloader.hide();
                         window.location.reload();
                     }
                 }
             });
+
             app.request.postJSON(
-                URL_WS + 'api/v2/editar/gastos-operador/' + idGasto,
+                URL_NEW_WS + 'api/v2/editar/gastos-operador/' + idGasto,
                 {
                     id_operador: id_operador,
                     id_concepto: ConceptoGasto,
+                    comentarios: concepto,
                     id_proveedor: OprProve,
                     monto: monto,
+                    num_comprobante: numticket,
                     tipo_comprobante: TpoCmprbnt,
                     fecha_gasto: fgasto,
-                    comentarios: comentario,
                     foto_comprobante: FotoGastos,
                     pdf_comprobante: PFDGastos,
-                    xml_comprobante: XMLGastos
+                    xml_comprobante: XMLGastos,
+                    observaciones: observaciones,
+                    kminicial: kminicial,
+                    kmfinal: kmfinal
                 },
                 function (data) {
-                    app.dialog.alert("Los cambios se agrego correctamente");
+                    app.dialog.alert("El gasto se actualizo correctamente");
                     app.views.main.router.navigate('/hojagastos/', {reloadCurrent: false});
                 }, function (error) {
                     console.log(error);
                 },
                 'json'
             );
+
         }
     });
-
 });
 
 $$(document).on('page:init', '.page[data-name="addproveedor"]', function (e) {
@@ -1713,7 +1793,7 @@ $$(document).on('page:init', '.page[data-name="addproveedor"]', function (e) {
             name_proveedor = name_proveedor.toUpperCase();
             app.request.setup({
                 headers: {
-                    'apikey': localStorage.getItem('apikey')
+                    'Authorization': "bearer " + localStorage.getItem('token')
                 },
                 beforeSend: function () {
                     app.preloader.show();
@@ -1722,7 +1802,7 @@ $$(document).on('page:init', '.page[data-name="addproveedor"]', function (e) {
                     app.preloader.hide();
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    if (jqXHR.status === 401) {
+                    if (jqXHR.status === 404) {
                         localStorage.clear();
                         app.preloader.hide();
                         window.location.reload();
@@ -1731,7 +1811,7 @@ $$(document).on('page:init', '.page[data-name="addproveedor"]', function (e) {
             });
 
             app.request.postJSON(
-                URL_WS + 'api/v2/proveedor-operador/nuevo',
+                URL_NEW_WS + 'api/v2/proveedor-operador/nuevo',
                 {
                     nombre: name_proveedor
                 },
@@ -1753,7 +1833,7 @@ $$(document).on('page:init', '.page[data-name="deletegastos"]', function (e) {
     var idGasto = app.view.main.router.currentRoute.params.idGasto;
     app.request.setup({
         headers: {
-            'apikey': localStorage.getItem('apikey')
+            'Authorization': "bearer " + localStorage.getItem('token')
         },
         beforeSend: function () {
             app.preloader.show();
@@ -1762,7 +1842,7 @@ $$(document).on('page:init', '.page[data-name="deletegastos"]', function (e) {
             app.preloader.hide();
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            if (jqXHR.status === 401) {
+            if (jqXHR.status === 404) {
                 localStorage.clear();
                 app.preloader.hide();
                 window.location.reload();
@@ -1770,11 +1850,8 @@ $$(document).on('page:init', '.page[data-name="deletegastos"]', function (e) {
         }
     });
 
-    app.request.postJSON(
-        URL_WS + 'api/v2/eliminar/gastos-operador/' + idGasto,
-        {
-            id: idGasto
-        },
+    app.request.get(
+        URL_NEW_WS + 'api/v2/delete/gastos-operador/' + idGasto,
         function (data) {
             app.views.main.router.navigate('/hojagastos/', {reloadCurrent: false});
             app.dialog.alert("El Gasto se elimino correctamente");
