@@ -8,10 +8,11 @@ import '../css/app.css';
 // Import Cordova APIs
 import cordovaApp from './cordova-app.js';
 // Import Routes
+
 import routes from './routes.js';
 
-var URL_NEW_WS = "https://logisticus.logify.com.mx/";
-//var URL_NEW_WS = "https://desarrollo.logisticus.logify.com.mx/";
+//var URL_NEW_WS = "https://logisticus.logify.com.mx/";
+var URL_NEW_WS = "https://desarrollo.logisticus.logify.com.mx/";
 
 
 /**
@@ -1460,7 +1461,7 @@ $$(document).on('page:init', '.page[data-name="addgastos"]', function (e) {
             app.dialog.alert("El campo de kminicial esta vácio");
         } else if (ConceptoGasto == 3 && kmfinal == '') {
             app.dialog.alert("El campo de kmfinal esta vácio");
-        } else if (OprProve == '') {
+        } else if (OprProve == 0) {
             app.dialog.alert("El campo de Proveedor esta vácio");
         } else if (monto == '') {
             app.dialog.alert("El campo de Monto esta vácio");
@@ -1471,11 +1472,12 @@ $$(document).on('page:init', '.page[data-name="addgastos"]', function (e) {
         } else if (FotoStatus == 0) {
             app.dialog.alert("El campo Foto del Comprobante esta vácio");
         } else if (observaciones == "" && PDFStatus == 0) {
-            app.dialog.alert("¿Explicar bravemente porque no el archivo no se agrego PDF");
+            app.dialog.alert("¿Explicar bravemente porque el archivo no se agrego PDF");
         } else if (observaciones == "" && XMLStatus == 0) {
-            app.dialog.alert("¿Explicar bravemente porque no el archivo no se agrego XML");
+            app.dialog.alert("¿Explicar bravemente porque el archivo no se agrego XML");
         } else {
-            console.log(FotoGastos+'**'+PFDGastos+'**'+XMLGastos+'**');
+            //alert(OprProve);
+            //console.log(FotoGastos+'**'+PFDGastos+'**'+XMLGastos+'**');
             app.request.setup({
                 headers: {
                     'Authorization': "bearer " + localStorage.getItem('token')
@@ -1718,7 +1720,7 @@ $$(document).on('page:init', '.page[data-name="editgastos"]', function (e) {
             app.dialog.alert("El campo de kminicial esta vácio");
         } else if (ConceptoGasto == 3 && kmfinal == '') {
             app.dialog.alert("El campo de kmfinal esta vácio");
-        } else if (OprProve == '') {
+        } else if (OprProve == 0) {
             app.dialog.alert("El campo de Proveedor esta vácio");
         } else if (monto == '') {
             app.dialog.alert("El campo de Monto esta vácio");
@@ -1729,9 +1731,9 @@ $$(document).on('page:init', '.page[data-name="editgastos"]', function (e) {
         } else if (FotoStatus == 0 && FotoStatusBD == 0) {
             app.dialog.alert("El campo Foto del Comprobante esta vácio");
         } else if (observaciones == "" && PDFStatus == 0 && PDFStatusBD == 0) {
-            app.dialog.alert("¿Explicar bravemente porque no el archivo no se agrego PDF");
+            app.dialog.alert("¿Explicar bravemente porque el archivo no se agrego PDF");
         } else if (observaciones == "" && XMLStatus == 0 && XMLStatusBD == 0) {
-            app.dialog.alert("¿Explicar bravemente porque no el archivo no se agrego XML");
+            app.dialog.alert("¿Explicar bravemente porque el archivo no se agrego XML");
         } else {
             if (ConceptoGasto != 12) {
                 concepto = '';

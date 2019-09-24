@@ -3,17 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="232bfe81-5379-4a5a-8314-3fb762c606de" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/app.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/www/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/www/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cordova/www/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/www/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/routes.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/addgastos.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/addgastos.f7.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/editgastos.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/editgastos.f7.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/hojagastos.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/hojagastos.f7.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -117,7 +111,8 @@
       <workItem from="1568050592271" duration="59025000" />
       <workItem from="1568386140070" duration="7736000" />
       <workItem from="1568726790176" duration="1144000" />
-      <workItem from="1569076451696" duration="11460000" />
+      <workItem from="1569076451696" duration="12199000" />
+      <workItem from="1569213789698" duration="3338000" />
     </task>
     <servers />
   </component>
