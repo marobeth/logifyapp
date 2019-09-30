@@ -1,25 +1,25 @@
 import $$ from 'dom7';
 import Framework7 from 'framework7/framework7.esm.bundle.js';
+
 // Import F7 Styles
 import 'framework7/css/framework7.bundle.css';
+
 // Import Icons and App Custom Styles
 import '../css/icons.css';
 import '../css/app.css';
 // Import Cordova APIs
 import cordovaApp from './cordova-app.js';
 // Import Routes
-
 import routes from './routes.js';
 
-//var URL_NEW_WS = "https://logisticus.logify.com.mx/";
-var URL_NEW_WS = "https://desarrollo.logisticus.logify.com.mx/";
+//var URL_WS = "http://192.168.10.51/api.logify.com.mx/";
+var URL_WS = "https://api.logify.com.mx/";
+//var URL_WS = "https://desarrollo.api.logify.com.mx/";
+var URL_NEW_WS = "https://logisticus.logify.com.mx/";
+//var URL_NEW_WS = "https://desarrollo.logisticus.logify.com.mx/";
 
 
-/**
- *
- * @param status
- * @returns {string}
- */
+/* TRADUCIR STATUS */
 function traducirStatus(status) {
     switch (status) {
         case '1':
@@ -28,39 +28,34 @@ function traducirStatus(status) {
         case '2':
             //Recolectado
             return 'Recolectado';
-        // break;
+            break;
         case '3':
             //En ruta
             return 'En Ruta';
-        //break;
+            break;
         case '4':
             //Entregado
             return 'Entregado';
-        //break;
+            break;
         case '5':
             //Incidencia
             return 'Incidencia';
-        //break;
+            break;
         case '6':
             //Devuelto
             return 'Devuelto';
-        //break;
+            break;
         case '7':
             //Ocurre
             return 'Ocurre';
-        //break;
+            break;
         case '8':
             //En almacén
             return 'En almacen';
-        //break;
+            break;
     }
 }
 
-/**
- *
- * @param num_guia
- * @returns {string}
- */
 function detectarProyecto(num_guia) {
     if (num_guia.includes('BCL1234')) {
         return "Tokens";
@@ -106,38 +101,139 @@ function detectarProyecto(num_guia) {
     }
 }
 
-/**
- *
- * @param valor
- * @returns {string}
- */
-function incidenciaGuia(valor) {
-    var incidencia;
+/* GEOLOCATION */
+function getLocation() {
+    var geolocation = navigator.geolocation;
+    geolocation.getCurrentPosition(showLocation, errorHandler);
+}
 
-    if (valor == 1) {
-        incidencia = 'Domicilio abandonado';
-    } else if (valor == 2) {
-        incidencia = 'Domicilio equivocado';
-    } else if (valor == 3) {
-        incidencia = 'Destinatario rechaza';
-    } else if (valor == 4) {
-        incidencia = 'Destinatario cambió de domicilio';
-    } else if (valor == 5) {
-        incidencia = 'No hay respuesta en el domicilio';
-    } else if (valor == 6) {
-        incidencia = 'Domicilio inexistente';
-    } else if (valor == 7) {
-        incidencia = 'Número equivocado';
-    } else if (valor == 8) {
-        incidencia = 'Destinatario Falleció';
-    } else if (valor == 9) {
-        incidencia = 'Zona de alto riesgo';
-    } else if (valor == 10) {
-        incidencia = 'Otro';
-    } else {
-        incidencia = '';
+function showLocation(position) {
+    $$('#latitud').val(position.coords.latitude);
+    $$('#longitud').val(position.coords.longitude);
+}
+
+function errorHandler(error) {
+    console.log(error);
+}
+
+
+/*
+function screenshot(){
+     navigator.screenshot.URI(function(error,res){
+        if(error){
+            console.error(error);
+        }else{
+            app.request.setup({
+                headers: {
+                    'apikey': localStorage.getItem('apikey')
+                }
+            });
+            app.request.postJSON(
+                URL_WS + 'guardar_screenshot',
+                {
+                    correo : localStorage.getItem('correo'),
+                    screenshot : res.URI,
+                },function(data){},function(error){}, 'json'
+            );
+        }
+    },50);
+}
+*/
+function enviarUbicacion() {
+    getLocation();
+    app.request.setup({
+        headers: {
+            'apikey': localStorage.getItem('apikey')
+        }, beforeSend: function () {
+            app.preloader.show();
+        },
+        complete: function () {
+            app.preloader.hide();
+        }
+    });
+    app.request.postJSON(
+        URL_WS + 'location',
+        {
+            latitud: $$('#latitud').val(),
+            longitud: $$('#longitud').val(),
+            id_usuario: localStorage.getItem('userid')
+        },
+        function (data) {
+        }, function (error) {
+        },
+        'json'
+    );
+}
+
+/* GEOLOCATION */
+
+document.addEventListener("deviceready", onDeviceReady, false);
+
+function onDeviceReady() {
+    //cordova.plugins.backgroundMode.enable();
+    //cordova.plugins.backgroundMode.setEnabled(true);
+    getLocation();
+    //setInterval(enviarUbicacion, 10000);
+    //setTimeout(function(){ cordova.plugins.backgroundMode.enable(); }, 3000);
+}
+
+
+var resize_image = function (img, canvas, max_width, max_height) {
+    var ctx = canvas.getContext("2d");
+    var canvasCopy = document.createElement("canvas");
+    var copyContext = canvasCopy.getContext("2d");
+    var ratio = 1;
+    if (img.width > max_width) {
+        ratio = max_width / img.width;
+    } else if (img.height > max_height) {
+        ratio = max_height / img.height;
     }
-    return incidencia;
+    canvasCopy.width = img.width;
+    canvasCopy.height = img.height;
+    copyContext.drawImage(img, 0, 0);
+    canvas.width = img.width * ratio;
+    canvas.height = img.height * ratio;
+    ctx.drawImage(canvasCopy, 0, 0, canvasCopy.width, canvasCopy.height, 0, 0, canvas.width, canvas.height);
+}
+
+
+function imageCapture() {
+    var options = {limit: 1};
+    navigator.device.capture.captureImage(onSuccess, onError, options);
+}
+
+
+function onError(error) {
+    //app.dialog.alert('Error code: ' + error.code, null, 'Capture Error');
+}
+
+function onSuccess(mediaFiles) {
+    $$('#myCanvas').show();
+    var canvas = $$('#myCanvas')[0];
+    var img = new Image();
+    img.src = mediaFiles[0].fullPath;
+    img.onload = function () {
+        resize_image(this, canvas, 800, 1200);
+    };
+}
+
+function imageCapture2() {
+    var options = {limit: 1};
+    navigator.device.capture.captureImage(onSuccess2, onError2, options);
+}
+
+function onError2(error) {
+    //navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
+}
+
+function onSuccess2(mediaFiles) {
+    $$('#myCanvas2').show();
+    var canvas = $$('#myCanvas2')[0];
+    var img = new Image();
+    img.src = mediaFiles[0].fullPath;
+    img.onload = function () {
+        resize_image(this, canvas, 800, 1200);
+    };
 }
 
 /**
@@ -149,8 +245,9 @@ function openCamera(idCanvas) {
     var destinationType = navigator.camera.DestinationType;
     var srcType = pictureSource.CAMERA;
     navigator.device.capture.captureImage(function onSuccess(mediaFiles) {
+        //navigator.camera.getPicture(function onSuccess(mediaFiles) {
         $$('#' + idCanvas).show();
-        /*var canvas = $$('#' + idCanvas)[0];*/
+        var canvas = $$('#' + idCanvas)[0];
         var canva = document.getElementById(idCanvas);
         var con = canva.getContext('2d');
         var img = new Image();
@@ -187,7 +284,7 @@ function openFilePicker(idCanvas) {
 
     navigator.camera.getPicture(function cameraSuccess(imageURI) {
         $$('#' + idCanvas).show();
-        /*var canvas = $$('#' + idCanvas);*/
+        var canvas = $$('#' + idCanvas);
         var canvass = document.getElementById(idCanvas);
         var context = canvass.getContext('2d');
         var img = new Image();
@@ -219,6 +316,37 @@ function ValidateApikey(correo, pass) {
     //console.log('entre');
     app.request.setup({
         headers: {
+            'email': correo,
+            'pass': pass
+        }
+    });
+    app.request.postJSON(
+        URL_WS + 'login',
+        function (data) {
+            if(data[0].activo ==1){
+                app.preloader.hide();
+                localStorage.setItem('auth', true);
+                localStorage.setItem('apikey', data[0].apikey);
+                localStorage.setItem('userid', data[0].user_id);
+                localStorage.setItem('avatar', data[0].avatar);
+                localStorage.setItem('nombre', data[0].nombre);
+                localStorage.setItem('paterno', data[0].paterno);
+                localStorage.setItem('correo', data[0].correo);
+                app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
+            }else{
+                app.dialog.alert('Error: Permiso Denegado');
+            }
+        }, function (data) {
+            app.preloader.hide();
+            app.dialog.alert('Error: Datos incorrectos');
+        }
+    );
+}
+
+function ValidateApikeyNEW(correo, pass) {
+    //console.log('entre');
+    app.request.setup({
+        headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         }
@@ -240,13 +368,13 @@ function ValidateApikey(correo, pass) {
                 localStorage.setItem('nombre', data.nombre);
                 localStorage.setItem('paterno', data.paterno);
                 localStorage.setItem('email', data.email);
-                app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
+                //app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
             } else {
-                app.dialog.alert('Error: Permiso Denegado');
+              //  app.dialog.alert('Error: Permiso Denegado');
             }
         }, function (data) {
-            app.preloader.hide();
-            app.dialog.alert('Error: Datos incorrectos');
+            //app.preloader.hide();
+            //app.dialog.alert('Error: Datos incorrectos');
         }
     );
 }
@@ -574,7 +702,6 @@ function validateMonto(valor) {
     }
 }
 
-
 var app = new Framework7({
     root: '#app', // App root element
     id: 'com.graphicsandcode.logify', // App bundle ID
@@ -637,6 +764,11 @@ $$('#btn_iniciar_sesion').on('click', function () {
 
 $$(document).on('page:init', '.page[data-name="inicio"]', function (e) {
     $$('#nombre_usuario').html(localStorage.getItem('nombre') + ' ' + localStorage.getItem('paterno'));
+    if(localStorage.getItem('correo') =='cags@logify.com.mx' || localStorage.getItem('correo') =='scm@logify.com.mx' || localStorage.getItem('correo') =='cde@logify.com.mx' || localStorage.getItem('correo') =='snr@logify.com.mx' || localStorage.getItem('correo') =='mmc@logify.com.mx' ){
+        $$(".HGastosViews").show();
+    } else {
+        $$(".HGastosViews").hide();
+    }
 });
 
 $$(document).on('page:init', '.page[data-name="home"]', function (e) {
@@ -649,7 +781,7 @@ $$(document).on('page:init', '.page[data-name="home"]', function (e) {
     });
 
     $$('#btn_olvide').on('click', function () {
-        cordova.InAppBrowser.open('https://logisticus.logify.com.mx/restablecer-contrasena', '_blank', 'location=yes');
+        cordova.InAppBrowser.open('https://admin.logify.com.mx/restablecer-contrasena', '_blank', 'location=yes');
     });
 });
 
@@ -658,6 +790,7 @@ $$(document).on('page:afterin', '.page[data-name="home"]', function (e) {
         app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
     }
 });
+
 
 $$(document).on('page:init', '.page[data-name="logout"]', function (e) {
     localStorage.clear();
@@ -676,7 +809,7 @@ $$(document).on('page:init', '.page[data-name="checkin"]', function (e) {
         } else {
             app.request.setup({
                 headers: {
-                    'Authorization': "bearer " + localStorage.getItem('token')
+                    'apikey': localStorage.getItem('apikey')
                 },
                 beforeSend: function () {
                     app.preloader.show();
@@ -685,16 +818,16 @@ $$(document).on('page:init', '.page[data-name="checkin"]', function (e) {
                     app.preloader.hide();
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    console.log(jqXHR);
-                    if (jqXHR.status === 404) {
-                        localStorage.clear();
-                        app.preloader.hide();
-                        window.location.reload();
+                    if (jqXHR.status === 401) {
+                        localStorage.clear(); //quita todas las variables de local storage
+                        app.preloader.hide(); // esconde el spinner
+                        //app.dialog.alert('Tu sesión expiró, inicia sesión de nuevo');
+                        window.location.reload(); // recarga la página (y te va a mandar a la página de login)
                     }
                 }
             });
             app.request.get(
-                URL_NEW_WS + 'api/v2/consulta_material_sucursal/' + $$('#input_num_sucursal_checkin').val(),
+                URL_WS + 'consulta_material_sucursal/' + $$('#input_num_sucursal_checkin').val(),
                 function (data) {
                     var data_tienda = data[0][0];
                     var data_billetes = data[1];
@@ -726,20 +859,9 @@ $$(document).on('page:init', '.page[data-name="checkin"]', function (e) {
                     });
                     $$('#lista_mkt').html(output_mkt);
 
-                    if (data_tienda.nombre != undefined) {
-                        $$('#nombre_tienda').html(data_tienda.nombre);
-                    }
-
-                    if (data_tienda.nombre != undefined && data_tienda.municipio != undefined) {
-                        $$('#edo_mun_tienda').html(data_tienda.estado + ' ' + data_tienda.municipio);
-                    }
-
-                    if (data_tienda.colonia != undefined) {
-                        $$('#direccion_tienda').html(data_tienda.calle + ' ' + data_tienda.no_ext + ' ' + data_tienda.colonia);
-                    } else {
-                        $$('#direccion_tienda').html(data_tienda.calle + ' ' + data_tienda.no_ext);
-
-                    }
+                    $$('#nombre_tienda').html(data_tienda.nombre);
+                    $$('#edo_mun_tienda').html(data_tienda.estado + ' ' + data_tienda.municipio);
+                    $$('#direccion_tienda').html(data_tienda.calle + ' ' + data_tienda.no_ext + ' ' + data_tienda.colonia);
                     app.preloader.hide();
                 },
                 function (error) {
@@ -761,9 +883,11 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
     num_guias = num_guias.split("|");
     if (num_guias.length == 1) {
         $$('#num_gias').val(num_guias);
+        //app.preloader.show();
+        //alert(localStorage.getItem('apikey'));
         app.request.setup({
             headers: {
-                'Authorization': "bearer " + localStorage.getItem('token')
+                'apikey': localStorage.getItem('apikey')
             },
             beforeSend: function () {
                 app.preloader.show();
@@ -772,22 +896,25 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 app.preloader.hide();
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                if (jqXHR.status === 404) {
-                    localStorage.clear();
-                    app.preloader.hide();
+                if (jqXHR.status === 401) {
+                    localStorage.clear(); //quita todas las variables de local storage
+                    app.preloader.hide(); // esconde el spinner
+                    //app.dialog.alert('Tu sesión expiró, inicia sesión de nuevo','Aviso');
                     window.location.reload();
+                }else{
+                    app.dialog.alert('Hubo un error, inténtelo de nuevo','Error');
                 }
             }
         });
 
         app.request.get(
-            URL_NEW_WS + 'api/v2/consulta/' + num_guias[0],
+            URL_WS + 'consulta/' + num_guias[0],
             function (data) {
                 //console.log(data['guia'][0].num_guia);
                 $$('#num_guia').html(data['guia'][0].num_guia);
-                if (data['guia'][0].proyecto == '0004') {
+                if (data['guia'][0].branch_number == '0004') {
                     var ouput_parsear_billetes = '';
-                    var parsear_billetes = data['guia'][0].contenido_paquete.split("|");
+                    var parsear_billetes = data['guia'][0].cont_paquete.split("|");
                     parsear_billetes.forEach(function (v, i) {
                         var parsear_billetes2 = v.split(': ');
                         if (parsear_billetes2[1] > 0) {
@@ -800,10 +927,10 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                     });
                     $$('#cont_paquete').html(ouput_parsear_billetes);
                 }
-                if (data['guia'][0].proyecto == '0003' || data['guia'][0].proyecto == '0006') {
-                    $$('#cont_paquete').html(data['guia'][0].contenido_paquete);
+                if (data['guia'][0].branch_number == '0003' || data['guia'][0].branch_number == '0006') {
+                    $$('#cont_paquete').html(data['guia'][0].cont_paquete);
                     $$('#cont_paquete').append('<br>');
-                    //$$('#cont_paquete').append(data['guia'][0].ids_tokens);
+                    $$('#cont_paquete').append(data['guia'][0].ids_tokens);
                 }
                 app.preloader.hide();
             },
@@ -822,7 +949,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
     $$('.open-foto-1').on('click', function () {
         app.dialog.create({
             title: 'Foto 1',
-            text: 'Elegir opción:',
+            text: 'Elegir opcion:',
             buttons: [
                 {
                     text: 'Camara',
@@ -881,7 +1008,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
     $$('.open-foto-2').on('click', function () {
         app.dialog.create({
             title: 'Foto 2',
-            text: 'Elegir opción:',
+            text: 'Elegir opcion:',
             buttons: [
                 {
                     text: 'Camara',
@@ -979,7 +1106,6 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
     });
 
     $$('#btn_cambiar_status').on('click', function (e) {
-        var idoperador = localStorage.getItem('userid');
         var latitud = $$('#latitud').val();
         var longitud = $$('#longitud').val();
         var status = $$('#status').val();
@@ -998,13 +1124,13 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                     var canvas1 = $$('#myCanvas')[0];
                     var foto1 = canvas1.toDataURL();
                 } else {
-                    var foto1 = '';
+                    foto1 = '';
                 }
                 if (statusFoto2 != 0) {
                     var canvas2 = $$('#myCanvas2')[0];
                     var foto2 = canvas2.toDataURL();
                 } else {
-                    var foto2 = '';
+                    foto2 = '';
                 }
 
                 if (foto1 == "" || foto2 == "" || persona_recibe == "") {
@@ -1026,13 +1152,13 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                     var canvas1 = $$('#myCanvas')[0];
                     var foto1 = canvas1.toDataURL();
                 } else {
-                    var foto1 = '';
+                    foto1 = '';
                 }
                 if (statusFoto2 != 0) {
                     var canvas2 = $$('#myCanvas2')[0];
                     var foto2 = canvas2.toDataURL();
                 } else {
-                    var foto2 = '';
+                    foto2 = '';
                 }
 
                 if (foto1 == "" || foto2 == "" || persona_recibe == "") {
@@ -1046,7 +1172,6 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 var statusFoto = $$('#myCanvas').data("foto1");
                 var statusFoto2 = $$('#myCanvas2').data("foto1");
                 var incidencia = $$('#incidencia').val();
-                incidencia = incidenciaGuia(incidencia);
 
                 if (statusFoto != 0) {
                     var canvas1 = $$('#myCanvas')[0];
@@ -1058,7 +1183,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                     var canvas2 = $$('#myCanvas2')[0];
                     var foto2 = canvas2.toDataURL();
                 } else {
-                    var foto2 = '';
+                    foto2 = '';
                 }
 
                 if (foto1 == "" || foto2 == "" || incidencia == "") {
@@ -1087,16 +1212,13 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
             var foto2 = canvas2.toDataURL();
             var persona_recibe = $$('#persona_recibe').val();
             var incidencia = $$('#incidencia').val();
-            incidencia = incidenciaGuia(incidencia);
             var comentarios = $$('#comentarios').val();
-            if (incidencia != '' && comentarios == '') {
-                comentarios = incidencia;
-            } else if (incidencia != '' && comentarios != '') {
-                comentarios = incidencia + ' ' + comentarios;
-            }
+
+            // hacer request:
+            //app.preloader.show();
             app.request.setup({
                 headers: {
-                    'Authorization': "bearer " + localStorage.getItem('token')
+                    'apikey': localStorage.getItem('apikey')
                 },
                 beforeSend: function () {
                     app.preloader.show();
@@ -1105,23 +1227,23 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                     app.preloader.hide();
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    if (jqXHR.status === 404) {
-                        localStorage.clear();
-                        app.preloader.hide();
-                        window.location.reload();
+                    if (jqXHR.status === 401) {
+                        localStorage.clear(); //quita todas las variables de local storage
+                        app.preloader.hide(); // esconde el spinner
+                        //app.dialog.alert('Tu sesión expiró, inicia sesión de nuevo');
+                        window.location.reload(); // recarga la página (y te va a mandar a la página de login)
                     }
                 }
             });
             app.request.postJSON(
-                URL_NEW_WS + 'api/v2/changestatus/' + $$('#num_gias').val(),
+                URL_WS + 'changestatus/' + $$('#num_gias').val(),
                 {
                     status: status,
-                    //latlong: latitud + ',' + longitud,
+                    latlong: latitud + ',' + longitud,
                     foto1: foto1,
                     foto2: foto2,
                     persona_recibe: persona_recibe,
-                    comentarios: comentarios,
-                    idoperador: idoperador
+                    comentarios: comentarios
                 },
                 function (data) {
                     app.preloader.hide();
@@ -1187,35 +1309,17 @@ $$(document).on('page:init', '.page[data-name="consultar"]', function (e) {
                 if (!result.cancelled) {
                     var num_guia = result.text;
                     $$('#num_guia_consulta').html(num_guia);
-                    app.request.setup({
-                        headers: {
-                            'Authorization': "bearer " + localStorage.getItem('token')
-                        },
-                        beforeSend: function () {
-                            app.preloader.show();
-                        },
-                        complete: function () {
-                            app.preloader.hide();
-                        },
-                        error: function (jqXHR, textStatus, errorThrown) {
-                            if (jqXHR.status === 404) {
-                                localStorage.clear();
-                                app.preloader.hide();
-                                window.location.reload();
-                            }
-                        }
-                    });
                     app.request.get(
-                        URL_NEW_WS + 'api/v2/guideinfo/' + num_guia,
+                        URL_WS + 'guideinfo/' + num_guia,
                         function (data) {
                             $$('#status_guia_consulta').html(traducirStatus(data[0].status));
                             $$('#espacio_proyecto').html(detectarProyecto(num_guia));
-                            $$('#espacio_destinatario').html(data[0].nombre_dest + ' ' + data[0].estado_dest + ' ' + data[0].municipio_dest + ' ' + data[0].colonia_dest);
-                            $$('#testigoreal1').attr('src', data[0].foto1);
-                            $$('#testigoreal2').attr('src', data[0].foto2);
+                            $$('#espacio_destinatario').html(data[0].nombre_dest + ' ' + data[0].paterno_dest + ' ' + data[0].materno_dest + '<br>' + data[0].edo_dest + ' ' + data[0].mun_dest + ' ' + data[0].asent_dest);
+                            $$('#testigoreal1').attr('src', URL_WS + data[0].foto1);
+                            $$('#testigoreal2').attr('src', URL_WS + data[0].foto2);
                             if (detectarProyecto(num_guia) == 'PPF') {
                                 var ouput_parsear_billetes = '';
-                                var parsear_billetes = data[0].contenido_paquete.split("|");
+                                var parsear_billetes = data[0].cont_paquete.split("|");
                                 parsear_billetes.forEach(function (v, i) {
                                     var parsear_billetes2 = v.split(': ');
                                     if (parsear_billetes2[1] > 0) {
@@ -1228,9 +1332,9 @@ $$(document).on('page:init', '.page[data-name="consultar"]', function (e) {
                                 });
                                 $$('#cont_paquete').html(ouput_parsear_billetes);
                             } else {
-                                $$('#cont_paquete').html(data[0].contenido_paquete);
+                                $$('#cont_paquete').html(data[0].cont_paquete);
                                 $$('#cont_paquete').append('<br>');
-                                $$('#cont_paquete').append('Lote/id/etc: ' + data[0].lote);
+                                $$('#cont_paquete').append('Lote/id/etc: ' + data[0].ids_tokens);
                             }
 
                         },
@@ -1261,6 +1365,22 @@ $$(document).on('page:init', '.page[data-name="consultar"]', function (e) {
 $$(document).on('page:init', '.page[data-name="hojagastos"]', function (e) {
     DateActual('calendardefault');
     var id_operador = localStorage.getItem('userid');
+    if(id_operador == 91){
+        ValidateApikeyNEW(localStorage.getItem('correo'),'maribel');
+        id_operador = 61;
+    }else if(id_operador == 42){
+        ValidateApikeyNEW(localStorage.getItem('correo'),'l0gify2020');
+        id_operador = 33;
+    }else if(id_operador == 34){
+        ValidateApikeyNEW(localStorage.getItem('correo'),'l0gify2020');
+        id_operador = 28;
+    }else if(id_operador == 84){
+        ValidateApikeyNEW(localStorage.getItem('correo'),'l0gify2020');
+        id_operador = 55;
+    }else if(id_operador == 43){
+        ValidateApikeyNEW(localStorage.getItem('correo'),'l0gify2020');
+        id_operador = 34;
+    }
     var periodo = $$('#calendardefault').val();
 
     app.request.setup({
@@ -1413,6 +1533,17 @@ $$(document).on('page:init', '.page[data-name="addgastos"]', function (e) {
 
     $$('#btn_form_add_gastos').on('click', function (e) {
         var id_operador = localStorage.getItem('userid');
+        if(id_operador == 91){
+            id_operador = 61;
+        }else if(id_operador == 42){
+            id_operador = 33;
+        }else if(id_operador == 34){
+            id_operador = 28;
+        }else if(id_operador == 84){
+            id_operador = 55;
+        }else if(id_operador == 43){
+            id_operador = 34;
+        }
         var fgasto = $$('#fgasto').val();
         var ConceptoGasto = $$('#ConceptoGasto').val();
         var concepto = $$('#comentario').val();
@@ -1664,6 +1795,17 @@ $$(document).on('page:init', '.page[data-name="editgastos"]', function (e) {
     $$('#btn_form_add_gastos').on('click', function (e) {
         //console.log("btn_form_add_gastos");
         var id_operador = localStorage.getItem('userid');
+        if(id_operador == 91){
+            id_operador = 61;
+        }else if(id_operador == 42){
+            id_operador = 33;
+        }else if(id_operador == 34){
+            id_operador = 28;
+        }else if(id_operador == 84){
+            id_operador = 55;
+        }else if(id_operador == 43){
+            id_operador = 34;
+        }
         var fgasto = $$('#fgasto').val();
         var ConceptoGasto = $$('#ConceptoGasto').val();
         var concepto = $$('#comentario').val();
