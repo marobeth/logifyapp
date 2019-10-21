@@ -1,9 +1,7 @@
 import $$ from 'dom7';
 import Framework7 from 'framework7/framework7.esm.bundle.js';
-
 // Import F7 Styles
 import 'framework7/css/framework7.bundle.css';
-
 // Import Icons and App Custom Styles
 import '../css/icons.css';
 import '../css/app.css';
@@ -12,14 +10,16 @@ import cordovaApp from './cordova-app.js';
 // Import Routes
 import routes from './routes.js';
 
-//var URL_WS = "http://192.168.10.51/api.logify.com.mx/";
 var URL_WS = "https://api.logify.com.mx/";
-//var URL_WS = "https://desarrollo.api.logify.com.mx/";
-var URL_NEW_WS = "https://logisticus.logify.com.mx/";
-//var URL_NEW_WS = "https://desarrollo.logisticus.logify.com.mx/";
+//var URL_NEW_WS = "https://logisticus.logify.com.mx/";
+var URL_NEW_WS = "https://desarrollo.logisticus.logify.com.mx/";
 
 
-/* TRADUCIR STATUS */
+/**
+ * TRADUCIR STATUS
+ * @param status
+ * @returns {string}
+ */
 function traducirStatus(status) {
     switch (status) {
         case '1':
@@ -55,7 +55,11 @@ function traducirStatus(status) {
             break;
     }
 }
-
+/**
+ *
+ * @param num_guia
+ * @returns {string}
+ */
 function detectarProyecto(num_guia) {
     if (num_guia.includes('BCL1234')) {
         return "Tokens";
@@ -100,23 +104,18 @@ function detectarProyecto(num_guia) {
         return "Diageo General";
     }
 }
-
 /* GEOLOCATION */
-function getLocation() {
+/*function getLocation() {
     var geolocation = navigator.geolocation;
     geolocation.getCurrentPosition(showLocation, errorHandler);
-}
-
+}*/
 function showLocation(position) {
     $$('#latitud').val(position.coords.latitude);
     $$('#longitud').val(position.coords.longitude);
 }
-
 function errorHandler(error) {
     console.log(error);
 }
-
-
 /*
 function screenshot(){
      navigator.screenshot.URI(function(error,res){
@@ -140,7 +139,7 @@ function screenshot(){
 }
 */
 function enviarUbicacion() {
-    getLocation();
+    //getLocation();
     app.request.setup({
         headers: {
             'apikey': localStorage.getItem('apikey')
@@ -164,20 +163,15 @@ function enviarUbicacion() {
         'json'
     );
 }
-
 /* GEOLOCATION */
-
 document.addEventListener("deviceready", onDeviceReady, false);
-
 function onDeviceReady() {
     //cordova.plugins.backgroundMode.enable();
     //cordova.plugins.backgroundMode.setEnabled(true);
-    getLocation();
+    //getLocation();
     //setInterval(enviarUbicacion, 10000);
     //setTimeout(function(){ cordova.plugins.backgroundMode.enable(); }, 3000);
 }
-
-
 var resize_image = function (img, canvas, max_width, max_height) {
     var ctx = canvas.getContext("2d");
     var canvasCopy = document.createElement("canvas");
@@ -195,18 +189,13 @@ var resize_image = function (img, canvas, max_width, max_height) {
     canvas.height = img.height * ratio;
     ctx.drawImage(canvasCopy, 0, 0, canvasCopy.width, canvasCopy.height, 0, 0, canvas.width, canvas.height);
 }
-
-
 function imageCapture() {
     var options = {limit: 1};
     navigator.device.capture.captureImage(onSuccess, onError, options);
 }
-
-
 function onError(error) {
     //app.dialog.alert('Error code: ' + error.code, null, 'Capture Error');
 }
-
 function onSuccess(mediaFiles) {
     $$('#myCanvas').show();
     var canvas = $$('#myCanvas')[0];
@@ -216,16 +205,13 @@ function onSuccess(mediaFiles) {
         resize_image(this, canvas, 800, 1200);
     };
 }
-
 function imageCapture2() {
     var options = {limit: 1};
     navigator.device.capture.captureImage(onSuccess2, onError2, options);
 }
-
 function onError2(error) {
     //navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
 }
-
 function onSuccess2(mediaFiles) {
     $$('#myCanvas2').show();
     var canvas = $$('#myCanvas2')[0];
@@ -235,7 +221,6 @@ function onSuccess2(mediaFiles) {
         resize_image(this, canvas, 800, 1200);
     };
 }
-
 /**
  * Cargar desde Camara
  * @param idCanvas
@@ -247,7 +232,7 @@ function openCamera(idCanvas) {
     navigator.device.capture.captureImage(function onSuccess(mediaFiles) {
         //navigator.camera.getPicture(function onSuccess(mediaFiles) {
         $$('#' + idCanvas).show();
-        var canvas = $$('#' + idCanvas)[0];
+        ///var canvas = $$('#' + idCanvas)[0];
         var canva = document.getElementById(idCanvas);
         var con = canva.getContext('2d');
         var img = new Image();
@@ -261,7 +246,6 @@ function openCamera(idCanvas) {
         navigator.camera.cleanup();
     }, function cameraError(error) {
         console.debug("No se puede obtener una foto: " + error, "app");
-
     }, {
         limit: 1,
         quality: 50,
@@ -272,7 +256,6 @@ function openCamera(idCanvas) {
         sourceType: srcType
     });
 }
-
 /**
  * Cargar desde galeria
  * @param idCanvas
@@ -281,10 +264,9 @@ function openFilePicker(idCanvas) {
     var pictureSource = navigator.camera.PictureSourceType;
     var destinationType = navigator.camera.DestinationType;
     var srcType = pictureSource.SAVEDPHOTOALBUM;
-
     navigator.camera.getPicture(function cameraSuccess(imageURI) {
         $$('#' + idCanvas).show();
-        var canvas = $$('#' + idCanvas);
+        //var canvas = $$('#' + idCanvas);
         var canvass = document.getElementById(idCanvas);
         var context = canvass.getContext('2d');
         var img = new Image();
@@ -297,7 +279,6 @@ function openFilePicker(idCanvas) {
         $$('#' + idCanvas).data("foto1", 1);
     }, function cameraError(error) {
         console.debug("No se puede obtener una foto: " + error, "app");
-
     }, {
         quality: 50,
         targetWidth: 800,
@@ -306,7 +287,6 @@ function openFilePicker(idCanvas) {
         sourceType: srcType
     });
 }
-
 /**
  * Apikey
  * @param correo
@@ -323,7 +303,7 @@ function ValidateApikey(correo, pass) {
     app.request.postJSON(
         URL_WS + 'login',
         function (data) {
-            if(data[0].activo ==1){
+            if (data[0].activo == 1) {
                 app.preloader.hide();
                 localStorage.setItem('auth', true);
                 localStorage.setItem('apikey', data[0].apikey);
@@ -333,7 +313,7 @@ function ValidateApikey(correo, pass) {
                 localStorage.setItem('paterno', data[0].paterno);
                 localStorage.setItem('correo', data[0].correo);
                 app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
-            }else{
+            } else {
                 app.dialog.alert('Error: Permiso Denegado');
             }
         }, function (data) {
@@ -342,9 +322,13 @@ function ValidateApikey(correo, pass) {
         }
     );
 }
-
+/**
+ *
+ * @param correo
+ * @param pass
+ * @constructor
+ */
 function ValidateApikeyNEW(correo, pass) {
-    //console.log('entre');
     app.request.setup({
         headers: {
             'Content-Type': 'application/json',
@@ -352,7 +336,7 @@ function ValidateApikeyNEW(correo, pass) {
         }
     });
     app.request.postJSON(
-        URL_NEW_WS + 'api/login',
+        URL_NEW_WS + 'api/loginapp',
         {
             'email': correo,
             'pass': pass
@@ -360,17 +344,23 @@ function ValidateApikeyNEW(correo, pass) {
         function (data) {
             if (data.activo == 1) {
                 app.preloader.hide();
-                localStorage.setItem('auth', true);
-                localStorage.setItem('apikey', data.apikey);
+                /*localStorage.setItem('auth', true);
+                localStorage.setItem('apikeyy', data.apikey);*/
                 localStorage.setItem('token', data.token);
-                localStorage.setItem('userid', data.user_id);
-                localStorage.setItem('avatar', data.avatar);
-                localStorage.setItem('nombre', data.nombre);
-                localStorage.setItem('paterno', data.paterno);
-                localStorage.setItem('email', data.email);
-                //app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
+                localStorage.setItem('user_id', data.user_id);
+                if (data.verhj_gasto == 1) {
+                    localStorage.getItem('verhj_gasto', 1);
+                    $$(".HGastosViews").show();
+                } else {
+                    localStorage.getItem('verhj_gasto', 0);
+                    $$(".HGastosViews").hide();
+                }
+                /* localStorage.setItem('avatar', data.avatar);
+                 localStorage.setItem('nombre', data.nombre);
+                 localStorage.setItem('paterno', data.paterno);
+                 localStorage.setItem('email', data.email);*/
             } else {
-              //  app.dialog.alert('Error: Permiso Denegado');
+                //  app.dialog.alert('Error: Permiso Denegado');
             }
         }, function (data) {
             //app.preloader.hide();
@@ -378,7 +368,6 @@ function ValidateApikeyNEW(correo, pass) {
         }
     );
 }
-
 /**
  * DateActual
  * @param iddate
@@ -396,8 +385,6 @@ function DateActual(iddate) {
     }
     document.getElementById(iddate).value = ano + "-" + mes + "-" + dia;
 }
-
-
 /**
  * DateGasto
  * @param DateGasto
@@ -405,7 +392,6 @@ function DateActual(iddate) {
 function DateGasto(CById, DateGasto) {
     document.getElementById(CById).value = DateGasto;
 }
-
 /**
  *
  * @param valor
@@ -445,7 +431,6 @@ function RsltsGastos(valor) {
         'json'
     );
 }
-
 /**
  *
  * @param CById
@@ -480,7 +465,6 @@ function NmPrvdr(CById, valor) {
         'json'
     );
 }
-
 /**
  *
  * @param valor
@@ -535,7 +519,29 @@ function RsltsPrvdr(valor) {
         }
     });
 }
-
+/**
+ *
+ * @param valor
+ */
+function validateMonto(valor) {
+    var RE = /^\d*(\.\d{1})?\d{0,1}$/;
+    if (RE.test(valor)) {
+    } else {
+        app.dialog.alert("El formato no corresponde Ej. 120.00 ó 23.65");
+    }
+}
+/**
+ *
+ * @param valor
+ */
+function validatePrecio(CById,valor) {
+    var RE = /^\d*(\.\d{1})?\d{0,1}$/;
+    if (RE.test(valor)) {
+    } else {
+        document.getElementById(CById).value = "";
+        app.dialog.alert("El formato no corresponde Ej. 120.00 ó 23.65");
+    }
+}
 /**
  * @param CById
  * @param monto
@@ -544,7 +550,6 @@ function RsltsPrvdr(valor) {
 function RsltsMonto(CById, monto) {
     document.getElementById(CById).value = monto;
 }
-
 /**
  *
  * @param CById
@@ -554,7 +559,6 @@ function RsltsMonto(CById, monto) {
 function RsltsNum(CById, num) {
     document.getElementById(CById).value = num;
 }
-
 /**
  *
  * @param CById
@@ -564,7 +568,6 @@ function RsltsNum(CById, num) {
 function RsltsObservaciones(CById, observaciones) {
     document.getElementById(CById).value = observaciones;
 }
-
 /**
  *
  * @param CById
@@ -586,7 +589,6 @@ function RsltsConcepto(CById, concepto, coment, kminicial, kmfinal) {
         document.getElementById('kmfinal').value = kmfinal;
     }
 }
-
 /**
  *
  * @param CById
@@ -607,7 +609,6 @@ function RsltsTpComprobante(CById, valor) {
     });
     $$('#TpoCmprbnt').html(TpoCmprbnt);
 }
-
 /**
  *
  * @param CById
@@ -623,7 +624,6 @@ function RsltsFotoComprobante(CById, valor) {
         $$('#' + CById).html('<img src="' + valor + '"/>');
     }
 }
-
 /**
  *
  * @param CById
@@ -642,7 +642,6 @@ function RsltsPDFComprobante(CById, valor) {
         $$('#pdfColocar').html(splits);
     }
 }
-
 /**
  *
  * @param CById
@@ -661,7 +660,6 @@ function RsltsXMLComprobante(CById, valor) {
         $$('#xmlColocar').html(splits);
     }
 }
-
 /**
  *
  * @param CById
@@ -686,22 +684,141 @@ function convertToBase64(CById, CById2, type) {
             fileReader.readAsDataURL(fileToLoad);
         }
     } else {
-        app.dialog.alert("El formato del archivo no corresponde " + type);
+        app.dialog.alert("El formato del archivo no corresponde, solo se permite " + type);
+        document.getElementById(CById).value = null;
     }
 }
-
+/**
+ *
+ * @param CById
+ * @param type
+ * @param valor
+ * @constructor
+ */
+function RsltsVehiculo(CById, type, valor) {
+    var Eselected;
+    var vehiculos = '';
+    app.request.setup({
+        headers: {
+            'Authorization': "bearer " + localStorage.getItem('token')
+        }, beforeSend: function () {
+            app.preloader.show();
+        },
+        complete: function () {
+            app.preloader.hide();
+        }
+    });
+    app.request.get(
+        URL_NEW_WS + 'api/v2/consultar-vehiculo/' + type,
+        function (data) {
+            vehiculos = '<option value="">Seleccionar</option>';
+            data.forEach(function (val, index) {
+                if (val.id == valor && val.id != '') {
+                    Eselected = 'selected';
+                } else {
+                    Eselected = '';
+                }
+                vehiculos += '<option value="' + val.id + '"' + Eselected + '>' + val.placa + '</option>';
+            });
+            $$('#' + CById).html(vehiculos);
+        },
+        function (error) {
+            console.log(error);
+        },
+        'json'
+    );
+}
+/**
+ *
+ * @param CById
+ * @param Id
+ * @param valor
+ * @constructor
+ */
+function RsltsAuto(CById, Id, valor) {
+    var vehiculos = '<option value="' + Id + '">' + valor + '</option>';
+    $$('#' + CById).html(vehiculos);
+}
 /**
  *
  * @param valor
  */
-function validateMonto(valor) {
-    var RE = /^\d*(\.\d{1})?\d{0,1}$/;
-    if (RE.test(valor)) {
-    } else {
-        app.dialog.alert("El formato del monto no corresponde Ej. 120.00 ó 23.65");
+function validateNumero(CById,valor) {
+    var RE = /^([0-9])*$/;
+    if (!RE.test(valor)) {
+        document.getElementById(CById).value = "";
+        app.dialog.alert("Solo se permiten numeros");
     }
 }
+/**
+ *
+ * @param CById
+ * @param valor
+ * @constructor
+ */
+function RsltsMtdPago(CById, valor) {
+    if(valor ==1){
+        $$(".TMtdPago").show();
+    } else {
+        $$(".TMtdPago").hide();
+    }
+    var MtdPago;
+    var Eselected;
+    var lista = ['Seleccionar', 'Efectivo', 'Ticket Car'];
+    lista.forEach(function (element, index) {
+        if(valor == ''){ valor=0;}
+        if (index == valor ) {
+            Eselected = 'selected';
+        } else {
+            Eselected = '';
+        }
+        MtdPago += '<option value="' + index + '"' + Eselected + '>' + element + '</option>';
+    });
+    $$('#'+CById).html(MtdPago);
+}
+/**
+ *
+ * @param CById
+ * @param valor
+ * @constructor
+ */
+function RsltsValor(CById, valor) {
+    document.getElementById(CById).value = valor;
+}
+/**
+ *
+ * @param CById
+ * @param valor
+ * @constructor
+ */
+function EnviarEmail( valor,IdUser) {
+    app.request.setup({
+        headers: {
+            'Authorization': "bearer " + localStorage.getItem('token')
+        }, beforeSend: function () {
+            app.preloader.show();
+        },
+        complete: function () {
+            app.preloader.hide();
+        }
+    });
+    app.request.get(
+        URL_NEW_WS + 'api/v2/enviar/msn/' + valor+'/'+IdUser,
+        function (data) {
+            app.dialog.alert(data.message);
+        },
+        function (data) {
+            var mensaje = JSON.parse(data.responseText);
+            app.dialog.alert(mensaje.message);
+        },
+        'json'
+    );
+}
 
+/**
+ *
+ * @type {Framework7}
+ */
 var app = new Framework7({
     root: '#app', // App root element
     id: 'com.graphicsandcode.logify', // App bundle ID
@@ -753,7 +870,9 @@ var app = new Framework7({
     },
 });
 
-
+/**
+ *
+ */
 $$('#btn_iniciar_sesion').on('click', function () {
     //app.preloader.show();
     var username = $$('#input_username').val();
@@ -761,16 +880,15 @@ $$('#btn_iniciar_sesion').on('click', function () {
 
     ValidateApikey(username, password);
 });
-
 $$(document).on('page:init', '.page[data-name="inicio"]', function (e) {
     $$('#nombre_usuario').html(localStorage.getItem('nombre') + ' ' + localStorage.getItem('paterno'));
-    if(localStorage.getItem('correo') =='cags@logify.com.mx' || localStorage.getItem('correo') =='scm@logify.com.mx' || localStorage.getItem('correo') =='cde@logify.com.mx' || localStorage.getItem('correo') =='snr@logify.com.mx' || localStorage.getItem('correo') =='mmc@logify.com.mx' ){
+    ValidateApikeyNEW(localStorage.getItem('userid'), localStorage.getItem('apikey'));
+    if (localStorage.getItem('verhj_gasto') == 1) {
         $$(".HGastosViews").show();
     } else {
         $$(".HGastosViews").hide();
     }
 });
-
 $$(document).on('page:init', '.page[data-name="home"]', function (e) {
     $$('#btn_iniciar_sesion').on('click', function () {
         //app.preloader.show();
@@ -784,24 +902,22 @@ $$(document).on('page:init', '.page[data-name="home"]', function (e) {
         cordova.InAppBrowser.open('https://admin.logify.com.mx/restablecer-contrasena', '_blank', 'location=yes');
     });
 });
-
 $$(document).on('page:afterin', '.page[data-name="home"]', function (e) {
     if (localStorage.getItem('auth') == 'true') {
         app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
     }
 });
-
-
 $$(document).on('page:init', '.page[data-name="logout"]', function (e) {
     localStorage.clear();
     app.preloader.hide();
     window.location.reload();
 });
-
+/**
+ ** Guia
+ **/
 $$(document).on('page:reinit', '.page[data-name="checkin"]', function (e) {
     $$('#btn_buscar_sucursal').click();
 });
-
 $$(document).on('page:init', '.page[data-name="checkin"]', function (e) {
     $$('#btn_buscar_sucursal').on('click', function () {
         if ($$('#input_num_sucursal_checkin').val() == "") {
@@ -874,9 +990,6 @@ $$(document).on('page:init', '.page[data-name="checkin"]', function (e) {
     });
 
 });
-
-//Cambiar de estatus
-
 $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
     var num_guias = app.view.main.router.currentRoute.params.numGuia;
     //alert(num_guias);
@@ -901,8 +1014,8 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                     app.preloader.hide(); // esconde el spinner
                     //app.dialog.alert('Tu sesión expiró, inicia sesión de nuevo','Aviso');
                     window.location.reload();
-                }else{
-                    app.dialog.alert('Hubo un error, inténtelo de nuevo','Error');
+                } else {
+                    app.dialog.alert('Hubo un error, inténtelo de nuevo', 'Error');
                 }
             }
         });
@@ -1259,7 +1372,6 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         }
     });
 });
-
 $$(document).on('page:init', '.page[data-name="escanear"]', function (e) {
     $$('#btn_escanear').on('click', function () {
         cordova.plugins.barcodeScanner.scan(
@@ -1301,7 +1413,6 @@ $$(document).on('page:init', '.page[data-name="escanear"]', function (e) {
         );
     });
 });
-
 $$(document).on('page:init', '.page[data-name="consultar"]', function (e) {
     $$('#btn_escanear_consulta').on('click', function () {
         cordova.plugins.barcodeScanner.scan(
@@ -1364,23 +1475,8 @@ $$(document).on('page:init', '.page[data-name="consultar"]', function (e) {
  **/
 $$(document).on('page:init', '.page[data-name="hojagastos"]', function (e) {
     DateActual('calendardefault');
-    var id_operador = localStorage.getItem('userid');
-    if(id_operador == 91){
-        ValidateApikeyNEW(localStorage.getItem('correo'),'maribel');
-        id_operador = 61;
-    }else if(id_operador == 42){
-        ValidateApikeyNEW(localStorage.getItem('correo'),'l0gify2020');
-        id_operador = 33;
-    }else if(id_operador == 34){
-        ValidateApikeyNEW(localStorage.getItem('correo'),'l0gify2020');
-        id_operador = 28;
-    }else if(id_operador == 84){
-        ValidateApikeyNEW(localStorage.getItem('correo'),'l0gify2020');
-        id_operador = 55;
-    }else if(id_operador == 43){
-        ValidateApikeyNEW(localStorage.getItem('correo'),'l0gify2020');
-        id_operador = 34;
-    }
+    //ValidateApikeyNEW(localStorage.getItem('userid'),localStorage.getItem('apikey'));
+    var id_operador = localStorage.getItem('user_id');
     var periodo = $$('#calendardefault').val();
 
     app.request.setup({
@@ -1426,7 +1522,8 @@ $$(document).on('page:init', '.page[data-name="hojagastos"]', function (e) {
             $$('#tbcoperadores').html(gatosConsulta);
         },
         function (error) {
-            console.log(error);
+            var gatosConsulta = '<tr><td class="label-cell"></td><td class="label-cell colors" colspan="3">No hay Información</td></tr>';
+            $$('#tbcoperadores').html(gatosConsulta);
         },
         'json'
     );
@@ -1438,8 +1535,7 @@ $$(document).on('page:init', '.page[data-name="hojagastos"]', function (e) {
     $$('#btn_delete_gastos').on('click', function (e) {
         app.views.main.router.navigate('/deletegastos/', {reloadCurrent: false});
     });
-});
-
+})
 $$(document).on('page:init', '.page[data-name="addgastos"]', function (e) {
     $$("#Gcomentario").hide();
     $$("#kmi").hide();
@@ -1532,18 +1628,7 @@ $$(document).on('page:init', '.page[data-name="addgastos"]', function (e) {
     });
 
     $$('#btn_form_add_gastos').on('click', function (e) {
-        var id_operador = localStorage.getItem('userid');
-        if(id_operador == 91){
-            id_operador = 61;
-        }else if(id_operador == 42){
-            id_operador = 33;
-        }else if(id_operador == 34){
-            id_operador = 28;
-        }else if(id_operador == 84){
-            id_operador = 55;
-        }else if(id_operador == 43){
-            id_operador = 34;
-        }
+        var id_operador = localStorage.getItem('user_id');
         var fgasto = $$('#fgasto').val();
         var ConceptoGasto = $$('#ConceptoGasto').val();
         var concepto = $$('#comentario').val();
@@ -1581,31 +1666,31 @@ $$(document).on('page:init', '.page[data-name="addgastos"]', function (e) {
         }
 
         if (fgasto == "") {
-            app.dialog.alert("El campo de Fecha esta vácio");
+            app.dialog.alert("El campo de Fecha está vacío");
         } else if (id_operador == '') {
             app.dialog.alert("Operador no existe");
         } else if (ConceptoGasto == '') {
-            app.dialog.alert("El campo de Concepto esta vácio");
+            app.dialog.alert("El campo de Concepto está vacío");
         } else if (ConceptoGasto == 12 && comentario == '') {
             app.dialog.alert("Explicar en el campo concepto que tipo de concepto");
         } else if (ConceptoGasto == 3 && kminicial == '') {
-            app.dialog.alert("El campo de kminicial esta vácio");
+            app.dialog.alert("El campo de kminicial está vacío");
         } else if (ConceptoGasto == 3 && kmfinal == '') {
-            app.dialog.alert("El campo de kmfinal esta vácio");
+            app.dialog.alert("El campo de kmfinal está vacío");
         } else if (OprProve == 0) {
-            app.dialog.alert("El campo de Proveedor esta vácio");
+            app.dialog.alert("El campo de Proveedor está vacío");
         } else if (monto == '') {
-            app.dialog.alert("El campo de Monto esta vácio");
+            app.dialog.alert("El campo de Monto está vacío");
         } else if (numticket == '') {
-            app.dialog.alert("El campo de No.Ticket o Folio esta vácio");
+            app.dialog.alert("El campo de No.Ticket o Folio está vacío");
         } else if (TpoCmprbnt == '' || TpoCmprbnt == 0) {
-            app.dialog.alert("El campo de Tipo de Comprobante esta vácio");
+            app.dialog.alert("El campo de Tipo de Comprobante está vacío");
         } else if (FotoStatus == 0) {
-            app.dialog.alert("El campo Foto del Comprobante esta vácio");
+            app.dialog.alert("El campo Foto del Comprobante está vacío");
         } else if (observaciones == "" && PDFStatus == 0) {
-            app.dialog.alert("¿Explicar bravemente porque el archivo no se agrego PDF");
+            app.dialog.alert("Explicar brevemente porque el archivo PDF no se enviara");
         } else if (observaciones == "" && XMLStatus == 0) {
-            app.dialog.alert("¿Explicar bravemente porque el archivo no se agrego XML");
+            app.dialog.alert("Explicar brevemente porque el archivo PDF no se enviara");
         } else {
             //alert(OprProve);
             //console.log(FotoGastos+'**'+PFDGastos+'**'+XMLGastos+'**');
@@ -1659,7 +1744,6 @@ $$(document).on('page:init', '.page[data-name="addgastos"]', function (e) {
     });
 
 });
-
 $$(document).on('page:init', '.page[data-name="editgastos"]', function (e) {
     $$("#Gcomentario").hide();
     $$("#kmi").hide();
@@ -1794,18 +1878,7 @@ $$(document).on('page:init', '.page[data-name="editgastos"]', function (e) {
 
     $$('#btn_form_add_gastos').on('click', function (e) {
         //console.log("btn_form_add_gastos");
-        var id_operador = localStorage.getItem('userid');
-        if(id_operador == 91){
-            id_operador = 61;
-        }else if(id_operador == 42){
-            id_operador = 33;
-        }else if(id_operador == 34){
-            id_operador = 28;
-        }else if(id_operador == 84){
-            id_operador = 55;
-        }else if(id_operador == 43){
-            id_operador = 34;
-        }
+        var id_operador = localStorage.getItem('user_id');
         var fgasto = $$('#fgasto').val();
         var ConceptoGasto = $$('#ConceptoGasto').val();
         var concepto = $$('#comentario').val();
@@ -1814,17 +1887,11 @@ $$(document).on('page:init', '.page[data-name="editgastos"]', function (e) {
         var numticket = $$('#numticket').val();
         var TpoCmprbnt = $$('#TpoCmprbnt').val();
         var FotoStatus = $$('#myCanvasGastos').data("foto1");
-        //console.log(FotoStatus);
         var FotoStatusBD = $$('#mediaColocar').data("status");
-        //console.log(FotoStatusBD);
         var PDFStatus = $$('#pdfColocar').data("status");
-        //console.log(PDFStatus);
         var PDFStatusBD = $$('#PFDGastos').data("status");
-        //console.log(PDFStatusBD);
         var XMLStatus = $$('#xmlColocar').data("status");
-        //console.log(XMLStatus);
         var XMLStatusBD = $$('#XMLGastos').data("status");
-        //console.log(XMLStatusBD);
         var kminicial = $$('#kminicial').val();
         var kmfinal = $$('#kmfinal').val();
         var observaciones = $$('#observaciones').val();
@@ -1851,31 +1918,31 @@ $$(document).on('page:init', '.page[data-name="editgastos"]', function (e) {
         }
 
         if (fgasto == "") {
-            app.dialog.alert("El campo de Fecha esta vácio");
+            app.dialog.alert("El campo de Fecha está vacío");
         } else if (id_operador == '') {
             app.dialog.alert("Operador no existe");
         } else if (ConceptoGasto == '') {
-            app.dialog.alert("El campo de Concepto esta vácio");
+            app.dialog.alert("El campo de Concepto está vacío");
         } else if (ConceptoGasto == 12 && comentario == '') {
             app.dialog.alert("Explicar en el campo concepto que tipo de concepto");
         } else if (ConceptoGasto == 3 && kminicial == '') {
-            app.dialog.alert("El campo de kminicial esta vácio");
+            app.dialog.alert("El campo de kminicial está vacío");
         } else if (ConceptoGasto == 3 && kmfinal == '') {
-            app.dialog.alert("El campo de kmfinal esta vácio");
+            app.dialog.alert("El campo de kmfinal está vacío");
         } else if (OprProve == 0) {
-            app.dialog.alert("El campo de Proveedor esta vácio");
+            app.dialog.alert("El campo de Proveedor está vacío");
         } else if (monto == '') {
-            app.dialog.alert("El campo de Monto esta vácio");
+            app.dialog.alert("El campo de Monto está vacío");
         } else if (TpoCmprbnt == '' || TpoCmprbnt == 0) {
-            app.dialog.alert("El campo de Tipo de Comprobante esta vácio");
+            app.dialog.alert("El campo de Tipo de Comprobante está vacío");
         } else if (numticket == '') {
-            app.dialog.alert("El campo de No.Tickeet o Folio esta vácio");
+            app.dialog.alert("El campo de No.Tickeet o Folio está vacío");
         } else if (FotoStatus == 0 && FotoStatusBD == 0) {
-            app.dialog.alert("El campo Foto del Comprobante esta vácio");
+            app.dialog.alert("El campo Foto del Comprobante está vacío");
         } else if (observaciones == "" && PDFStatus == 0 && PDFStatusBD == 0) {
-            app.dialog.alert("¿Explicar bravemente porque el archivo no se agrego PDF");
+            app.dialog.alert("Explicar brevemente porque el archivo PDF no se enviara");
         } else if (observaciones == "" && XMLStatus == 0 && XMLStatusBD == 0) {
-            app.dialog.alert("¿Explicar bravemente porque el archivo no se agrego XML");
+            app.dialog.alert("Explicar brevemente porque el archivo PDF no se enviara");
         } else {
             if (ConceptoGasto != 12) {
                 concepto = '';
@@ -1929,7 +1996,6 @@ $$(document).on('page:init', '.page[data-name="editgastos"]', function (e) {
         }
     });
 });
-
 $$(document).on('page:init', '.page[data-name="addproveedor"]', function (e) {
     $$('#btn_add_proveedor').on('click', function (e) {
         var name_proveedor = $$('#nameprvdr').val();
@@ -1972,7 +2038,6 @@ $$(document).on('page:init', '.page[data-name="addproveedor"]', function (e) {
         }
     });
 });
-
 $$(document).on('page:init', '.page[data-name="deletegastos"]', function (e) {
     var idGasto = app.view.main.router.currentRoute.params.idGasto;
     app.request.setup({
@@ -2004,4 +2069,476 @@ $$(document).on('page:init', '.page[data-name="deletegastos"]', function (e) {
         },
         'json'
     );
+});
+
+/**
+ ** Solicitud Combustible
+ **/
+$$(document).on('page:init', '.page[data-name="solicitudes"]', function (e) {
+    var SlctdConsulta = '';
+    var status, ClassRlts;
+    DateActual('calendardefault');
+    var id_operador = localStorage.getItem('user_id');
+    var periodo = $$('#calendardefault').val();
+    app.request.setup({
+        headers: {
+            'Authorization': "bearer " + localStorage.getItem('token')
+        }, beforeSend: function () {
+            app.preloader.show();
+        },
+        complete: function () {
+            app.preloader.hide();
+        }
+    });
+    app.request.get(
+        URL_NEW_WS + 'api/v2/consultar/solicitud/' + id_operador + '/' + periodo,
+        function (data) {
+            SlctdConsulta += '<div class="list accordion-list">\n' + '<ul>';
+            if (data != '') {
+                data.forEach(function (cslt_slctds_opr, index) {
+                    if (cslt_slctds_opr.observaciones == '' ||
+                        cslt_slctds_opr.observaciones == undefined ||
+                        cslt_slctds_opr.observaciones == null) {
+                        var observaciones = "";
+                    } else {
+                        var observaciones = cslt_slctds_opr.observaciones;
+                    }
+                    if (cslt_slctds_opr.status_solicitud == 1) {
+                        ClassRlts = "class='alert alert-primary'";
+                        status = 'Solicitado';
+                    } else if (cslt_slctds_opr.status_solicitud == 2) {
+                        ClassRlts = "class='alert alert-info'";
+                        status = 'Autorizado';
+                    } else if (cslt_slctds_opr.status_solicitud == 3) {
+                        ClassRlts = "class='alert alert-warning'";
+                        status = 'Anomalía';
+                    } else if (cslt_slctds_opr.status_solicitud == 4) {
+                        ClassRlts = "class='alert alert-success'";
+                        status = 'Proceso Terminado';
+                    }
+                    var msn_enviar = cslt_slctds_opr.status_msn_recibido;
+                    //console.log(msn_enviar);
+                    SlctdConsulta +=
+                        '    <li class="accordion-item"><a href="#" class="item-content item-link">\n' +
+                        '        <div class="item-inner">' +
+                        '          <div class="item-title"> <span>Folio: ' + cslt_slctds_opr.id + '</span>' +
+                        '<span> Placas: ' + cslt_slctds_opr.placa + '</span></div>' +
+                        '        </div></a>' +
+                        '      <div class="accordion-item-content">\n' +
+                        '        <div class="block">' +
+                        '          <p>Status: <span ' + ClassRlts + '>' + status + '</span></p>';
+                    if (cslt_slctds_opr.status_solicitud > 1 && cslt_slctds_opr.status_solicitud < 4) {
+                        SlctdConsulta +=
+                            '          <p>Observaciones: ' + observaciones + '</p>';
+                        if (msn_enviar == 0) {
+                            SlctdConsulta += '          <p>Enviar correo de enterado: <i class="material-icons color-gray clickemail" data-folio="' + cslt_slctds_opr.id + '">email</i></p>';
+                        }
+                        SlctdConsulta += '          <p><a href="/solicitudgasto/' + cslt_slctds_opr.id + '"><i class="icon f7-icons">arrow_up_doc_fill</i>Subir datos de TICKET</a></p>';
+                    }
+                    SlctdConsulta += '</div>' +
+                        '      </div>' +
+                        '    </li>';
+                });
+                SlctdConsulta += '</ul></div>';
+                $$('#tbcoperadores').html(SlctdConsulta);
+                $$(".clickemail").on('click', function () {
+                    //console.log("folio:"+$$(this).data('folio'));
+                    var folio = $$(this).data('folio');
+                    EnviarEmail(folio, id_operador);
+                });
+            } else {
+                SlctdConsulta += '<div class="label-cell colors">No hay Información</div>';
+                $$('#tbcoperadores').html(SlctdConsulta);
+            }
+        },
+        function (error) {
+            var gatosConsulta = '<tr><td class="label-cell"></td><td class="label-cell colors" colspan="3">No hay Información</td></tr>';
+            $$('#tbcoperadores').html(SlctdConsulta);
+        },
+        'json'
+    );
+    $$('#btn_add_solicitud').on('click', function (e) {
+        app.views.main.router.navigate('/addsolicitud/', {reloadCurrent: false});
+    });
+
+});
+$$(document).on('page:init', '.page[data-name="addsolicitud"]', function (e) {
+    DateActual('fsolicitud');
+    $$('#TpoUnidad').on('change', function () {
+        var TpoUnidad = $$('#TpoUnidad').val();
+        RsltsVehiculo('vehiculo', TpoUnidad);
+    });
+    $$('#openFotoOdometro').on('click', function () {
+        app.dialog.create({
+            title: 'Foto',
+            text: 'Elegir opción:',
+            buttons: [
+                {
+                    text: 'Camara',
+                    cssClass: 'id_ftodometro_camara'
+                },
+                {
+                    text: 'Galeria',
+                    cssClass: 'id_ftodometro_galeria'
+                },
+                {
+                    text: 'Cancelar',
+                    cssClass: 'id_ftodometro_cancelar'
+                },
+            ],
+            verticalButtons: true,
+        }).open();
+        $$('.id_ftodometro_camara').on('click', function (e) {
+            var permissions = cordova.plugins.permissions;
+            permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
+
+            function error() {
+                app.dialog.alert('Necesitas permiso de: WRITE_EXTERNAL_STORAGE ');
+            }
+
+            function success(status) {
+                if (!status.hasPermission) {
+                    error();
+                } else {
+                    openCamera('myCanvasOdometro');
+                }
+            }
+        });
+
+        $$('.id_ftodometro_cancelar').on('click', function (e) {
+            app.dialog.close();
+        });
+
+        $$('.id_ftodometro_galeria').on('click', function (e) {
+            var permissions = cordova.plugins.permissions;
+            permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
+
+            function error() {
+                app.dialog.alert('Necesitas permiso de: WRITE_EXTERNAL_STORAGE ');
+            }
+
+            function success(status) {
+                if (!status.hasPermission) {
+                    error();
+                } else {
+                    openFilePicker('myCanvasOdometro');
+                }
+            }
+        });
+    });
+    $$('#btnsolicitud').on('click', function (e) {
+        var id_operador = localStorage.getItem('user_id');
+        var fsolicitud = $$('#fsolicitud').val();
+        var id_auto = $$('#vehiculo').val();
+        var odometro = $$('#odometro').val();
+        var monto = $$('#monto').val();
+        var FotoStatus = $$('#myCanvasOdometro').data("foto1");
+        validatePrecio('monto', monto);
+        validateNumero('odometro',odometro);
+
+        if (FotoStatus == 0) {
+            var foto_odometro = '';
+        } else {
+            var cnvsOdometro = $$('#myCanvasOdometro')[0];
+            var foto_odometro = cnvsOdometro.toDataURL();
+        }
+        if (fsolicitud == '') {
+            app.dialog.alert("El campo de Fecha está vacío");
+        } else if (id_auto == '' || id_auto == 0) {
+            app.dialog.alert("El campo Tipo de vehículo está vacío");
+        } else if (monto == '') {
+            app.dialog.alert("El campo monto está vacío");
+        } else if (odometro == '') {
+            app.dialog.alert("El campo odómetro está vacío");
+        } else if (FotoStatus == 0) {
+            app.dialog.alert("El campo Foto de Odómetro está vacío");
+        } else {
+            //console.log(id_operador + '**' + fsolicitud + '**' + id_auto + '**' + odometro + '**' + monto + '**' + FotoStatus + '**' + foto_odometro);
+            app.request.setup({
+                headers: {
+                    'Authorization': "bearer " + localStorage.getItem('token')
+                },
+                beforeSend: function () {
+                    app.preloader.show();
+                },
+                complete: function () {
+                    app.preloader.hide();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    if (jqXHR.status === 404) {
+                        localStorage.clear();
+                        app.preloader.hide();
+                        window.location.reload();
+                    }
+                }
+            });
+            app.request.postJSON(
+                URL_NEW_WS + 'api/v2/agregar-combustible',
+                {
+                    fecha: fsolicitud,
+                    id_operador: id_operador,
+                    id_auto: id_auto,
+                    monto: monto,
+                    foto_odometro: foto_odometro,
+                    odometro: odometro
+                },
+                function (data) {
+                    app.dialog.alert("La solicitud ha sido enviada pronto recibirá un correo");
+                    app.views.main.router.navigate('/solicitudes/', {reloadCurrent: false});
+                }, function (error) {
+                    console.log(error);
+                },
+                'json'
+            );
+        }
+    });
+});
+$$(document).on('page:init', '.page[data-name="solicitudgasto"]', function (e) {
+    var idSolicitud = app.view.main.router.currentRoute.params.idSolicitud;
+    var id_operador = localStorage.getItem('user_id');
+    var metodo_pago = $$('#MtdPago').val();
+    RsltsMtdPago('metodo_pago', metodo_pago);
+
+    $$('#MtdPago').on('change', function () {
+        var metodo_pago = $$('#MtdPago').val();
+        if (metodo_pago == 1) {
+            $$(".TMtdPago").show();
+        } else {
+            document.getElementById('PFDGastos').value = null;
+            document.getElementById('XMLGastos').value = null;
+            document.getElementById('obs_comprobante').value = null;
+            $$('#pdfColocar').data("status", 0);
+            $$('#xmlColocar').data("status", 0);
+            $$(".TMtdPago").hide();
+        }
+    });
+    $$('#openFotoGasto').on('click', function () {
+        app.dialog.create({
+            title: 'Comprobate',
+            text: 'Elegir opción:',
+            buttons: [
+                {
+                    text: 'Camara',
+                    cssClass: 'id_cmpbnt_camara'
+                },
+                {
+                    text: 'Galeria',
+                    cssClass: 'id_cmpbnt_galeria'
+                },
+                {
+                    text: 'Cancelar',
+                    cssClass: 'id_cmpbnt_cancelar'
+                },
+            ],
+            verticalButtons: true,
+        }).open();
+
+        $$('.id_cmpbnt_camara').on('click', function (e) {
+            var permissions = cordova.plugins.permissions;
+            permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
+
+            function error() {
+                app.dialog.alert('Necesitas permiso de: WRITE_EXTERNAL_STORAGE ');
+            }
+
+            function success(status) {
+                if (!status.hasPermission) {
+                    error();
+                } else {
+                    openCamera('myCanvasGastos');
+                }
+            }
+        });
+
+        $$('.id_cmpbnt_cancelar').on('click', function (e) {
+            app.dialog.close();
+        });
+
+        $$('.id_cmpbnt_galeria').on('click', function (e) {
+            var permissions = cordova.plugins.permissions;
+            permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
+
+            function error() {
+                app.dialog.alert('Necesitas permiso de: WRITE_EXTERNAL_STORAGE ');
+            }
+
+            function success(status) {
+                if (!status.hasPermission) {
+                    error();
+                } else {
+                    openFilePicker('myCanvasGastos');
+                }
+            }
+        });
+
+    });
+    $$('#PFDGastos').on('change', function () {
+        convertToBase64('PFDGastos', 'pdfColocar', 'pdf');
+    });
+    $$('#pdfColocar').on('click', function () {
+        var PDFStatus = $$('#pdfColocar').data("file");
+        cordova.InAppBrowser.open(PDFStatus, '_system', 'location=yes');
+    });
+    $$('#XMLGastos').on('change', function () {
+        convertToBase64('XMLGastos', 'xmlColocar', 'xml');
+    });
+    $$('#xmlColocar').on('click', function () {
+        var XMLStatus = $$('#xmlColocar').data("file");
+        cordova.InAppBrowser.open(XMLStatus, '_blank', 'location=yes');
+    });
+    app.request.setup({
+        headers: {
+            'Authorization': "bearer " + localStorage.getItem('token')
+        },
+        beforeSend: function () {
+            app.preloader.show();
+        },
+        complete: function () {
+            app.preloader.hide();
+        },
+    });
+    app.request.get(
+        URL_NEW_WS + 'api/v2/consultar/combustible/' + idSolicitud,
+        function (data) {
+            data.forEach(function (Oprsolicitud, index) {
+                DateGasto('fgasto', Oprsolicitud.fecha);
+                RsltsValor('monto', Oprsolicitud.monto);
+                RsltsValor('prcltrs', Oprsolicitud.precio_combustible);
+                RsltsValor('ltsttls', Oprsolicitud.ttltrs_combustible);
+                RsltsAuto('vehiculo', Oprsolicitud.id_auto, Oprsolicitud.placa);
+                RsltsValor('nameprovedor', Oprsolicitud.name_proveedor);
+                RsltsValor('numticket', Oprsolicitud.num_comprobante);
+                RsltsValor('odometro', Oprsolicitud.odometro);
+                RsltsMtdPago('MtdPago', Oprsolicitud.metodo_pago);
+                RsltsFotoComprobante('mediaColocar', Oprsolicitud.foto_comprobante);
+                RsltsPDFComprobante('PFDGastos', Oprsolicitud.pdf_comprobante);
+                RsltsXMLComprobante('XMLGastos', Oprsolicitud.xml_comprobante);
+                RsltsValor('obs_comprobante', Oprsolicitud.obs_comprobante);
+            });
+        },
+        function (error) {
+            console.log(error);
+        },
+        'json'
+    );
+
+    $$('#btn_gastos_solicitud').on('click', function (e) {
+        var id_operador = localStorage.getItem('user_id');
+        var fgasto = $$('#fgasto').val();
+        var id_auto = $$('#vehiculo').val();
+        var monto = $$('#monto').val();
+        var odometro = $$('#odometro').val();
+        var precio = $$('#prcltrs').val();
+        var total = $$('#ltsttls').val();
+        var name_proveedor = $$('#nameprovedor').val();
+        var metodo_pago = $$('#MtdPago').val();
+        var numticket = $$('#numticket').val();
+        var TpoCmprbnt = $$('#TpoCmprbnt').val();
+        var FotoStatus = $$('#myCanvasGastos').data("foto1");
+        var FotoStatusBD = $$('#mediaColocar').data("status");
+        var PDFStatus = $$('#pdfColocar').data("status");
+        var PDFStatusBD = $$('#PFDGastos').data("status");
+        var XMLStatus = $$('#xmlColocar').data("status");
+        var XMLStatusBD = $$('#XMLGastos').data("status");
+        var observaciones = $$('#obs_comprobante').val();
+
+        validatePrecio('monto', monto);
+        validatePrecio('prcltrs', precio);
+        validatePrecio('ltsttls', total);
+
+        if (FotoStatus == 0 && FotoStatusBD == 1) {
+            var FotoGastos = '';
+        } else {
+            var cnvsGasto = $$('#myCanvasGastos')[0];
+            var FotoGastos = cnvsGasto.toDataURL();
+        }
+
+        if (PDFStatus == 0) {
+            var PFDGastos = '';
+        } else {
+            var PFDGastos = $$('#pdfColocar').data("file");
+        }
+
+        if (XMLStatus == 0) {
+            var XMLGastos = '';
+        } else {
+            var XMLGastos = $$('#xmlColocar').data("file");
+        }
+
+        if (fgasto == "") {
+            app.dialog.alert("El campo de Fecha está vacío");
+        } else if (id_operador == '') {
+            app.dialog.alert("Operador no existe");
+        } else if (id_auto == "") {
+            app.dialog.alert("El campo de vehículo está vacío");
+        } else if (monto == '') {
+            app.dialog.alert("El campo de Monto está vacío");
+        } else if (odometro == '') {
+            app.dialog.alert("El campo de Odómetro está vacío");
+        } else if (precio == '') {
+            app.dialog.alert("El campo de Precios x Litros está vacío");
+        } else if (total == '') {
+            app.dialog.alert("El campo de Total Litros Cargados está vacío");
+        } else if (name_proveedor == "") {
+            app.dialog.alert("El campo de Proveedor está vacío");
+        } else if (metodo_pago == '' || metodo_pago == 0) {
+            app.dialog.alert("El campo de Método de Pago está vacío");
+        } else if (TpoCmprbnt == '' || TpoCmprbnt == 0) {
+            app.dialog.alert("El campo de Tipo de Comprobante está vacío");
+        } else if (numticket == '') {
+            app.dialog.alert("El campo de No.Ticket está vacío");
+        } else if (FotoStatus == 0 && FotoStatusBD == 0) {
+            app.dialog.alert("El campo Foto del Comprobante está vacío");
+        } else if (observaciones == "" && PDFStatus == 0 && metodo_pago == 1 ) {
+            app.dialog.alert("Explicar brevemente porque el archivo PDF o XML no se enviaran");
+        } else if (observaciones == "" && XMLStatus == 0 && metodo_pago == 1) {
+            app.dialog.alert("Explicar brevemente porque el archivo PDF o XML no se enviaran");
+        } else {
+            app.request.setup({
+                headers: {
+                    'Authorization': "bearer " + localStorage.getItem('token')
+                },
+                beforeSend: function () {
+                    app.preloader.show();
+                },
+                complete: function () {
+                    app.preloader.hide();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    if (jqXHR.status === 404) {
+                        localStorage.clear();
+                        app.preloader.hide();
+                        window.location.reload();
+                    }
+                }
+            });
+            app.request.postJSON(
+                URL_NEW_WS + 'api/v2/update-combustible/' + idSolicitud,
+                {
+                    fecha: fgasto,
+                    id_operador: id_operador,
+                    id_auto: id_auto,
+                    monto: monto,
+                    name_proveedor: name_proveedor,
+                    metodo_pago: metodo_pago,
+                    tipo_comprobante: TpoCmprbnt,
+                    num_comprobante: numticket,
+                    foto_comprobante: FotoGastos,
+                    pdf_comprobante: PFDGastos,
+                    xml_comprobante: XMLGastos,
+                    obs_comprobante: observaciones,
+                    precio_combustible: precio,
+                    ttltrs_combustible: total
+                },
+                function (data) {
+                    app.dialog.alert("Se actualizo correctamente");
+                    app.views.main.router.navigate('/solicitudes/', {reloadCurrent: false});
+                }, function (error) {
+                    console.log(error);
+                },
+                'json'
+            );
+        }
+    });
+
 });

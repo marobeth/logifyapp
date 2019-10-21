@@ -10,6 +10,9 @@ import AddGastosPage from '../pages/addgastos.f7.html';
 import EditGastosPage from '../pages/editgastos.f7.html';
 import DeleteGastosPage from '../pages/deletegastos.f7.html';
 import AddProvdorPage from '../pages/addproveedor.f7.html';
+import AddSolicitudPage from '../pages/addsolicitud.f7.html';
+import SolicitudesPage from '../pages/solicitudes.f7.html';
+import AddGastoSolicitudesPage from '../pages/solicitudgasto.f7.html';
 
 import NotFoundPage from '../pages/404.f7.html';
 
@@ -61,6 +64,18 @@ var routes = [
     {
         path: '/addproveedor/',
         component: AddProvdorPage,
+    },
+    {
+        path: '/solicitudes/',
+        component: SolicitudesPage,
+    },
+    {
+        path: '/addsolicitud/',
+        component: AddSolicitudPage,
+    },
+    {
+        path: '/solicitudgasto/:idSolicitud',
+        component: AddGastoSolicitudesPage,
     },
     {
         path: '(.*)',

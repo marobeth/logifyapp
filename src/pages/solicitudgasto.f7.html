@@ -1,5 +1,5 @@
 <template>
-    <div class="page" data-name="editgastos">
+    <div class="page" data-name="solicitudgasto">
         <div class="navbar">
             <div class="navbar-inner sliding">
                 <div class="left">
@@ -8,7 +8,7 @@
                         <span class="if-not-md"></span>
                     </a>
                 </div>
-                <div class="title">Actualizar Gastos</div>
+                <div class="title">Solicitud Combustible</div>
                 <div class="right">
                     <a href="#" data-panel="right" class="panel-open">
                         <i class="material-icons">menu</i>
@@ -20,14 +20,14 @@
         <div class="page-content">
             <!--<div class="block-title"> Gasto</div>-->
             <div class="list no-hairlines-md">
-                <form class="list" id="myGastos">
+                <form class="list">
                     <ul>
                         <li>
                             <div class="item-content item-input">
                                 <div class="item-inner">
-                                    <div class="item-title item-label">Fecha Gasto</div>
+                                    <div class="item-title item-label">Fecha</div>
                                     <div class="item-input-wrap">
-                                        <input type="text" id="fgasto" name="fgasto" placeholder="Fecha de Gastos"
+                                        <input type="text" id="fgasto" name="fgasto" placeholder="Fecha"
                                                readonly>
                                     </div>
                                 </div>
@@ -36,60 +36,11 @@
                         <li>
                             <div class="item-content item-input">
                                 <div class="item-inner">
-                                    <div class="item-title item-label">Proveedor</div>
+                                    <div class="item-title item-label">Vehiculo</div>
                                     <div class="item-input-wrap">
-                                        <input type="text" placeholder="OXXO" name="OprProve" id="OprProve" data-idPrvdr="0">
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="list links-list">
-                                <ul>
-                                    <li class="cmrStyle"><a href="/addproveedor/" class="cmrStyle">Agregar Proveedor</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="item-content item-input">
-                                <div class="item-inner">
-                                    <div class="item-title item-label">Tipo de Concepto de Gasto</div>
-                                    <div class="item-input-wrap">
-                                        <select name="ConceptoGasto" id="ConceptoGasto">
+                                        <select name="vehiculo" id="vehiculo" readonly>
+                                            <option value="">Seleccionar</option>
                                         </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li id="Gcomentario">
-                            <div class="item-content item-input">
-                                <div class="item-inner">
-                                    <div class="item-title item-label">Concepto</div>
-                                    <div class="item-input-wrap">
-                                        <textarea name="comentario" id="comentario"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li id="kmi">
-                            <div class="item-content item-input">
-                                <div class="item-inner">
-                                    <div class="item-title item-label">Kilometraje Inicial</div>
-                                    <div class="item-input-wrap">
-                                        <input type="text" id="kminicial" name="kminicial"
-                                               placeholder="Kilometraje Inicial">
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li id="kmf">
-                            <div class="item-content item-input">
-                                <div class="item-inner">
-                                    <div class="item-title item-label">Kilometraje Final</div>
-                                    <div class="item-input-wrap">
-                                        <input type="text" id="kmfinal" name="kmfinal"
-                                               placeholder="Kilometraje Final">
                                     </div>
                                 </div>
                             </div>
@@ -99,7 +50,58 @@
                                 <div class="item-inner">
                                     <div class="item-title item-label">Monto</div>
                                     <div class="item-input-wrap">
-                                        <input type="text" name="monto" id="monto" placeholder="300.79">
+                                        <input type="text" name="monto" id="monto" placeholder="00.00" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Odómetro</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" id="odometro" name="odometro" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Precio x Litro</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" id="prcltrs" name="prcltrs">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Total litros cargados</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" id="ltsttls" name="ltsttls">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Proveedor</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" placeholder="PEMEX" name="nameprovedor" id="nameprovedor">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Método de Pago</div>
+                                    <div class="item-input-wrap">
+                                        <select name="MtdPago" id="MtdPago">
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -110,6 +112,7 @@
                                     <div class="item-title item-label">Tipo Comprobante</div>
                                     <div class="item-input-wrap">
                                         <select name="TpoCmprbnt" id="TpoCmprbnt">
+                                            <option value="1" selected>Ticket</option>
                                         </select>
                                     </div>
                                 </div>
@@ -137,7 +140,7 @@
                                 </div>
                             </div>
                         </li>
-                        <li>
+                        <li class="TMtdPago">
                             <div class="item-content item-input">
                                 <div class="item-inner">
                                     <div class="item-title item-label">Subir PDF <i
@@ -158,7 +161,7 @@
                                 </div>
                             </div>
                         </li>
-                        <li>
+                        <li class="TMtdPago">
                             <div class="item-content item-input">
                                 <div class="item-inner">
                                     <div class="item-title item-label">Subir XML<i
@@ -179,19 +182,19 @@
                                 </div>
                             </div>
                         </li>
-                        <li id="Gobservaciones">
+                        <li>
                             <div class="item-content item-input">
                                 <div class="item-inner">
                                     <div class="item-title item-label">Observaciones</div>
                                     <div class="item-input-wrap">
-                                        <textarea name="observaciones" id="observaciones"></textarea>
+                                        <textarea name="obs_comprobante" id="obs_comprobante"></textarea>
                                     </div>
                                 </div>
                             </div>
                         </li>
                     </ul>
                     <div class="block row">
-                        <div class="col"><a class="col button button-fill" id="btn_form_add_gastos">Agregar</a></div>
+                        <div class="col"><a class="col button button-fill" id="btn_gastos_solicitud">Agregar</a></div>
                     </div>
                 </form>
             </div>

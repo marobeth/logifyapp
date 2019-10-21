@@ -3,11 +3,18 @@
   <component name="ChangeListManager">
     <list default="true" id="232bfe81-5379-4a5a-8314-3fb762c606de" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/app.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cordova/www/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/www/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cordova/www/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/www/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/app.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/routes.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/addgastos.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/addgastos.f7.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/editgastos.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/editgastos.f7.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/inicio.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/inicio.f7.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -49,6 +56,11 @@
       </list>
     </option>
   </component>
+  <component name="ProjectFrameBounds">
+    <option name="y" value="23" />
+    <option name="width" value="1280" />
+    <option name="height" value="709" />
+  </component>
   <component name="ProjectId" id="1QKPvHWQnDV79nsOIIrSDItElcd" />
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
@@ -68,6 +80,11 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
     <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/pages" />
+    </key>
   </component>
   <component name="RunAnythingCache">
     <myKeys>
@@ -113,6 +130,14 @@
       <workItem from="1568726790176" duration="1144000" />
       <workItem from="1569076451696" duration="12199000" />
       <workItem from="1569213789698" duration="3338000" />
+      <workItem from="1570632831453" duration="948000" />
+      <workItem from="1570633884320" duration="21722000" />
+      <workItem from="1570720571692" duration="23935000" />
+      <workItem from="1570797989707" duration="10422000" />
+      <workItem from="1570896477097" duration="24297000" />
+      <workItem from="1571007150847" duration="5524000" />
+      <workItem from="1571059825041" duration="21816000" />
+      <workItem from="1571525458560" duration="3646000" />
     </task>
     <servers />
   </component>
@@ -145,16 +170,6 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/js/routes.js</url>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="masterDetails">
     <states>
