@@ -11,8 +11,8 @@ import cordovaApp from './cordova-app.js';
 import routes from './routes.js';
 
 var URL_WS = "https://api.logify.com.mx/";
-//var URL_NEW_WS = "https://logisticus.logify.com.mx/";
-var URL_NEW_WS = "https://desarrollo.logisticus.logify.com.mx/";
+var URL_NEW_WS = "https://logisticus.logify.com.mx/";
+//var URL_NEW_WS = "https://desarrollo.logisticus.logify.com.mx/";
 
 /**
  * TRADUCIR STATUS
