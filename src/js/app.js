@@ -12,7 +12,6 @@ import routes from './routes.js';
 
 var URL_WS = "https://api.logify.com.mx/";
 var URL_NEW_WS = "https://logisticus.logify.com.mx/";
-//var URL_NEW_WS = "https://desarrollo.logisticus.logify.com.mx/";
 
 /**
  * TRADUCIR STATUS
@@ -51,6 +50,10 @@ function traducirStatus(status) {
         case '8':
             //En almacén
             return 'En almacen';
+            break;
+        case '12':
+            //En ruta
+            return 'Conectado';
             break;
     }
 }
@@ -1214,6 +1217,11 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_enalmacen').show();
                 break;
+            case '12':
+                //En ruta
+                $$('.ocultar_campos').hide();
+                $$('.mostrar_enruta').show();
+                break;
         }
     });
 
@@ -1315,6 +1323,9 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
             case '8':
                 //En almacén
                 validado = true;
+                break;
+            case '12':
+                validado=true;
                 break;
         }
         if (validado == true) {

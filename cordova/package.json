@@ -15,7 +15,6 @@
   "dependencies": {
     "com.darktalker.cordova.screenshot": "git+https://github.com/gitawego/cordova-screenshot.git",
     "cordova-android": "^8.0.0",
-    "cordova-ios": "^5.0.1",
     "cordova-plugin-android-permissions": "^1.0.0",
     "cordova-plugin-background-mode": "^0.7.2",
     "cordova-plugin-camera": "file:plugins/cordova-plugin-camera",
@@ -61,8 +60,7 @@
       "cordova-plugin-inappbrowser": {}
     },
     "platforms": [
-      "android",
-      "ios"
+      "android"
     ]
   },
   "devDependencies": {
