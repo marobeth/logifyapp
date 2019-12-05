@@ -51,6 +51,7 @@
                             </div>
                         </div>
                     </li>
+                    <!-- Status recolectado e incidencia-->
                     <li class="mostrar_recolectado mostrar_entregado mostrar_incidencia ocultar_campos">
                       <div class="item-content item-input">
                         <div class="item-inner">
@@ -73,6 +74,41 @@
                         </div>
                       </div>
                     </li>
+                    <!-- Status Entregado-->
+                    <li class="mostrar_entregado ocultar_campos">
+                        <div class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label"></div>
+                                <div class="item-input-wrap">
+                                    <button class="button open-foto-3">Foto guía logify</button>
+                                    <canvas id="myCanvas3" data-foto1="0"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="mostrar_entregado ocultar_campos">
+                        <div class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label"></div>
+                                <div class="item-input-wrap">
+                                    <button class="button open-foto-4">Foto firma de acuse</button>
+                                    <canvas id="myCanvas4" data-foto1="0"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="mostrar_entregado ocultar_campos">
+                        <div class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label"></div>
+                                <div class="item-input-wrap">
+                                    <button class="button open-foto-5">Foto Selfie sucursal</button>
+                                    <canvas id="myCanvas5" data-foto1="0"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- otros campos-->
                     <li class="mostrar_recolectado mostrar_entregado ocultar_campos">
                         <div class="item-content item-input">
                             <div class="item-inner">
@@ -112,6 +148,36 @@
                                 <!--<div class="item-title item-label">Comentarios</div>-->
                                 <div class="item-input-wrap">
                                     <input id="comentarios" type="text" placeholder="Comentarios"/>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- Status conectado-->
+                    <li class="mostrar_conectado ocultar_campos">
+                        <div class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label"></div>
+                                <div class="item-input-wrap">
+                                    <select class="form-control" name="proveedor_ocurre" id="proveedor_ocurre">
+                                        <option value="0">Seleccionar</option>
+                                        <option value="LOGIFY">LOGIFY</option>
+                                        <option value="ETN">ETN</option>
+                                        <option value="AEROMÉXICO CARGO">AEROMÉXICO CARGO</option>
+                                        <option value="DHL">DHL</option>
+                                        <option value="ESTAFETA">ESTAFETA</option>
+                                        <option value="OTRO">OTRO</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="mostrar_conectado ocultar_campos">
+                        <div class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label"></div>
+                                <div class="item-input-wrap">
+                                    <input id="guia_ocurre" name="guia_ocurre" type="text"
+                                           placeholder="Num Guia Ocurre"/>
                                 </div>
                             </div>
                         </div>

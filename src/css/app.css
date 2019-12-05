@@ -95,10 +95,14 @@ div[data-name=home] {
 }
 
 #myCanvas2 {
-    width: 100%;;
+    width: 100%;
     margin-top: 10px;
     display: none
 }
+
+#myCanvas3 {width: 100%;margin-top: 10px;display: none;}
+#myCanvas4 {width: 100%;margin-top: 10px;display: none;}
+#myCanvas5 {width: 100%;margin-top: 10px;display: none;}
 
 .ocultar_campos {
     display: none
@@ -118,13 +122,11 @@ div[data-name=home] {
     display: none
 }
 
-.button.open-foto-1 {
-    color: #fff;
-}
-
-.button.open-foto-2 {
-    color: #fff;
-}
+.button.open-foto-1 {color: #fff;}
+.button.open-foto-2 {color: #fff;}
+.button.open-foto-3 {color: #fff;}
+.button.open-foto-4 {color: #fff;}
+.button.open-foto-5 {color: #fff;}
 
 .btn_olvide_div {
     text-align: right;
@@ -164,4 +166,5 @@ form#myGastos.list ul:after { /*background-color: none;*/background-color: initi
 .alert-danger {color: #721c24;background-color: #f8d7da;border-color: #f5c6cb;}
 .alert-info {color: #0c5460;background-color: #d1ecf1;border-color: #bee5eb;}
 .item-title span{padding: 5px;}
+.clickemail{cursor:pointer;}
 

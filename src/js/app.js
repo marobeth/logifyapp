@@ -10,8 +10,18 @@ import cordovaApp from './cordova-app.js';
 // Import Routes
 import routes from './routes.js';
 
-var URL_WS = "https://api.logify.com.mx/";
-var URL_NEW_WS = "https://logisticus.logify.com.mx/";
+/**
+ *
+ * URL API
+ */
+//var URL_WS = "https://api.logify.com.mx/";
+//var URL_NEW_WS = "https://logisticus.logify.com.mx/";
+
+var URL_WS = "https://desarrollo.api.logify.com.mx/";
+var URL_NEW_WS = "https://desarrollo.logisticus.logify.com.mx/";
+
+//var URL_WS = "http://localhost:8888/desarrollo.api.logify.com.mx/";
+//var URL_NEW_WS = "http://localhost:8888/desarrollo.logisticus.logify.com.mx/";
 
 /**
  * TRADUCIR STATUS
@@ -107,10 +117,10 @@ function detectarProyecto(num_guia) {
     }
 }
 /* GEOLOCATION */
-/*function getLocation() {
+function getLocation() {
     var geolocation = navigator.geolocation;
     geolocation.getCurrentPosition(showLocation, errorHandler);
-}*/
+}
 function showLocation(position) {
     $$('#latitud').val(position.coords.latitude);
     $$('#longitud').val(position.coords.longitude);
@@ -138,10 +148,9 @@ function screenshot(){
             );
         }
     },50);
-}
-*/
+}*/
 function enviarUbicacion() {
-    //getLocation();
+    getLocation();
     app.request.setup({
         headers: {
             'apikey': localStorage.getItem('apikey')
@@ -170,7 +179,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
 function onDeviceReady() {
     //cordova.plugins.backgroundMode.enable();
     //cordova.plugins.backgroundMode.setEnabled(true);
-    //getLocation();
+    getLocation();
     //setInterval(enviarUbicacion, 10000);
     //setTimeout(function(){ cordova.plugins.backgroundMode.enable(); }, 3000);
 }
@@ -745,9 +754,10 @@ function RsltsAuto(CById, Id, valor) {
  *
  * @param valor
  */
-function validateNumero(CById,valor) {
+function validateNumero(CById) {
+    var odometro = $$("#odometro").val();
     var RE = /^([0-9])*$/;
-    if (!RE.test(valor)) {
+    if (!RE.test(odometro)) {
         document.getElementById(CById).value = "";
         app.dialog.alert("Solo se permiten numeros");
     }
@@ -816,7 +826,43 @@ function EnviarEmail( valor,IdUser) {
         'json'
     );
 }
-
+/**
+ *
+ * @param CById
+ * @param idauto
+ * @param odometro
+ */
+function validateOdometro(CById, idauto, valor) {
+    var result = false;
+    app.request.setup({
+        headers: {
+            'Authorization': "bearer " + localStorage.getItem('token')
+        }, beforeSend: function () {
+            app.preloader.show();
+        },
+        complete: function () {
+            app.preloader.hide();
+        }
+    });
+    app.request.get(
+        URL_NEW_WS + 'api/v2/latestodometro/' + idauto,
+        function (data) {
+            var odometro = $$("#odometro").val();
+            console.log(odometro,data.odometro);
+            if (odometro <= data.odometro) {
+                result = true;
+                document.getElementById(CById).value = "";
+                app.dialog.alert("Error: Revisar el odómetro su valor debe ser mayor al ingresado");
+            }
+        },
+        function (error) {
+            console.log(error);
+        },
+        'json'
+    );
+    console.log("result:"+result);
+    return result;
+}
 /**
  *
  * @type {Framework7}
@@ -871,7 +917,6 @@ var app = new Framework7({
         },
     },
 });
-
 /**
  *
  */
@@ -914,6 +959,7 @@ $$(document).on('page:init', '.page[data-name="logout"]', function (e) {
     app.preloader.hide();
     window.location.reload();
 });
+
 /**
  ** Guia
  **/
@@ -1119,7 +1165,6 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
             }
         });
     });
-
     $$('.open-foto-2').on('click', function () {
         app.dialog.create({
             title: 'Foto 2',
@@ -1178,7 +1223,170 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
             }
         });
     });
+    $$('.open-foto-3').on('click', function () {
+        app.dialog.create({
+            title: 'Foto 3 Guía logify',
+            text: 'Elegir opcion:',
+            buttons: [
+                {
+                    text: 'Camara',
+                    cssClass: 'id_camara_3'
+                },
+                {
+                    text: 'Galeria',
+                    cssClass: 'id_galeria_3'
+                },
+                {
+                    text: 'Cancelar',
+                    cssClass: 'id_cancelar_3'
+                },
+            ],
+            verticalButtons: true,
+        }).open();
+        $$('.id_camara_3').on('click', function (e) {
+            var permissions = cordova.plugins.permissions;
+            permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
+            function error() {
+                app.dialog.alert('Necesitas permiso de: WRITE_EXTERNAL_STORAGE ');
+            }
+            function success(status) {
+                if (!status.hasPermission) {
+                    error();
+                } else {
+                    openCamera('myCanvas3');
+                }
+            }
+        });
+        $$('.id_cancelar_3').on('click', function (e) {
+            app.dialog.close();
+        });
+        $$('.id_galeria_3').on('click', function (e) {
+            var permissions = cordova.plugins.permissions;
+            permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
 
+            function error() {
+                app.dialog.alert('Necesitas permiso de: WRITE_EXTERNAL_STORAGE ');
+            }
+
+            function success(status) {
+                if (!status.hasPermission) {
+                    error();
+                } else {
+                    openFilePicker('myCanvas3');
+                }
+            }
+        });
+    });
+    $$('.open-foto-4').on('click', function () {
+        app.dialog.create({
+            title: 'Foto 4 Firma de acuse',
+            text: 'Elegir opcion:',
+            buttons: [
+                {
+                    text: 'Camara',
+                    cssClass: 'id_camara_4'
+                },
+                {
+                    text: 'Galeria',
+                    cssClass: 'id_galeria_4'
+                },
+                {
+                    text: 'Cancelar',
+                    cssClass: 'id_cancelar_4'
+                },
+            ],
+            verticalButtons: true,
+        }).open();
+        $$('.id_camara_4').on('click', function (e) {
+            var permissions = cordova.plugins.permissions;
+            permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
+            function error() {
+                app.dialog.alert('Necesitas permiso de: WRITE_EXTERNAL_STORAGE ');
+            }
+            function success(status) {
+                if (!status.hasPermission) {
+                    error();
+                } else {
+                    openCamera('myCanvas4');
+                }
+            }
+        });
+        $$('.id_cancelar_4').on('click', function (e) {
+            app.dialog.close();
+        });
+        $$('.id_galeria_4').on('click', function (e) {
+            var permissions = cordova.plugins.permissions;
+            permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
+
+            function error() {
+                app.dialog.alert('Necesitas permiso de: WRITE_EXTERNAL_STORAGE ');
+            }
+
+            function success(status) {
+                if (!status.hasPermission) {
+                    error();
+                } else {
+                    openFilePicker('myCanvas4');
+                }
+            }
+        });
+    });
+    $$('.open-foto-5').on('click', function () {
+        app.dialog.create({
+            title: 'Foto 5 Selfie en sucursal',
+            text: 'Elegir opcion:',
+            buttons: [
+                {
+                    text: 'Camara',
+                    cssClass: 'id_camara_5'
+                },
+                {
+                    text: 'Galeria',
+                    cssClass: 'id_galeria_5'
+                },
+                {
+                    text: 'Cancelar',
+                    cssClass: 'id_cancelar_5'
+                },
+            ],
+            verticalButtons: true,
+        }).open();
+        $$('.id_camara_5').on('click', function (e) {
+            var permissions = cordova.plugins.permissions;
+            permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
+
+            function error() {
+                app.dialog.alert('Necesitas permiso de: WRITE_EXTERNAL_STORAGE ');
+            }
+
+            function success(status) {
+                if (!status.hasPermission) {
+                    error();
+                } else {
+                    openCamera('myCanvas5');
+                }
+            }
+        });
+        $$('.id_cancelar_5').on('click', function (e) {
+            app.dialog.close();
+        });
+        $$('.id_galeria_5').on('click', function (e) {
+            var permissions = cordova.plugins.permissions;
+            permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
+
+            function error() {
+                app.dialog.alert('Necesitas permiso de: WRITE_EXTERNAL_STORAGE ');
+            }
+
+            function success(status) {
+                if (!status.hasPermission) {
+                    error();
+                } else {
+                    openFilePicker('myCanvas5');
+                }
+            }
+        });
+    });
     $$('#status').on('change', function (e) {
         var status = $$(this).val();
         switch (status) {
@@ -1218,37 +1426,41 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 $$('.mostrar_enalmacen').show();
                 break;
             case '12':
-                //En ruta
+                //En conectado
                 $$('.ocultar_campos').hide();
-                $$('.mostrar_enruta').show();
+                $$('.mostrar_conectado').show();
                 break;
         }
     });
-
     $$('#btn_cambiar_status').on('click', function (e) {
         var latitud = $$('#latitud').val();
         var longitud = $$('#longitud').val();
         var status = $$('#status').val();
         var validado = false;
+        var foto1,foto2,foto3,foto4,foto5;
+        var canvas1,canvas2,canvas3,canvas4,canvas5;
+        var statusFoto,statusFoto2,statusFoto3,statusFoto4,statusFoto5;
+        var persona_recibe,incidencia,comentarios,proveedor_ocurre,guia_ocurre;
+
         switch (status) {
             case 'Seleccione':
                 app.dialog.alert('Seleccione un status');
                 break;
             case '2':
                 //Recolectado
-                var statusFoto = $$('#myCanvas').data("foto1");
-                var statusFoto2 = $$('#myCanvas2').data("foto1");
-                var persona_recibe = $$('#persona_recibe').val();
+                statusFoto = $$('#myCanvas').data("foto1");
+                statusFoto2 = $$('#myCanvas2').data("foto1");
+                persona_recibe = $$('#persona_recibe').val();
 
                 if (statusFoto != 0) {
-                    var canvas1 = $$('#myCanvas')[0];
-                    var foto1 = canvas1.toDataURL();
+                    canvas1 = $$('#myCanvas')[0];
+                    foto1 = canvas1.toDataURL();
                 } else {
                     foto1 = '';
                 }
                 if (statusFoto2 != 0) {
-                    var canvas2 = $$('#myCanvas2')[0];
-                    var foto2 = canvas2.toDataURL();
+                    canvas2 = $$('#myCanvas2')[0];
+                    foto2 = canvas2.toDataURL();
                 } else {
                     foto2 = '';
                 }
@@ -1260,48 +1472,69 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 }
                 break;
             case '3':
-                validado = true
+                validado = true;
                 break;
             case '4':
                 //Entregado
-                var statusFoto = $$('#myCanvas').data("foto1");
-                var statusFoto2 = $$('#myCanvas2').data("foto1");
-                var persona_recibe = $$('#persona_recibe').val();
+                statusFoto = $$('#myCanvas').data("foto1");
+                statusFoto2 = $$('#myCanvas2').data("foto1");
+                statusFoto3 = $$('#myCanvas3').data("foto1");
+                statusFoto4 = $$('#myCanvas4').data("foto1");
+                statusFoto5 = $$('#myCanvas5').data("foto1");
+                persona_recibe = $$('#persona_recibe').val();
 
                 if (statusFoto != 0) {
-                    var canvas1 = $$('#myCanvas')[0];
-                    var foto1 = canvas1.toDataURL();
+                    canvas1 = $$('#myCanvas')[0];
+                    foto1 = canvas1.toDataURL();
                 } else {
                     foto1 = '';
                 }
                 if (statusFoto2 != 0) {
-                    var canvas2 = $$('#myCanvas2')[0];
-                    var foto2 = canvas2.toDataURL();
+                    canvas2 = $$('#myCanvas2')[0];
+                    foto2 = canvas2.toDataURL();
                 } else {
                     foto2 = '';
                 }
+                if (statusFoto3 != 0) {
+                    canvas3 = $$('#myCanvas3')[0];
+                    foto3 = canvas3.toDataURL();
+                } else {
+                    foto3 = '';
+                }
+                if (statusFoto4 != 0) {
+                    canvas4 = $$('#myCanvas4')[0];
+                    foto4 = canvas4.toDataURL();
+                } else {
+                    foto4 = '';
+                }
+                if (statusFoto5 != 0) {
+                    canvas5 = $$('#myCanvas5')[0];
+                    foto5 = canvas5.toDataURL();
+                } else {
+                    foto5 = '';
+                }
 
-                if (foto1 == "" || foto2 == "" || persona_recibe == "") {
-                    app.dialog.alert('La foto 1, la foto 2 y la persona que recibe / entrega son obligatorios');
+                if (foto1 == "" || foto2 == "" || foto3 == "" || foto4 == "" || foto5 == "" || persona_recibe == "" ) {
+                    app.dialog.alert('La foto 1, la foto 2 , la foto 3, la foto 4 y la foto 5 y la persona que recibe / entrega son obligatorios');
                 } else {
                     validado = true;
                 }
                 break;
             case '5':
                 //Incidencia
-                var statusFoto = $$('#myCanvas').data("foto1");
-                var statusFoto2 = $$('#myCanvas2').data("foto1");
-                var incidencia = $$('#incidencia').val();
+                statusFoto = $$('#myCanvas').data("foto1");
+                statusFoto2 = $$('#myCanvas2').data("foto1");
+                incidencia = $$('#incidencia').val();
 
                 if (statusFoto != 0) {
-                    var canvas1 = $$('#myCanvas')[0];
-                    var foto1 = canvas1.toDataURL();
+                    canvas1 = $$('#myCanvas')[0];
+                    foto1 = canvas1.toDataURL();
                 } else {
                     foto1 = '';
                 }
                 if (statusFoto2 != 0) {
-                    var canvas2 = $$('#myCanvas2')[0];
-                    var foto2 = canvas2.toDataURL();
+                    canvas2 = $$('#myCanvas2')[0];
+                    foto2 = canvas2.toDataURL();
                 } else {
                     foto2 = '';
                 }
@@ -1325,20 +1558,61 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 validado = true;
                 break;
             case '12':
-                validado=true;
+                proveedor_ocurre = $$('#proveedor_ocurre').val();
+                guia_ocurre = $$('#guia_ocurre').val();
+                if(proveedor_ocurre != '' && guia_ocurre != ''){
+                    validado=true;
+                }else{
+                    app.dialog.alert('El proveedor ocurre y la guía ocurre son obligatorios');
+                }
                 break;
         }
         if (validado == true) {
-            var canvas1 = $$('#myCanvas')[0];
-            var foto1 = canvas1.toDataURL();
-            var canvas2 = $$('#myCanvas2')[0];
-            var foto2 = canvas2.toDataURL();
-            var persona_recibe = $$('#persona_recibe').val();
-            var incidencia = $$('#incidencia').val();
-            var comentarios = $$('#comentarios').val();
+            statusFoto = $$('#myCanvas').data("foto1");
+            if (statusFoto != 0) {
+                canvas1 = $$('#myCanvas')[0];
+                foto1 = canvas1.toDataURL();
+            } else {
+                foto1 = '';
+            }
+            statusFoto2 = $$('#myCanvas2').data("foto1");
+            if (statusFoto2 != 0) {
+                canvas2 = $$('#myCanvas2')[0];
+                foto2 = canvas2.toDataURL();
+            } else {
+                foto2 = '';
+            }
+            statusFoto3 = $$('#myCanvas3').data("foto1");
+            if (statusFoto3 != 0) {
+                canvas3 = $$('#myCanvas3')[0];
+                foto3 = canvas3.toDataURL();
+            } else {
+                foto3 = '';
+            }
+            statusFoto4 = $$('#myCanvas4').data("foto1");
+            if (statusFoto4 != 0) {
+                canvas4 = $$('#myCanvas4')[0];
+                foto4 = canvas4.toDataURL();
+            } else {
+                foto4 = '';
+            }
+            statusFoto5 = $$('#myCanvas5').data("foto1");
+            if (statusFoto2 != 0) {
+                canvas5 = $$('#myCanvas5')[0];
+                foto5 = canvas5.toDataURL();
+            } else {
+                foto5 = '';
+            }
 
-            // hacer request:
-            //app.preloader.show();
+            persona_recibe = $$('#persona_recibe').val();
+            incidencia = $$('#incidencia').val();
+            comentarios = $$('#comentarios').val();
+            proveedor_ocurre = $$('#proveedor_ocurre').val();
+            if(proveedor_ocurre == 0){
+                proveedor_ocurre='';
+            }
+            guia_ocurre = $$('#guia_ocurre').val();
+
             app.request.setup({
                 headers: {
                     'apikey': localStorage.getItem('apikey')
@@ -1365,8 +1639,14 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                     latlong: latitud + ',' + longitud,
                     foto1: foto1,
                     foto2: foto2,
+                    foto3: foto3,
+                    foto4: foto4,
+                    foto5: foto5,
                     persona_recibe: persona_recibe,
-                    comentarios: comentarios
+                    comentarios: comentarios,
+                    proveedor_ocurre:proveedor_ocurre,
+                    guia_ocurre:guia_ocurre
+
                 },
                 function (data) {
                     app.preloader.hide();
@@ -2242,6 +2522,7 @@ $$(document).on('page:init', '.page[data-name="addsolicitud"]', function (e) {
             }
         });
     });
+
     $$('#btnsolicitud').on('click', function (e) {
         var id_operador = localStorage.getItem('user_id');
         var fsolicitud = $$('#fsolicitud').val();
@@ -2249,14 +2530,19 @@ $$(document).on('page:init', '.page[data-name="addsolicitud"]', function (e) {
         var odometro = $$('#odometro').val();
         var monto = $$('#monto').val();
         var FotoStatus = $$('#myCanvasOdometro').data("foto1");
+        var foto_odometro,cnvsOdometro;
+
         validatePrecio('monto', monto);
-        validateNumero('odometro',odometro);
+        validateNumero('odometro');
+        validateOdometro('odometro',id_auto);
+
+
 
         if (FotoStatus == 0) {
-            var foto_odometro = '';
+            foto_odometro = '';
         } else {
-            var cnvsOdometro = $$('#myCanvasOdometro')[0];
-            var foto_odometro = cnvsOdometro.toDataURL();
+            cnvsOdometro = $$('#myCanvasOdometro')[0];
+            foto_odometro = cnvsOdometro.toDataURL();
         }
         if (fsolicitud == '') {
             app.dialog.alert("El campo de Fecha está vacío");
@@ -2288,20 +2574,36 @@ $$(document).on('page:init', '.page[data-name="addsolicitud"]', function (e) {
                     }
                 }
             });
-            app.request.postJSON(
-                URL_NEW_WS + 'api/v2/agregar-combustible',
-                {
-                    fecha: fsolicitud,
-                    id_operador: id_operador,
-                    id_auto: id_auto,
-                    monto: monto,
-                    foto_odometro: foto_odometro,
-                    odometro: odometro
-                },
+            app.request.get(
+                URL_NEW_WS + 'api/v2/latestodometro/' + id_auto,
                 function (data) {
-                    app.dialog.alert("La solicitud ha sido enviada pronto recibirá un correo");
-                    app.views.main.router.navigate('/solicitudes/', {reloadCurrent: false});
-                }, function (error) {
+                    var odometro = $$("#odometro").val();
+                    console.log(odometro,data.odometro);
+                    if (odometro <= data.odometro) {
+                        document.getElementById("odometro").value = "";
+                        app.dialog.alert("Error: Revisar el odómetro "+odometro+", su valor debe ser mayor al ingresado");
+                    }else{
+                        app.request.postJSON(
+                            URL_NEW_WS + 'api/v2/agregar-combustible',
+                            {
+                                fecha: fsolicitud,
+                                id_operador: id_operador,
+                                id_auto: id_auto,
+                                monto: monto,
+                                foto_odometro: foto_odometro,
+                                odometro: odometro
+                            },
+                            function (data) {
+                                app.dialog.alert("La solicitud ha sido enviada pronto recibirá un correo");
+                                app.views.main.router.navigate('/solicitudes/', {reloadCurrent: false});
+                            }, function (error) {
+                                console.log(error);
+                            },
+                            'json'
+                        );
+                    }
+                },
+                function (error) {
                     console.log(error);
                 },
                 'json'
