@@ -27,6 +27,7 @@
                     <h1 id="num_guia"></h1>
                     <div id="cont_paquete"></div>
                 </div>
+                <div id="fbillete" data-ver="0"></div>
             </div>
             <input type="hidden" id="num_gias">
             <div class="list no-hairlines-md">
@@ -53,26 +54,26 @@
                     </li>
                     <!-- Status recolectado e incidencia-->
                     <li class="mostrar_recolectado mostrar_entregado mostrar_incidencia ocultar_campos">
-                      <div class="item-content item-input">
-                        <div class="item-inner">
-                          <div class="item-title item-label"></div>
-                          <div class="item-input-wrap">
-                                <button class="button open-foto-1">Foto 1</button>
-                                <canvas id="myCanvas" data-foto1="0"></canvas>
-                          </div>
+                        <div class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label"></div>
+                                <div class="item-input-wrap">
+                                    <button class="button open-foto-1">Foto acuse</button>
+                                    <canvas id="myCanvas" data-foto1="0"></canvas>
+                                </div>
+                            </div>
                         </div>
-                      </div>
                     </li>
                     <li class="mostrar_recolectado mostrar_entregado mostrar_incidencia ocultar_campos">
-                      <div class="item-content item-input">
-                        <div class="item-inner">
-                          <div class="item-title item-label"></div>
-                          <div class="item-input-wrap">
-                            <button class="button open-foto-2">Foto 2</button>
-                              <canvas id="myCanvas2" data-foto1="0"></canvas>
-                          </div>
+                        <div class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label"></div>
+                                <div class="item-input-wrap">
+                                    <button class="button open-foto-2">Foto guía</button>
+                                    <canvas id="myCanvas2" data-foto1="0"></canvas>
+                                </div>
+                            </div>
                         </div>
-                      </div>
                     </li>
                     <!-- Status Entregado-->
                     <li class="mostrar_entregado ocultar_campos">
@@ -165,6 +166,7 @@
                                         <option value="AEROMÉXICO CARGO">AEROMÉXICO CARGO</option>
                                         <option value="DHL">DHL</option>
                                         <option value="ESTAFETA">ESTAFETA</option>
+                                        <option value="TAP">TAP</option>
                                         <option value="OTRO">OTRO</option>
                                     </select>
                                 </div>

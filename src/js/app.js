@@ -14,14 +14,8 @@ import routes from './routes.js';
  *
  * URL API
  */
-//var URL_WS = "https://api.logify.com.mx/";
-//var URL_NEW_WS = "https://logisticus.logify.com.mx/";
-
-var URL_WS = "https://desarrollo.api.logify.com.mx/";
-var URL_NEW_WS = "https://desarrollo.logisticus.logify.com.mx/";
-
-//var URL_WS = "http://localhost:8888/desarrollo.api.logify.com.mx/";
-//var URL_NEW_WS = "http://localhost:8888/desarrollo.logisticus.logify.com.mx/";
+var URL_WS = "https://api.logify.com.mx/";
+var URL_NEW_WS = "https://logisticus.logify.com.mx/";
 
 /**
  * TRADUCIR STATUS
@@ -863,6 +857,59 @@ function validateOdometro(CById, idauto, valor) {
     console.log("result:"+result);
     return result;
 }
+
+/**
+ *
+ * @param CById
+ * @param Numguia
+ */
+function verBilletes(CById,Numguia) {
+    app.request.setup({
+        headers: {
+            'apikey': localStorage.getItem('apikey')
+        },
+        beforeSend: function () {
+            app.preloader.show();
+        },
+        complete: function () {
+            app.preloader.hide();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            if (jqXHR.status === 401) {
+                localStorage.clear(); //quita todas las variables de local storage
+                app.preloader.hide(); // esconde el spinner
+                //app.dialog.alert('Tu sesión expiró, inicia sesión de nuevo','Aviso');
+                window.location.reload();
+            } else {
+                app.dialog.alert('Hubo un error, inténtelo de nuevo', 'Error');
+            }
+        }
+    });
+    app.request.get(
+        URL_WS + 'api/v2/consultar-ppfbilletes/' + Numguia,
+        function (data) {
+            if (data.length > 0) {
+                var folio = '<div class="list accordion-list">\n' +
+                    '<ul><li class="accordion-item"><a href="#" class="item-content item-link">\n' +
+                    '<div class="item-inner"><div class="item-title">Billetes con serie</div></div></a>\n' +
+                    '<div class="accordion-item-content"><div class="block"><p>\n' +
+                    '<div class="list accordion-list"><ul>\n';
+                data.forEach(function (val, index) {
+                    folio += '<li> PPF: ' + val.valor + ' SERIE: ' + val.folio + '</li>';
+                });
+                folio+='<p></div>\n' +
+                    '</div>\n' +
+                    '</li>\n' +
+                    '</ul>\n' +
+                    '</div>\n'+
+                    '</ul></div>';
+                $$('#' + CById).html(folio);
+            }
+        },
+        'json'
+    );
+}
+
 /**
  *
  * @type {Framework7}
@@ -1005,6 +1052,7 @@ $$(document).on('page:init', '.page[data-name="checkin"]', function (e) {
                     });
                     $$('#lista_billetes').html(output_billetes);
 
+
                     var output_am = '';
                     data_am.forEach(function (v, i) {
                         output_am += '<li><a href="/cambiarstatus/' + v.num_guia + '">' + v.num_guia + '</a></li>';
@@ -1087,11 +1135,11 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                         }
                     });
                     $$('#cont_paquete').html(ouput_parsear_billetes);
+                    verBilletes('fbillete', num_guias[0]);
                 }
                 if (data['guia'][0].branch_number == '0003' || data['guia'][0].branch_number == '0006') {
                     $$('#cont_paquete').html(data['guia'][0].cont_paquete);
                     $$('#cont_paquete').append('<br>');
-                    $$('#cont_paquete').append(data['guia'][0].ids_tokens);
                 }
                 app.preloader.hide();
             },
@@ -1661,6 +1709,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
             );
         }
     });
+
 });
 $$(document).on('page:init', '.page[data-name="escanear"]', function (e) {
     $$('#btn_escanear').on('click', function () {
@@ -2408,32 +2457,32 @@ $$(document).on('page:init', '.page[data-name="solicitudes"]', function (e) {
                     }
                     var msn_enviar = cslt_slctds_opr.status_msn_recibido;
                     //console.log(msn_enviar);
-                         SlctdConsulta +=
-                            '    <li class="accordion-item"><a href="#" class="item-content item-link">\n' +
-                            '        <div class="item-inner">' +
-                            '          <div class="item-title"> <span>Folio: ' + cslt_slctds_opr.id + '</span>' +
-                            '<span> Placas: ' + cslt_slctds_opr.placa + '</span></div>' +
-                            '        </div></a>' +
-                            '      <div class="accordion-item-content">\n' +
-                            '        <div class="block">' +
-                            '          <p>Status: <span ' + ClassRlts + '>' + status + '</span></p>';
-                        if (cslt_slctds_opr.status_solicitud > 1 && cslt_slctds_opr.status_solicitud < 4) {
-                            SlctdConsulta +=
-                                '          <p>Observaciones: ' + observaciones + '</p>';
-                            if (msn_enviar == 0) {
-                                SlctdConsulta += '          <p>Enviar correo de enterado: <i class="material-icons color-gray clickemail" data-folio="' + cslt_slctds_opr.id + '">email</i></p>';
-                            }
-                            if(cslt_slctds_opr.metodo_pago <=1 &&  cslt_slctds_opr.vigencia_solicitud >=periodo && (cslt_slctds_opr.pdf_comprobante ==null || cslt_slctds_opr.pdf_comprobante == undefined) && (cslt_slctds_opr.xml_comprobante ==null || cslt_slctds_opr.xml_comprobante == undefined)) {
-                                SlctdConsulta += '          <p class="alert alert-warning">Subir Ticket, PDF y XML antes del '+cslt_slctds_opr.vigencia_solicitud+'</p>';
-                                SlctdConsulta += '          <p><a href="/solicitudgasto/' + cslt_slctds_opr.id + '"><i class="icon f7-icons">arrow_up_doc_fill</i>Subir datos de TICKET</a></p>';
-                            }else{
-                                SlctdConsulta += '          <p><a href="/solicitudgasto/' + cslt_slctds_opr.id + '"><i class="icon f7-icons">arrow_up_doc_fill</i>Subir datos de TICKET</a></p>';
-
-                            }
+                    SlctdConsulta +=
+                        '    <li class="accordion-item"><a href="#" class="item-content item-link">\n' +
+                        '        <div class="item-inner">' +
+                        '          <div class="item-title"> <span>Folio: ' + cslt_slctds_opr.id + '</span>' +
+                        '<span> Placas: ' + cslt_slctds_opr.placa + '</span></div>' +
+                        '        </div></a>' +
+                        '      <div class="accordion-item-content">\n' +
+                        '        <div class="block">' +
+                        '          <p>Status: <span ' + ClassRlts + '>' + status + '</span></p>';
+                    if (cslt_slctds_opr.status_solicitud > 1 && cslt_slctds_opr.status_solicitud < 4) {
+                        SlctdConsulta +=
+                            '          <p>Observaciones: ' + observaciones + '</p>';
+                        if (msn_enviar == 0) {
+                            SlctdConsulta += '          <p>Enviar correo de enterado: <i class="material-icons color-gray clickemail" data-folio="' + cslt_slctds_opr.id + '">email</i></p>';
                         }
-                        SlctdConsulta += '</div>' +
-                            '      </div>' +
-                            '    </li>';
+                        if(cslt_slctds_opr.metodo_pago <=1 &&  cslt_slctds_opr.vigencia_solicitud >=periodo && (cslt_slctds_opr.pdf_comprobante ==null || cslt_slctds_opr.pdf_comprobante == undefined) && (cslt_slctds_opr.xml_comprobante ==null || cslt_slctds_opr.xml_comprobante == undefined)) {
+                            SlctdConsulta += '          <p class="alert alert-warning">Subir Ticket, PDF y XML antes del '+cslt_slctds_opr.vigencia_solicitud+'</p>';
+                            SlctdConsulta += '          <p><a href="/solicitudgasto/' + cslt_slctds_opr.id + '"><i class="icon f7-icons">arrow_up_doc_fill</i>Subir datos de TICKET</a></p>';
+                        }else{
+                            SlctdConsulta += '          <p><a href="/solicitudgasto/' + cslt_slctds_opr.id + '"><i class="icon f7-icons">arrow_up_doc_fill</i>Subir datos de TICKET</a></p>';
+
+                        }
+                    }
+                    SlctdConsulta += '</div>' +
+                        '      </div>' +
+                        '    </li>';
                 });
                 SlctdConsulta += '</ul></div>';
                 $$('#tbcoperadores').html(SlctdConsulta);
