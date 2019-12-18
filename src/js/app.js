@@ -1526,9 +1526,9 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 //Entregado
                 statusFoto = $$('#myCanvas').data("foto1");
                 statusFoto2 = $$('#myCanvas2').data("foto1");
-                statusFoto3 = $$('#myCanvas3').data("foto1");
-                statusFoto4 = $$('#myCanvas4').data("foto1");
-                statusFoto5 = $$('#myCanvas5').data("foto1");
+                //statusFoto3 = $$('#myCanvas3').data("foto1");
+                //statusFoto4 = $$('#myCanvas4').data("foto1");
+                //statusFoto5 = $$('#myCanvas5').data("foto1");
                 persona_recibe = $$('#persona_recibe').val();
 
                 if (statusFoto != 0) {
@@ -1543,7 +1543,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 } else {
                     foto2 = '';
                 }
-                if (statusFoto3 != 0) {
+               /* if (statusFoto3 != 0) {
                     canvas3 = $$('#myCanvas3')[0];
                     foto3 = canvas3.toDataURL();
                 } else {
@@ -1560,10 +1560,15 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                     foto5 = canvas5.toDataURL();
                 } else {
                     foto5 = '';
-                }
+                }*/
 
-                if (foto1 == "" || foto2 == "" || foto3 == "" || foto4 == "" || foto5 == "" || persona_recibe == "" ) {
+                /*if (foto1 == "" || foto2 == "" || foto3 == "" || foto4 == "" || foto5 == "" || persona_recibe == "" ) {
                     app.dialog.alert('La foto 1, la foto 2 , la foto 3, la foto 4 y la foto 5 y la persona que recibe / entrega son obligatorios');
+                } else {
+                    validado = true;
+                }*/
+                if (foto1 == "" || foto2 == "" || persona_recibe == "" ) {
+                    app.dialog.alert('La foto 1, la foto 2 y la persona que recibe / entrega son obligatorios');
                 } else {
                     validado = true;
                 }
@@ -1633,21 +1638,24 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
             statusFoto3 = $$('#myCanvas3').data("foto1");
             if (statusFoto3 != 0) {
                 canvas3 = $$('#myCanvas3')[0];
-                foto3 = canvas3.toDataURL();
+                //foto3 = canvas3.toDataURL();
+                foto3 = '';
             } else {
                 foto3 = '';
             }
             statusFoto4 = $$('#myCanvas4').data("foto1");
             if (statusFoto4 != 0) {
                 canvas4 = $$('#myCanvas4')[0];
-                foto4 = canvas4.toDataURL();
+                //foto4 = canvas4.toDataURL();
+                foto4 = '';
             } else {
                 foto4 = '';
             }
             statusFoto5 = $$('#myCanvas5').data("foto1");
             if (statusFoto2 != 0) {
                 canvas5 = $$('#myCanvas5')[0];
-                foto5 = canvas5.toDataURL();
+                //foto5 = canvas5.toDataURL();
+                foto5 = '';
             } else {
                 foto5 = '';
             }
