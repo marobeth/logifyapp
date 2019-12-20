@@ -13,6 +13,11 @@ import AddProvdorPage from '../pages/addproveedor.f7.html';
 import AddSolicitudPage from '../pages/addsolicitud.f7.html';
 import SolicitudesPage from '../pages/solicitudes.f7.html';
 import AddGastoSolicitudesPage from '../pages/solicitudgasto.f7.html';
+import FotoAcusePage from '../pages/fotoacuse.f7.html';
+import FotoGuiaPage from '../pages/fotoguia.f7.html';
+import FotoGuiaLogifyPage from '../pages/fotoguialogify.f7.html';
+import FotoGerentePage from '../pages/fotogerente.f7.html';
+import FotoPeradorPage from '../pages/fotoperador.f7.html';
 
 import NotFoundPage from '../pages/404.f7.html';
 
@@ -76,6 +81,30 @@ var routes = [
     {
         path: '/solicitudgasto/:idSolicitud',
         component: AddGastoSolicitudesPage,
+    },
+    {
+        path: '/solicitudgasto/:idSolicitud',
+        component: AddGastoSolicitudesPage,
+    },
+    {
+        path: '/fotoacuse/',
+        component: FotoAcusePage,
+    },
+    {
+        path: '/fotoguia/',
+        component: FotoGuiaPage,
+    },
+    {
+        path: '/fotoguialogify/',
+        component: FotoGuiaLogifyPage,
+    },
+    {
+        path: '/fotogerente/',
+        component: FotoGerentePage,
+    },
+    {
+        path: '/fotoperador/',
+        component: FotoPeradorPage,
     },
     {
         path: '(.*)',

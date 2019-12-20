@@ -167,3 +167,7 @@ form#myGastos.list ul:after { /*background-color: none;*/background-color: initi
 .alert-info {color: #0c5460;background-color: #d1ecf1;border-color: #bee5eb;}
 .item-title span{padding: 5px;}
 .clickemail{cursor:pointer;}
+.infoimg{width: 80%;margin-left: 30px;}
+.tablefoto{width: 100%;}
+.espacio{padding-left: 30px;}
+.guiasize{font-size: 25px;}

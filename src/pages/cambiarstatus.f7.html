@@ -24,7 +24,7 @@
                     <ul id="lista_multiples_guias"></ul>
                 </div>
                 <div id="info_guia">
-                    <h1 id="num_guia"></h1>
+                    <h1 id="num_guia" class="guiasize"></h1>
                     <div id="cont_paquete"></div>
                 </div>
                 <div id="fbillete" data-ver="0"></div>
@@ -58,7 +58,18 @@
                             <div class="item-inner">
                                 <div class="item-title item-label"></div>
                                 <div class="item-input-wrap">
-                                    <button class="button open-foto-1">Foto 1</button>
+                                    <table class="tablefoto">
+                                        <tr>
+                                            <td>
+                                                <button class="button open-foto-1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Foto acuse&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                                            </td>
+                                            <td>
+                                                <a href="/fotoacuse/">
+                                                    <i class="material-icons">info</i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </table>
                                     <canvas id="myCanvas" data-foto1="0"></canvas>
                                 </div>
                             </div>
@@ -69,19 +80,41 @@
                             <div class="item-inner">
                                 <div class="item-title item-label"></div>
                                 <div class="item-input-wrap">
-                                    <button class="button open-foto-2">Foto 2</button>
+                                    <table class="tablefoto">
+                                        <tr>
+                                            <td>
+                                                <button class="button open-foto-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Foto guía&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                                            </td>
+                                            <td>
+                                                <a href="/fotoguia/">
+                                                    <i class="material-icons">info</i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </table>
                                     <canvas id="myCanvas2" data-foto1="0"></canvas>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <!-- Status Entregado-->
-                    <!--<li class="mostrar_entregado ocultar_campos">
+                    <li class="mostrar_entregado ocultar_campos">
                         <div class="item-content item-input">
                             <div class="item-inner">
                                 <div class="item-title item-label"></div>
                                 <div class="item-input-wrap">
-                                    <button class="button open-foto-3">Foto guía logify</button>
+                                    <table class="tablefoto">
+                                        <tr>
+                                            <td>
+                                                <button class="button open-foto-3">&nbsp;&nbsp;&nbsp;Foto guía logify&nbsp;&nbsp;&nbsp;</button>
+                                            </td>
+                                            <td>
+                                                <a href="/fotoguialogify/">
+                                                    <i class="material-icons">info</i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </table>
                                     <canvas id="myCanvas3" data-foto1="0"></canvas>
                                 </div>
                             </div>
@@ -92,7 +125,18 @@
                             <div class="item-inner">
                                 <div class="item-title item-label"></div>
                                 <div class="item-input-wrap">
-                                    <button class="button open-foto-4">Foto firma de acuse</button>
+                                    <table class="tablefoto">
+                                        <tr>
+                                            <td>
+                                                <button class="button open-foto-4">Foto firma de acuse&nbsp;</button>
+                                            </td>
+                                            <td>
+                                                <a href="/fotogerente/">
+                                                    <i class="material-icons">info</i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </table>
                                     <canvas id="myCanvas4" data-foto1="0"></canvas>
                                 </div>
                             </div>
@@ -103,12 +147,23 @@
                             <div class="item-inner">
                                 <div class="item-title item-label"></div>
                                 <div class="item-input-wrap">
-                                    <button class="button open-foto-5">Foto Selfie sucursal</button>
+                                    <table class="tablefoto">
+                                        <tr>
+                                            <td>
+                                                <button class="button open-foto-5">Foto Selfie sucursal</button>
+                                            </td>
+                                            <td>
+                                                <a href="/fotoperador/">
+                                                    <i class="material-icons">info</i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </table>
                                     <canvas id="myCanvas5" data-foto1="0"></canvas>
                                 </div>
                             </div>
                         </div>
-                    </li>-->
+                    </li>
                     <!-- otros campos-->
                     <li class="mostrar_recolectado mostrar_entregado ocultar_campos">
                         <div class="item-content item-input">
