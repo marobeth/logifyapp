@@ -15,8 +15,8 @@ import routes from './routes.js';
  *
  * URL API
  */
-var URL_WS = "http://localhost:8888/desarrollo.api.logify.com.mx/";
-var URL_NEW_WS = "http://localhost:8888/desarrollo.logisticus.logify.com.mx/";
+var URL_WS = "https://api.logify.com.mx/";
+var URL_NEW_WS = "https://logisticus.logify.com.mx/";
 
 /**
  * TRADUCIR STATUS
