@@ -15,8 +15,8 @@ import routes from './routes.js';
  *
  * URL API
  */
-var URL_WS = "https://api.logify.com.mx/";
-var URL_NEW_WS = "https://logisticus.logify.com.mx/";
+var URL_WS = "http://localhost:8888/desarrollo.api.logify.com.mx/";
+var URL_NEW_WS = "http://localhost:8888/desarrollo.logisticus.logify.com.mx/";
 
 /**
  * TRADUCIR STATUS
@@ -913,6 +913,43 @@ function verBilletes(CById,Numguia) {
 
 /**
  *
+ * @param CById
+ * @param numguia
+ */
+function verTarjetas(CById, numguia) {
+    app.request.setup({
+        headers: {
+            'apikey': localStorage.getItem('apikey')
+        },
+        beforeSend: function () {
+            app.preloader.show();
+        },
+        complete: function () {
+            app.preloader.hide();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            if (jqXHR.status === 401) {
+                localStorage.clear(); //quita todas las variables de local storage
+                app.preloader.hide(); // esconde el spinner
+                //app.dialog.alert('Tu sesión expiró, inicia sesión de nuevo','Aviso');
+                window.location.reload();
+            } else {
+                app.dialog.alert('Hubo un error, inténtelo de nuevo', 'Error');
+            }
+        }
+    });
+    app.request.get(
+        URL_WS + '/api/v2/consultar-tarjetas/' + numguia,
+        function (data) {
+            var tarjeta = '' + data.nombre_tarjeta + ' No.Lote: ' + data.numero_lote + ' Cantidad: ' + data.cantidad;
+            $$('#' + CById).html(tarjeta);
+        },
+        'json'
+    );
+}
+
+/**
+ *
  * @type {Framework7}
  */
 var app = new Framework7({
@@ -1141,6 +1178,10 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 if (data['guia'][0].branch_number == '0003' || data['guia'][0].branch_number == '0006') {
                     $$('#cont_paquete').html(data['guia'][0].cont_paquete);
                     $$('#cont_paquete').append('<br>');
+                    if(data['guia'][0].branch_number == '0006'){
+                        verTarjetas('verTarjeta', num_guias[0]);
+                    }
+
                 }
                 app.preloader.hide();
             },
