@@ -15,8 +15,10 @@ import routes from './routes.js';
  *
  * URL API
  */
-var URL_WS = "https://api.logify.com.mx/";
-var URL_NEW_WS = "https://logisticus.logify.com.mx/";
+var URL_WS = "http://localhost:8888/desarrollo.api.logify.com.mx/";
+//var URL_WS = "https://desarrollo.api.logify.com.mx/";
+//var URL_WS = "https://api.logify.com.mx/";
+//var URL_NEW_WS = "https://logisticus.logify.com.mx/";
 
 /**
  * TRADUCIR STATUS
@@ -477,7 +479,8 @@ function NmPrvdr(CById, valor) {
  * @constructor
  */
 function RsltsPrvdr(valor) {
-    var autocompleteProveedor = app.autocomplete.create({
+    var autocompleteProveedor;
+    autocompleteProveedor = app.autocomplete.create({
         inputEl: '#OprProve',
         openIn: 'dropdown',
         preloader: true,
@@ -865,7 +868,7 @@ function validateOdometro(CById, idauto, valor) {
  * @param Numguia
  */
 function verBilletes(CById,Numguia) {
-    app.request.setup({
+        app.request.setup({
         headers: {
             'apikey': localStorage.getItem('apikey')
         },
@@ -874,16 +877,6 @@ function verBilletes(CById,Numguia) {
         },
         complete: function () {
             app.preloader.hide();
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            if (jqXHR.status === 401) {
-                localStorage.clear(); //quita todas las variables de local storage
-                app.preloader.hide(); // esconde el spinner
-                //app.dialog.alert('Tu sesión expiró, inicia sesión de nuevo','Aviso');
-                window.location.reload();
-            } else {
-                app.dialog.alert('Hubo un error, inténtelo de nuevo', 'Error');
-            }
         }
     });
     app.request.get(
@@ -928,21 +921,62 @@ function verTarjetas(CById, numguia) {
             app.preloader.hide();
         },
         error: function (jqXHR, textStatus, errorThrown) {
+            //console.log(jqXHR);
             if (jqXHR.status === 401) {
                 localStorage.clear(); //quita todas las variables de local storage
                 app.preloader.hide(); // esconde el spinner
                 //app.dialog.alert('Tu sesión expiró, inicia sesión de nuevo','Aviso');
-                window.location.reload();
+                //window.location.reload();
             } else {
-                app.dialog.alert('Hubo un error, inténtelo de nuevo', 'Error');
+               // app.dialog.alert('Hubo un error, no hay información detallada en tarjetas', 'Error');
             }
         }
     });
     app.request.get(
-        URL_WS + '/api/v2/consultar-tarjetas/' + numguia,
+        URL_WS + 'api/v2/consultar-tarjetas/' + numguia,
         function (data) {
             var tarjeta = '' + data.nombre_tarjeta + ' No.Lote: ' + data.numero_lote + ' Cantidad: ' + data.cantidad;
             $$('#' + CById).html(tarjeta);
+        },
+        'json'
+    );
+}
+
+function mostrarSttus(branchnumber,clientcode,CById,CByCC) {
+    var proyectoStatus;
+    app.request.setup({
+        headers: {
+            'apikey': localStorage.getItem('apikey')
+        },
+        beforeSend: function () {
+            app.preloader.show();
+        },
+        complete: function () {
+            app.preloader.hide();
+        }
+    });
+    app.request.get(
+        URL_WS + 'api/v2/permiso/operador/proyecto/' + clientcode+'/'+branchnumber,
+        function (data) {
+            if (data.length > 0) {
+                proyectoStatus = '<option value="">Seleccionar</option>';
+                data.forEach(function (val, index) {
+                    proyectoStatus += '<option value="' + val.idstatus_guia + '">' +  val.label + '</option>';
+                });
+                $$('#' + CById).html(proyectoStatus);
+            }else{
+                proyectoStatus='<option value="">Seleccione</option>\n' +
+                    '                                        <option value="2">Recolectado</option>\n' +
+                    '                                        <option value="3">En Ruta</option>\n' +
+                    '                                        <option value="4">Entregado</option>\n' +
+                    '                                        <option value="5">Incidencia</option>\n' +
+                    '                                        <option value="6">Devuelto</option>\n' +
+                    '                                        <option value="7">Ocurre</option>\n' +
+                    '                                        <option value="8">En Almacén</option>\n' +
+                    '                                        <option value="12">Conectado</option>';
+                $$('#' + CById).html(proyectoStatus);
+                $$('#' + CByCC).html(clientcode);
+            }
         },
         'json'
     );
@@ -1014,12 +1048,14 @@ $$('#btn_iniciar_sesion').on('click', function () {
 });
 $$(document).on('page:init', '.page[data-name="inicio"]', function (e) {
     $$('#nombre_usuario').html(localStorage.getItem('nombre') + ' ' + localStorage.getItem('paterno'));
+    /*logisticus
     ValidateApikeyNEW(localStorage.getItem('userid'), localStorage.getItem('apikey'));
     if (localStorage.getItem('verhj_gasto') == 1) {
         $$(".HGastosViews").show();
     } else {
         $$(".HGastosViews").hide();
     }
+    */
 });
 $$(document).on('page:init', '.page[data-name="home"]', function (e) {
     $$('#btn_iniciar_sesion').on('click', function () {
@@ -1029,7 +1065,6 @@ $$(document).on('page:init', '.page[data-name="home"]', function (e) {
 
         ValidateApikey(username, password);
     });
-
     $$('#btn_olvide').on('click', function () {
         cordova.InAppBrowser.open('https://admin.logify.com.mx/restablecer-contrasena', '_blank', 'location=yes');
     });
@@ -1178,11 +1213,12 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 if (data['guia'][0].branch_number == '0003' || data['guia'][0].branch_number == '0006') {
                     $$('#cont_paquete').html(data['guia'][0].cont_paquete);
                     $$('#cont_paquete').append('<br>');
-                    if(data['guia'][0].branch_number == '0006'){
-                        verTarjetas('verTarjeta', num_guias[0]);
+                    if(data['guia'][0].branch_number == '0006' && data['guia'][0].num_guia !=''){
+                        verTarjetas('verTarjeta',  data['guia'][0].num_guia);
                     }
 
                 }
+                mostrarSttus(data['guia'][0].branch_number,data['guia'][0].client_code,'status','cdgcliente');
                 app.preloader.hide();
             },
             'json'
@@ -1478,7 +1514,12 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         });
     });
     $$('#status').on('change', function (e) {
-        var status = $$(this).val();
+        var status = $$('#status').val();
+        //console.log(status+num_guias);
+        var cliente= num_guias.slice(1,3);
+        console.log('num_guias - '+cliente);
+        var codigo= num_guias.substr(3,3);
+        console.log(codigo);
         switch (status) {
             case '2':
                 //Recolectado
