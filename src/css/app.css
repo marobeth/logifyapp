@@ -88,39 +88,18 @@ div[data-name=home] {
     color: #fff;
 }
 
-#myCanvas {
-    width: 100%;
-    margin-top: 10px;
-    display: none
-}
-
-#myCanvas2 {
-    width: 100%;
-    margin-top: 10px;
-    display: none
-}
-
+#myCanvas1 {width: 100%;margin-top: 10px;display: none}
+#myCanvas2 {width: 100%;margin-top: 10px;display: none;}
 #myCanvas3 {width: 100%;margin-top: 10px;display: none;}
 #myCanvas4 {width: 100%;margin-top: 10px;display: none;}
 #myCanvas5 {width: 100%;margin-top: 10px;display: none;}
 
-.ocultar_campos {
-    display: none
-}
+.ocultar_campos {display: none}
 
-#testigoreal1 {
-    width: 100%;
-    margin-top: 10px
-}
+#testigoreal1 {width: 100%;margin-top: 10px}
 
-#testigoreal2 {
-    width: 100%;
-    margin-top: 10px
-}
-
-#titulo_testigos {
-    display: none
-}
+#testigoreal2 {width: 100%;margin-top: 10px}
+#titulo_testigos {display: none}
 
 .button.open-foto-1 {color: #fff;}
 .button.open-foto-2 {color: #fff;}
@@ -128,15 +107,9 @@ div[data-name=home] {
 .button.open-foto-4 {color: #fff;}
 .button.open-foto-5 {color: #fff;}
 
-.btn_olvide_div {
-    text-align: right;
-    margin-right: 20px;
-}
+.btn_olvide_div {text-align: right;margin-right: 20px;}
 
-#btn_olvide {
-    color: #D1D1D1;
-    text-align: right;
-}
+#btn_olvide {color: #D1D1D1;text-align: right;}
 
 div[data-name=resetpass] {
     background: url(../static/images/bg.jpg);

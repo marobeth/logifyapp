@@ -10,60 +10,16 @@ import '../css/app.css';
 import cordovaApp from './cordova-app.js';
 // Import Routes
 import routes from './routes.js';
+import fnGuias from './guias/fn-guias';
+import config from './config';
 
 /**
  *
  * URL API
  */
-var URL_WS = "http://localhost:8888/desarrollo.api.logify.com.mx/";
-//var URL_WS = "https://desarrollo.api.logify.com.mx/";
-//var URL_WS = "https://api.logify.com.mx/";
-//var URL_NEW_WS = "https://logisticus.logify.com.mx/";
+var URL_WS = config.URL_WS;
 
-/**
- * TRADUCIR STATUS
- * @param status
- * @returns {string}
- */
-function traducirStatus(status) {
-    switch (status) {
-        case '1':
-            //Solicitado
-            return 'Solicitado';
-        case '2':
-            //Recolectado
-            return 'Recolectado';
-            break;
-        case '3':
-            //En ruta
-            return 'En Ruta';
-            break;
-        case '4':
-            //Entregado
-            return 'Entregado';
-            break;
-        case '5':
-            //Incidencia
-            return 'Incidencia';
-            break;
-        case '6':
-            //Devuelto
-            return 'Devuelto';
-            break;
-        case '7':
-            //Ocurre
-            return 'Ocurre';
-            break;
-        case '8':
-            //En almacén
-            return 'En almacen';
-            break;
-        case '12':
-            //En ruta
-            return 'Conectado';
-            break;
-    }
-}
+
 /**
  *
  * @param num_guia
@@ -205,8 +161,8 @@ function onError(error) {
     //app.dialog.alert('Error code: ' + error.code, null, 'Capture Error');
 }
 function onSuccess(mediaFiles) {
-    $$('#myCanvas').show();
-    var canvas = $$('#myCanvas')[0];
+    $$('#myCanvas1').show();
+    var canvas = $$('#myCanvas1')[0];
     var img = new Image();
     img.src = mediaFiles[0].fullPath;
     img.onload = function () {
@@ -941,7 +897,7 @@ function verTarjetas(CById, numguia) {
         'json'
     );
 }
-
+/*
 function mostrarSttus(branchnumber,clientcode,CById,CByCC) {
     var proyectoStatus;
     app.request.setup({
@@ -980,7 +936,7 @@ function mostrarSttus(branchnumber,clientcode,CById,CByCC) {
         },
         'json'
     );
-}
+}*/
 
 /**
  *
@@ -1218,7 +1174,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                     }
 
                 }
-                mostrarSttus(data['guia'][0].branch_number,data['guia'][0].client_code,'status','cdgcliente');
+                fnGuias.mostrarSttus(app, data['guia'][0].branch_number,data['guia'][0].client_code,'status','cdgcliente');
                 app.preloader.hide();
             },
             'json'
@@ -1265,7 +1221,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 if (!status.hasPermission) {
                     error();
                 } else {
-                    openCamera('myCanvas');
+                    openCamera('myCanvas1');
                 }
             }
         });
@@ -1286,7 +1242,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 if (!status.hasPermission) {
                     error();
                 } else {
-                    openFilePicker('myCanvas');
+                    openFilePicker('myCanvas1');
                 }
             }
         });
@@ -1516,52 +1472,10 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
     $$('#status').on('change', function (e) {
         var status = $$('#status').val();
         //console.log(status+num_guias);
-        var cliente= num_guias.slice(1,3);
-        console.log('num_guias - '+cliente);
-        var codigo= num_guias.substr(3,3);
-        console.log(codigo);
-        switch (status) {
-            case '2':
-                //Recolectado
-                $$('.ocultar_campos').hide();
-                $$('.mostrar_recolectado').show();
-                break;
-            case '3':
-                //En ruta
-                $$('.ocultar_campos').hide();
-                $$('.mostrar_enruta').show();
-                break;
-            case '4':
-                //Entregado
-                $$('.ocultar_campos').hide();
-                $$('.mostrar_entregado').show();
-                break;
-            case '5':
-                //Incidencia
-                $$('.ocultar_campos').hide();
-                $$('.mostrar_incidencia').show();
-                break;
-            case '6':
-                //Devuelto
-                $$('.ocultar_campos').hide();
-                $$('.mostrar_devuelto').show();
-                break;
-            case '7':
-                //Ocurre
-                $$('.ocultar_campos').hide();
-                $$('.mostrar_ocurre').show();
-                break;
-            case '8':
-                //En almacén
-                $$('.ocultar_campos').hide();
-                $$('.mostrar_enalmacen').show();
-                break;
-            case '12':
-                //En conectado
-                $$('.ocultar_campos').hide();
-                $$('.mostrar_conectado').show();
-                break;
-        }
+        var numeroguia=num_guias[0];
+        var codCliente = numeroguia.substring(0,3);
+        var braNumbre = numeroguia.substring(3,7);
+        fnGuias.mostrarCampos(app,codCliente,braNumbre,status);
     });
     $$('#btn_cambiar_status').on('click', function (e) {
         var latitud = $$('#latitud').val();
@@ -1579,7 +1493,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 break;
             case '2':
                 //Recolectado
-                statusFoto = $$('#myCanvas').data("foto1");
+                statusFoto = $$('#myCanvas1').data("foto1");
                 statusFoto2 = $$('#myCanvas2').data("foto1");
                 persona_recibe = $$('#persona_recibe').val();
 
@@ -1607,7 +1521,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 break;
             case '4':
                 //Entregado
-                statusFoto = $$('#myCanvas').data("foto1");
+                statusFoto = $$('#myCanvas1').data("foto1");
                 statusFoto2 = $$('#myCanvas2').data("foto1");
                 statusFoto3 = $$('#myCanvas3').data("foto1");
                 statusFoto4 = $$('#myCanvas4').data("foto1");
@@ -1615,7 +1529,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 persona_recibe = $$('#persona_recibe').val();
 
                 if (statusFoto != 0) {
-                    canvas1 = $$('#myCanvas')[0];
+                    canvas1 = $$('#myCanvas1')[0];
                     foto1 = canvas1.toDataURL();
                 } else {
                     foto1 = '';
@@ -1652,7 +1566,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 break;
             case '5':
                 //Incidencia
-                statusFoto = $$('#myCanvas').data("foto1");
+                statusFoto = $$('#myCanvas1').data("foto1");
                 statusFoto2 = $$('#myCanvas2').data("foto1");
                 incidencia = $$('#incidencia').val();
 
@@ -1698,9 +1612,9 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 break;
         }
         if (validado == true) {
-            statusFoto = $$('#myCanvas').data("foto1");
+            statusFoto = $$('#myCanvas1').data("foto1");
             if (statusFoto != 0) {
-                canvas1 = $$('#myCanvas')[0];
+                canvas1 = $$('#myCanvas1')[0];
                 foto1 = canvas1.toDataURL();
             } else {
                 foto1 = '';
@@ -1844,7 +1758,7 @@ $$(document).on('page:init', '.page[data-name="consultar"]', function (e) {
                     app.request.get(
                         URL_WS + 'guideinfo/' + num_guia,
                         function (data) {
-                            $$('#status_guia_consulta').html(traducirStatus(data[0].status));
+                            $$('#status_guia_consulta').html(fnGuias.traducirStatus(data[0].status));
                             $$('#espacio_proyecto').html(detectarProyecto(num_guia));
                             $$('#espacio_destinatario').html(data[0].nombre_dest + ' ' + data[0].paterno_dest + ' ' + data[0].materno_dest + '<br>' + data[0].edo_dest + ' ' + data[0].mun_dest + ' ' + data[0].asent_dest);
                             $$('#testigoreal1').attr('src', URL_WS + data[0].foto1);
@@ -2990,4 +2904,14 @@ $$(document).on('page:init', '.page[data-name="solicitudgasto"]', function (e) {
         }
     });
 
+});
+
+/**Fotografias**/
+$$(document).on('page:init', '.page[data-name="fotoacuse"]', function (e) {
+    var numGuia = app.view.main.router.currentRoute.params.numGuia;
+    var codCliente = numGuia.substring(0,3);
+    var braNumbre = numGuia.substring(3,7);
+    var status = numGuia.substring(7,8);
+    var tipo_aud = numGuia.substring(8,9);
+    fnGuias.mostrarImagen(app,codCliente,braNumbre,status,tipo_aud)
 });

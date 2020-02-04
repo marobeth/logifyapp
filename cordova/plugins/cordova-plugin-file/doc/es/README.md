@@ -246,10 +246,10 @@ Puede utilizar la función `window.isFilePluginReadyRaised` para verificar si ya
   * No debe crear entrada utilizando DirectoryEntry resultado de devolución de llamada de instancia que fue borrado. De lo contrario, obtendrá una entrada' colgar'.
   * Antes de que se puede leer un archivo, el cual fue escrito sólo que necesitas una nueva instancia de este archivo.
   * la función `setMetadata`, que no es indicada en las especificaciones soporta sólo el cambio de campo `modificationTime`. 
-  * `copyTo` y `moveTo` funciones no son compatibles con directorios.
+  * `copyTo` y `moveTo` fnGuias no son compatibles con directorios.
   * Metadatos de directorios no es compatible.
   * Tanto Entry.remove y directoryEntry.removeRecursively no fallan al retirar no vacía directorios - directorios de ser eliminados se limpian junto con contenido en su lugar.
-  * `abort` y `truncate` las funciones no son compatibles.
+  * `abort` y `truncate` las fnGuias no son compatibles.
   * eventos de progreso no están despedidos. Por ejemplo, este controlador no ejecutará:
 
 ```javascript

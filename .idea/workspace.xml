@@ -3,11 +3,20 @@
   <component name="ChangeListManager">
     <list default="true" id="232bfe81-5379-4a5a-8314-3fb762c606de" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/www/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/www/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cordova/plugins/cordova-plugin-file/doc/es/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/plugins/cordova-plugin-file/doc/es/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cordova/plugins/cordova-plugin-file/doc/es/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/plugins/cordova-plugin-file/doc/es/index.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cordova/plugins/cordova-plugin-geolocation/doc/es/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/plugins/cordova-plugin-geolocation/doc/es/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cordova/plugins/cordova-plugin-geolocation/doc/es/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/plugins/cordova-plugin-geolocation/doc/es/index.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cordova/plugins/cordova-plugin-statusbar/doc/es/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/plugins/cordova-plugin-statusbar/doc/es/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cordova/plugins/cordova-plugin-statusbar/doc/es/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/plugins/cordova-plugin-statusbar/doc/es/index.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/app.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/routes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/cambiarstatus.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/cambiarstatus.f7.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/fotoacuse.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/fotoacuse.f7.html" afterDir="false" />
     </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -36,6 +45,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="HTML File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -78,10 +88,13 @@
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/js/guias" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/pages" />
     </key>
@@ -93,15 +106,15 @@
       <visibility group="Run configurations" flag="false" />
     </myKeys>
   </component>
-  <component name="ServiceViewManager">
-    <option name="viewStates">
+  <component name="RunDashboard">
+    <option name="ruleStates">
       <list>
-        <serviceView>
-          <treeState>
-            <expand />
-            <select />
-          </treeState>
-        </serviceView>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
       </list>
     </option>
   </component>
@@ -162,6 +175,7 @@
       <workItem from="1576094057727" duration="2781000" />
       <workItem from="1576162467123" duration="13352000" />
       <workItem from="1576706169149" duration="12074000" />
+      <workItem from="1580772936496" duration="22890000" />
     </task>
     <servers />
   </component>

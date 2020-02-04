@@ -87,25 +87,25 @@ var routes = [
         component: AddGastoSolicitudesPage,
     },
     {
-        path: '/fotoacuse/',
+        path: '/fotoacuse/:numGuia',
         component: FotoAcusePage,
     },
-    {
-        path: '/fotoguia/',
+    /*{
+        path: '/fotoguia/:numGuia',
         component: FotoGuiaPage,
     },
     {
-        path: '/fotoguialogify/',
+        path: '/fotoguialogify/:numGuia',
         component: FotoGuiaLogifyPage,
     },
     {
-        path: '/fotogerente/',
+        path: '/fotogerente/:numGuia',
         component: FotoGerentePage,
     },
     {
-        path: '/fotoperador/',
+        path: '/fotoperador/:numGuia',
         component: FotoPeradorPage,
-    },
+    },*/
     {
         path: '(.*)',
         component: NotFoundPage,

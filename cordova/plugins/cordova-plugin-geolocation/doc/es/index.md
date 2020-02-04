@@ -168,7 +168,7 @@ Contiene `Position` coordenadas y timestamp, creado por la API de geolocalizaci�
 
 ## Coordinates
 
-A `Coordinates` objeto está unido a un `Position` que está disponible para funciones de retrollamada en las solicitudes para la posición actual del objeto. Contiene un conjunto de propiedades que describen las coordenadas geográficas de posición.
+A `Coordinates` objeto está unido a un `Position` que está disponible para fnGuias de retrollamada en las solicitudes para la posición actual del objeto. Contiene un conjunto de propiedades que describen las coordenadas geográficas de posición.
 
 ### Propiedades
 

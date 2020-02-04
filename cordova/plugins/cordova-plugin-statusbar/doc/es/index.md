@@ -21,7 +21,7 @@
 
 # StatusBar
 
-> El `StatusBar` objeto proporciona algunas funciones para personalizar el iOS y Android StatusBar.
+> El `StatusBar` objeto proporciona algunas fnGuias para personalizar el iOS y Android StatusBar.
 
 ## Instalación
 
@@ -96,7 +96,7 @@ En iOS 7, hacer la barra de estado superposición o no superponer la vista Web.
 
 ## Descripción
 
-En iOS 7, establecida en false para que la barra de estado aparezca como iOS 6. Establece el color de fondo y estilo para utilizar las otras funciones.
+En iOS 7, establecida en false para que la barra de estado aparezca como iOS 6. Establece el color de fondo y estilo para utilizar las otras fnGuias.
 
 ## Plataformas soportadas
 
