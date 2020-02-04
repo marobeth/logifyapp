@@ -1,5 +1,6 @@
 import $$ from "dom7";
 import config from '../config';
+import defaults from "@babel/runtime/helpers/esm/defaults";
 
 
 var fnGuias = {
@@ -69,14 +70,14 @@ var fnGuias = {
                     $$('#' + CById).html(proyectoStatus);
                 }else{
                     proyectoStatus='<option value="">Seleccione</option>\n' +
-                        '                                        <option value="2">Recolectado</option>\n' +
-                        '                                        <option value="3">En Ruta</option>\n' +
-                        '                                        <option value="4">Entregado</option>\n' +
-                        '                                        <option value="5">Incidencia</option>\n' +
-                        '                                        <option value="6">Devuelto</option>\n' +
-                        '                                        <option value="7">Ocurre</option>\n' +
-                        '                                        <option value="8">En Almacén</option>\n' +
-                        '                                        <option value="12">Conectado</option>';
+                        '<option value="2">Recolectado</option>\n' +
+                        '<option value="3">En Ruta</option>\n' +
+                        '<option value="4">Entregado</option>\n' +
+                        '<option value="5">Incidencia</option>\n' +
+                        '<option value="6">Devuelto</option>\n' +
+                        '<option value="7">Ocurre</option>\n' +
+                        '<option value="8">En Almacén</option>\n' +
+                        '<option value="12">Conectado</option>';
                     $$('#' + CById).html(proyectoStatus);
                     $$('#' + CByCC).html(clientcode);
                 }
@@ -85,34 +86,31 @@ var fnGuias = {
         );
     },
     mostrarCampos:(app,codCliente,braNumbre,status)=>{
-        console.log('codCliente'+codCliente);
-        console.log('braNumbre'+braNumbre);
-        console.log('status'+status);
         var tipoFimg=codCliente+braNumbre+status;
         var fotos ='';
         switch (status) {
-            /*case '2':
+            case '2':
                 //Recolectado
-                if(tipoFimg){
-                    console.log();
-                }
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_recolectado').show();
-                break;*/
+                fnGuias.fnmostrarCampos(app,codCliente,braNumbre,status,tipoFimg);
+                break;
             case '3':
                 //En ruta
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_enruta').show();
                 break;
-            /*case '4':
+            case '4':
                 //Entregado
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_entregado').show();
-                break;*/
+                fnGuias.fnmostrarCampos(app,codCliente,braNumbre,status,tipoFimg);
+                break;
             case '5':
                 //Incidencia
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_incidencia').show();
+                fnGuias.fnmostrarCampos(app,codCliente,braNumbre,status,tipoFimg);
                 break;
             case '6':
                 //Devuelto
@@ -134,54 +132,10 @@ var fnGuias = {
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_conectado').show();
                 break;
+            case defaults:
+                $$('.ocultar_campos').hide();
         }
-        app.request.setup({
-            headers: {
-                'apikey': localStorage.getItem('apikey')
-            },
-            beforeSend: function () {
-                app.preloader.show();
-            },
-            complete: function () {
-                app.preloader.hide();
-            }
-        });
-        app.request.get(
-            config.URL_WS + 'api/v2/permiso/operador/proyecto/' + codCliente+'/'+braNumbre+'/'+status,
-            function (data) {
-                if (data.length > 0) {
-                    data.forEach((val, index) => {
-                        fotos +='<li>\n' +
-                            '                            <div class="item-content item-input">\n' +
-                            '                                <div class="item-inner">\n' +
-                            '                                    <div class="item-title item-label"></div>\n' +
-                            '                                    <div class="item-input-wrap">\n' +
-                            '                                        <table class="tablefoto">\n' +
-                            '                                            <tr>\n' +
-                            '                                                <td>\n' +
-                            '                                                    <button class="button open-foto-'+ (index+1) +'">'+ val.nombre+'</button>\n' +
-                            '                                                </td>\n' +
-                            '                                                <td>\n' +
-                            '                                                    <a href="/fotoacuse/'+tipoFimg+val.tipo_aud+'">\n' +
-                            '                                                        <i class="material-icons">info</i>\n' +
-                            '                                                    </a>\n' +
-                            '                                                </td>\n' +
-                            '                                            </tr>\n' +
-                            '                                        </table>\n' +
-                            '                                        <canvas id="myCanvas'+(index+1) +'" data-foto1="0"></canvas>\n' +
-                            '                                    </div>\n' +
-                            '                                </div>\n' +
-                            '                            </div>\n' +
-                            '                        </li>';
-                    });
-                    $$('#mostarfotos').html(fotos);
-                }else{
 
-                }
-
-            },
-            'json'
-        );
     },
     mostrarImagen:(app,codCliente,braNumbre,status,tipo_aud)=>{
         $$('#descripcion').html('');
@@ -211,7 +165,55 @@ var fnGuias = {
             },
             'json'
         );
-    }
+    },
+    fnmostrarCampos:(app,codCliente,braNumbre,status,tipoFimg)=>{
+        $$('#mostarfotos').html('');
+        var fotos ='';
+        app.request.setup({
+        headers: {
+            'apikey': localStorage.getItem('apikey')
+        },
+        beforeSend: function () {
+            app.preloader.show();
+        },
+        complete: function () {
+            app.preloader.hide();
+        }
+    });
+        app.request.get(
+            config.URL_WS + 'api/v2/permiso/operador/proyecto/' + codCliente + '/' + braNumbre + '/' + status,
+            function (data) {
+                if (data.length > 0) {
+                    data.forEach((val, index) => {
+                        fotos += '<li>\n' +
+                            '                            <div class="item-content item-input">\n' +
+                            '                                <div class="item-inner">\n' +
+                            '                                    <div class="item-title item-label"></div>\n' +
+                            '                                    <div class="item-input-wrap">\n' +
+                            '                                        <table class="tablefoto">\n' +
+                            '                                            <tr>\n' +
+                            '                                                <td>\n' +
+                            '                                                    <button class="button open-foto-' + (index + 1) + '">' + val.nombre + '</button>\n' +
+                            '                                                </td>\n' +
+                            '                                                <td>\n' +
+                            '                                                    <a href="/fotoacuse/' + tipoFimg + val.tipo_aud + '">\n' +
+                            '                                                        <i class="material-icons">info</i>\n' +
+                            '                                                    </a>\n' +
+                            '                                                </td>\n' +
+                            '                                            </tr>\n' +
+                            '                                        </table>\n' +
+                            '                                        <canvas id="myCanvas' + (index + 1) + '" data-foto1="0" data-activo="1"></canvas>\n' +
+                            '                                    </div>\n' +
+                            '                                </div>\n' +
+                            '                            </div>\n' +
+                            '                        </li>';
+                    });
+                    $$('#mostarfotos').html(fotos);
+                }
 
+            },
+            'json'
+        );
+    }
 };
 export default fnGuias;
