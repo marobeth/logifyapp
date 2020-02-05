@@ -12,6 +12,7 @@ import cordovaApp from './cordova-app.js';
 import routes from './routes.js';
 import fnGuias from './guias/fn-guias';
 import config from './config';
+import fotoacuse from './fotoacuse';
 
 /**
  *
@@ -1482,10 +1483,10 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         var longitud = $$('#longitud').val();
         var status = $$('#status').val();
         var validado = false;
-        var foto1,foto2,foto3,foto4,foto5;
-        var canvas1,canvas2,canvas3,canvas4,canvas5;
-        var statusFoto,statusFoto2,statusFoto3,statusFoto4,statusFoto5;
-        var persona_recibe,incidencia,comentarios,proveedor_ocurre,guia_ocurre;
+        var foto1, foto2, foto3, foto4, foto5;
+        var canvas1, canvas2, canvas3, canvas4, canvas5;
+        var statusFoto, statusFoto2, statusFoto3, statusFoto4, statusFoto5;
+        var persona_recibe, incidencia, comentarios, proveedor_ocurre, guia_ocurre;
 
         switch (status) {
             case 'Seleccione':
@@ -1558,7 +1559,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 } else {
                     foto5 = '';
                 }
-                if (foto1 == "" || foto2 == "" || foto3 == "" || foto4 == "" || foto5 == "" || persona_recibe == "" ) {
+                if (foto1 == "" || foto2 == "" || foto3 == "" || foto4 == "" || foto5 == "" || persona_recibe == "") {
                     app.dialog.alert('La foto 1, la foto 2 , la foto 3, la foto 4 y la foto 5 y la persona que recibe / entrega son obligatorios');
                 } else {
                     validado = true;
@@ -1604,13 +1605,25 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
             case '12':
                 proveedor_ocurre = $$('#proveedor_ocurre').val();
                 guia_ocurre = $$('#guia_ocurre').val();
-                if(proveedor_ocurre != '' && guia_ocurre != ''){
-                    validado=true;
-                }else{
+                if (proveedor_ocurre != '' && guia_ocurre != '') {
+                    validado = true;
+                } else {
                     app.dialog.alert('El proveedor ocurre y la guía ocurre son obligatorios');
                 }
                 break;
         }
+
+        var totalImg = $$('#totalImg').val();
+        if(totalImg>0) {
+            for (var i = 0; i <= totalImg; i++) {
+                var canvas_img = $$('#myCanvas' + i)[0];
+                var foto = canvas_img.toDataURL();
+                if (foto != 0) {
+                    validado = false;
+                }
+            }
+        }
+
         if (validado == true) {
             statusFoto = $$('#myCanvas1').data("foto1");
             if (statusFoto != 0) {
@@ -1652,8 +1665,8 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
             incidencia = $$('#incidencia').val();
             comentarios = $$('#comentarios').val();
             proveedor_ocurre = $$('#proveedor_ocurre').val();
-            if(proveedor_ocurre == 0){
-                proveedor_ocurre='';
+            if (proveedor_ocurre == 0) {
+                proveedor_ocurre = '';
             }
             guia_ocurre = $$('#guia_ocurre').val();
 
@@ -1688,8 +1701,8 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                     foto5: foto5,
                     persona_recibe: persona_recibe,
                     comentarios: comentarios,
-                    proveedor_ocurre:proveedor_ocurre,
-                    guia_ocurre:guia_ocurre
+                    proveedor_ocurre: proveedor_ocurre,
+                    guia_ocurre: guia_ocurre
 
                 },
                 function (data) {
@@ -1704,7 +1717,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 'json'
             );
         }
-    });
+    })
 
 });
 $$(document).on('page:init', '.page[data-name="escanear"]', function (e) {
@@ -2908,10 +2921,5 @@ $$(document).on('page:init', '.page[data-name="solicitudgasto"]', function (e) {
 
 /**Fotografias**/
 $$(document).on('page:init', '.page[data-name="fotoacuse"]', function (e) {
-    var numGuia = app.view.main.router.currentRoute.params.numGuia;
-    var codCliente = numGuia.substring(0,3);
-    var braNumbre = numGuia.substring(3,7);
-    var status = numGuia.substring(7,8);
-    var tipo_aud = numGuia.substring(8,9);
-    fnGuias.mostrarImagen(app,codCliente,braNumbre,status,tipo_aud)
+    fotoacuse.index(app);
 });
