@@ -1471,6 +1471,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         });
     });
     $$('#status').on('change', function (e) {
+        $$('#mostarfotos').html('');
         var status = $$('#status').val();
         //console.log(status+num_guias);
         var numeroguia=num_guias[0];
@@ -1482,17 +1483,26 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         var latitud = $$('#latitud').val();
         var longitud = $$('#longitud').val();
         var status = $$('#status').val();
+        console.log(status+'entre');
         var validado = false;
+<<<<<<< HEAD
         var foto1, foto2, foto3, foto4, foto5;
         var canvas1, canvas2, canvas3, canvas4, canvas5;
         var statusFoto, statusFoto2, statusFoto3, statusFoto4, statusFoto5;
         var persona_recibe, incidencia, comentarios, proveedor_ocurre, guia_ocurre;
+=======
+        var foto1,foto2,foto3,foto4,foto5;
+        var canvas1,canvas2,canvas3,canvas4,canvas5;
+        var sttsFt,sttsFt2,sttsFt3,sttsFt4,sttsFt5;
+        var statusFoto,statusFoto2,statusFoto3,statusFoto4,statusFoto5;
+        var persona_recibe,incidencia,comentarios,proveedor_ocurre,guia_ocurre;
+>>>>>>> 2f7114c3493f4c9ebd34ba6641195ed7c5ce551f
 
         switch (status) {
             case 'Seleccione':
                 app.dialog.alert('Seleccione un status');
                 break;
-            case '2':
+            /*case '2':
                 //Recolectado
                 statusFoto = $$('#myCanvas1').data("foto1");
                 statusFoto2 = $$('#myCanvas2').data("foto1");
@@ -1516,11 +1526,12 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 } else {
                     validado = true;
                 }
-                break;
+                break;*/
             case '3':
+                //Ruta
                 validado = true;
                 break;
-            case '4':
+           /* case '4':
                 //Entregado
                 statusFoto = $$('#myCanvas1').data("foto1");
                 statusFoto2 = $$('#myCanvas2').data("foto1");
@@ -1564,28 +1575,39 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 } else {
                     validado = true;
                 }
-                break;
+                break;*/
             case '5':
                 //Incidencia
                 statusFoto = $$('#myCanvas1').data("foto1");
+                console.log(statusFoto);
                 statusFoto2 = $$('#myCanvas2').data("foto1");
+                console.log(statusFoto2);
+                statusFoto3 = $$('#myCanvas3').data("foto1");
+                console.log(statusFoto3);
+                statusFoto4 = $$('#myCanvas4').data("foto1");
+                console.log(statusFoto4);
+                statusFoto5 = $$('#myCanvas5').data("foto1");
+                console.log(statusFoto5);
                 incidencia = $$('#incidencia').val();
-
-                if (statusFoto != 0) {
-                    canvas1 = $$('#myCanvas')[0];
+                if (statusFoto == 1 ) {
+                    canvas1 = $$('#myCanvas1')[0];
                     foto1 = canvas1.toDataURL();
-                } else {
-                    foto1 = '';
-                }
-                if (statusFoto2 != 0) {
+                }else if (statusFoto2 == 1) {
                     canvas2 = $$('#myCanvas2')[0];
                     foto2 = canvas2.toDataURL();
-                } else {
-                    foto2 = '';
+                }else if (statusFoto3 == 1 ) {
+                    canvas3 = $$('#myCanvas3')[0];
+                    foto3 = canvas3.toDataURL();
+                }else if (statusFoto4 == 1 ) {
+                    canvas4 = $$('#myCanvas4')[0];
+                    foto4 = canvas4.toDataURL();
+                }else if (statusFoto5 == 1 ) {
+                    canvas5 = $$('#myCanvas5')[0];
+                    foto5 = canvas5.toDataURL();
                 }
 
-                if (foto1 == "" || foto2 == "" || incidencia == "") {
-                    app.dialog.alert('La foto 1, la foto 2 y la incidencia son obligatorios');
+                if (foto1 == "" || foto2 == "" || foto3 == "" || foto4 == "" || foto5 == "" || incidencia == "") {
+                    app.dialog.alert('La fotos y la incidencia son obligatorios');
                 } else {
                     validado = true;
                 }
@@ -1625,36 +1647,37 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         }
 
         if (validado == true) {
+            console.log("entre");
             statusFoto = $$('#myCanvas1').data("foto1");
-            if (statusFoto != 0) {
+            if (statusFoto == 1) {
                 canvas1 = $$('#myCanvas1')[0];
                 foto1 = canvas1.toDataURL();
             } else {
                 foto1 = '';
             }
             statusFoto2 = $$('#myCanvas2').data("foto1");
-            if (statusFoto2 != 0) {
+            if (statusFoto2 == 1) {
                 canvas2 = $$('#myCanvas2')[0];
                 foto2 = canvas2.toDataURL();
             } else {
                 foto2 = '';
             }
             statusFoto3 = $$('#myCanvas3').data("foto1");
-            if (statusFoto3 != 0) {
+            if (statusFoto3 == 1) {
                 canvas3 = $$('#myCanvas3')[0];
                 foto3 = canvas3.toDataURL();
             } else {
                 foto3 = '';
             }
             statusFoto4 = $$('#myCanvas4').data("foto1");
-            if (statusFoto4 != 0) {
+            if (statusFoto4 == 1) {
                 canvas4 = $$('#myCanvas4')[0];
                 foto4 = canvas4.toDataURL();
             } else {
                 foto4 = '';
             }
             statusFoto5 = $$('#myCanvas5').data("foto1");
-            if (statusFoto2 != 0) {
+            if (statusFoto5 == 1) {
                 canvas5 = $$('#myCanvas5')[0];
                 foto5 = canvas5.toDataURL();
             } else {
@@ -1716,6 +1739,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 },
                 'json'
             );
+
         }
     })
 
