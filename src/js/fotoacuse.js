@@ -9,16 +9,5 @@ var fotoacuse = {
         var tipo_aud = numGuia.substring(8,9);
         fnGuias.mostrarImagen(app,codCliente,braNumbre,status,tipo_aud);
     },
-    fncreate:(app)=>{
-
-    },
-    fnstore:(app)=>{
-        },
-    fnedit:(app)=>{
-        },
-    fnupdate:(app)=>{
-        },
-    fndelete:(app)=>{
-    }
 };
 export default fotoacuse;

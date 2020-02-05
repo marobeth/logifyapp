@@ -47,6 +47,8 @@ var fnGuias = {
         return statusResult;
     },
     mostrarSttus:(app,branchnumber,clientcode,CById,CByCC) => {
+        console.log("engtre mostrarSttus");
+        console.log(branchnumber+clientcode);
         var proyectoStatus;
         app.request.setup({
             headers: {
@@ -86,8 +88,9 @@ var fnGuias = {
         );
     },
     mostrarCampos:(app,codCliente,braNumbre,status)=>{
+        console.log("engtre mostrarCampos");
         var tipoFimg=codCliente+braNumbre+status;
-        var fotos ='';
+        var fotos;
         switch (status) {
             case '2':
                 //Recolectado
@@ -135,7 +138,6 @@ var fnGuias = {
             case defaults:
                 $$('.ocultar_campos').hide();
         }
-
     },
     mostrarImagen:(app,codCliente,braNumbre,status,tipo_aud)=>{
         $$('#descripcion').html('');
@@ -170,16 +172,16 @@ var fnGuias = {
         $$('#mostarfotos').html('');
         var fotos ='';
         app.request.setup({
-        headers: {
-            'apikey': localStorage.getItem('apikey')
-        },
-        beforeSend: function () {
-            app.preloader.show();
-        },
-        complete: function () {
-            app.preloader.hide();
-        }
-    });
+            headers: {
+                'apikey': localStorage.getItem('apikey')
+            },
+            beforeSend: function () {
+                app.preloader.show();
+            },
+            complete: function () {
+                app.preloader.hide();
+            }
+        });
         app.request.get(
             config.URL_WS + 'api/v2/permiso/operador/proyecto/' + codCliente + '/' + braNumbre + '/' + status,
             function (data) {
@@ -202,15 +204,44 @@ var fnGuias = {
                             '                                                </td>\n' +
                             '                                            </tr>\n' +
                             '                                        </table>\n' +
-                            '                                        <canvas id="myCanvas' + (index + 1) + '" data-foto1="0" data-activo="1"></canvas>\n' +
+                            '                                        <canvas id="myCanvas' + (index + 1) + '" data-foto1="0"></canvas>\n' +
                             '                                    </div>\n' +
                             '                                </div>\n' +
                             '                            </div>\n' +
                             '                        </li>';
                     });
                     $$('#mostarfotos').html(fotos);
+                    $$('#totalImg').val(data.length);
+                }else{
+                    console.log('default campos');
+                    var val=5;
+                    data.forEach((val, index) => {
+                        fotos += '<li>\n' +
+                            '                            <div class="item-content item-input">\n' +
+                            '                                <div class="item-inner">\n' +
+                            '                                    <div class="item-title item-label"></div>\n' +
+                            '                                    <div class="item-input-wrap">\n' +
+                            '                                        <table class="tablefoto">\n' +
+                            '                                            <tr>\n' +
+                            '                                                <td>\n' +
+                            '                                                    <button class="button open-foto-' + (index + 1) + '">' + val.nombre + '</button>\n' +
+                            '                                                </td>\n' +
+                            '                                                <td>\n' +
+                            '                                                    <a href="/fotoacuse/' + tipoFimg + val.tipo_aud + '">\n' +
+                            '                                                        <i class="material-icons">info</i>\n' +
+                            '                                                    </a>\n' +
+                            '                                                </td>\n' +
+                            '                                            </tr>\n' +
+                            '                                        </table>\n' +
+                            '                                        <canvas id="myCanvas' + (index + 1) + '" data-foto1="0"></canvas>\n' +
+                            '                                    </div>\n' +
+                            '                                </div>\n' +
+                            '                            </div>\n' +
+                            '                        </li>';
+                    });
+                    $$('#mostarfotos').html(fotos);
+                    $$('#totalImg').val(data.length);
                 }
-
             },
             'json'
         );

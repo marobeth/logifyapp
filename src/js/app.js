@@ -898,51 +898,13 @@ function verTarjetas(CById, numguia) {
         'json'
     );
 }
-/*
-function mostrarSttus(branchnumber,clientcode,CById,CByCC) {
-    var proyectoStatus;
-    app.request.setup({
-        headers: {
-            'apikey': localStorage.getItem('apikey')
-        },
-        beforeSend: function () {
-            app.preloader.show();
-        },
-        complete: function () {
-            app.preloader.hide();
-        }
-    });
-    app.request.get(
-        URL_WS + 'api/v2/permiso/operador/proyecto/' + clientcode+'/'+branchnumber,
-        function (data) {
-            if (data.length > 0) {
-                proyectoStatus = '<option value="">Seleccionar</option>';
-                data.forEach(function (val, index) {
-                    proyectoStatus += '<option value="' + val.idstatus_guia + '">' +  val.label + '</option>';
-                });
-                $$('#' + CById).html(proyectoStatus);
-            }else{
-                proyectoStatus='<option value="">Seleccione</option>\n' +
-                    '                                        <option value="2">Recolectado</option>\n' +
-                    '                                        <option value="3">En Ruta</option>\n' +
-                    '                                        <option value="4">Entregado</option>\n' +
-                    '                                        <option value="5">Incidencia</option>\n' +
-                    '                                        <option value="6">Devuelto</option>\n' +
-                    '                                        <option value="7">Ocurre</option>\n' +
-                    '                                        <option value="8">En Almacén</option>\n' +
-                    '                                        <option value="12">Conectado</option>';
-                $$('#' + CById).html(proyectoStatus);
-                $$('#' + CByCC).html(clientcode);
-            }
-        },
-        'json'
-    );
-}*/
+
 
 /**
  *
  * @type {Framework7}
  */
+
 var app = new Framework7({
     root: '#app', // App root element
     id: 'com.graphicsandcode.logify', // App bundle ID
@@ -1175,6 +1137,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                     }
 
                 }
+                console.log("generarStatus");
                 fnGuias.mostrarSttus(app, data['guia'][0].branch_number,data['guia'][0].client_code,'status','cdgcliente');
                 app.preloader.hide();
             },
@@ -1472,6 +1435,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
     });
     $$('#status').on('change', function (e) {
         $$('#mostarfotos').html('');
+        $$('.ocultar_campos').hide();
         var status = $$('#status').val();
         //console.log(status+num_guias);
         var numeroguia=num_guias[0];
@@ -1480,133 +1444,53 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         fnGuias.mostrarCampos(app,codCliente,braNumbre,status);
     });
     $$('#btn_cambiar_status').on('click', function (e) {
-        var latitud = $$('#latitud').val();
-        var longitud = $$('#longitud').val();
-        var status = $$('#status').val();
-        console.log(status+'entre');
-        var validado = false;
-<<<<<<< HEAD
+        console.log('btn_cambiar_status');
         var foto1, foto2, foto3, foto4, foto5;
         var canvas1, canvas2, canvas3, canvas4, canvas5;
         var statusFoto, statusFoto2, statusFoto3, statusFoto4, statusFoto5;
-        var persona_recibe, incidencia, comentarios, proveedor_ocurre, guia_ocurre;
-=======
-        var foto1,foto2,foto3,foto4,foto5;
-        var canvas1,canvas2,canvas3,canvas4,canvas5;
-        var sttsFt,sttsFt2,sttsFt3,sttsFt4,sttsFt5;
-        var statusFoto,statusFoto2,statusFoto3,statusFoto4,statusFoto5;
-        var persona_recibe,incidencia,comentarios,proveedor_ocurre,guia_ocurre;
->>>>>>> 2f7114c3493f4c9ebd34ba6641195ed7c5ce551f
+        var persona_recibe, incidencia, comentarios,status;
+        var proveedor_ocurre, guia_ocurre,latitud,longitud;
 
+        latitud = $$('#latitud').val();
+        longitud = $$('#longitud').val();
+        status = $$('#status').val();
+
+        var validado = false;
+
+        if(status == ''){
+            validado = false;
+            app.dialog.alert('Seleccione un status');
+        }
         switch (status) {
             case 'Seleccione':
                 app.dialog.alert('Seleccione un status');
                 break;
-            /*case '2':
+            case '2':
                 //Recolectado
-                statusFoto = $$('#myCanvas1').data("foto1");
-                statusFoto2 = $$('#myCanvas2').data("foto1");
                 persona_recibe = $$('#persona_recibe').val();
-
-                if (statusFoto != 0) {
-                    canvas1 = $$('#myCanvas')[0];
-                    foto1 = canvas1.toDataURL();
-                } else {
-                    foto1 = '';
-                }
-                if (statusFoto2 != 0) {
-                    canvas2 = $$('#myCanvas2')[0];
-                    foto2 = canvas2.toDataURL();
-                } else {
-                    foto2 = '';
-                }
-
-                if (foto1 == "" || foto2 == "" || persona_recibe == "") {
-                    app.dialog.alert('La foto 1, la foto 2 y la persona que recibe / entrega son obligatorios');
+                if (persona_recibe == "") {
+                    app.dialog.alert('La persona que recibe / entrega son obligatorios');
                 } else {
                     validado = true;
                 }
-                break;*/
+                break;
             case '3':
                 //Ruta
                 validado = true;
                 break;
-           /* case '4':
+            case '4':
                 //Entregado
-                statusFoto = $$('#myCanvas1').data("foto1");
-                statusFoto2 = $$('#myCanvas2').data("foto1");
-                statusFoto3 = $$('#myCanvas3').data("foto1");
-                statusFoto4 = $$('#myCanvas4').data("foto1");
-                statusFoto5 = $$('#myCanvas5').data("foto1");
                 persona_recibe = $$('#persona_recibe').val();
-
-                if (statusFoto != 0) {
-                    canvas1 = $$('#myCanvas1')[0];
-                    foto1 = canvas1.toDataURL();
-                } else {
-                    foto1 = '';
-                }
-                if (statusFoto2 != 0) {
-                    canvas2 = $$('#myCanvas2')[0];
-                    foto2 = canvas2.toDataURL();
-                } else {
-                    foto2 = '';
-                }
-                if (statusFoto3 != 0) {
-                    canvas3 = $$('#myCanvas3')[0];
-                    foto3 = canvas3.toDataURL();
-                } else {
-                    foto3 = '';
-                }
-                if (statusFoto4 != 0) {
-                    canvas4 = $$('#myCanvas4')[0];
-                    foto4 = canvas4.toDataURL();
-                } else {
-                    foto4 = '';
-                }
-                if (statusFoto5 != 0) {
-                    canvas5 = $$('#myCanvas5')[0];
-                    foto5 = canvas5.toDataURL();
-                } else {
-                    foto5 = '';
-                }
-                if (foto1 == "" || foto2 == "" || foto3 == "" || foto4 == "" || foto5 == "" || persona_recibe == "") {
-                    app.dialog.alert('La foto 1, la foto 2 , la foto 3, la foto 4 y la foto 5 y la persona que recibe / entrega son obligatorios');
+                if (persona_recibe == "") {
+                    app.dialog.alert('la persona que recibe / entrega son obligatorios');
                 } else {
                     validado = true;
                 }
-                break;*/
+                break;
             case '5':
                 //Incidencia
-                statusFoto = $$('#myCanvas1').data("foto1");
-                console.log(statusFoto);
-                statusFoto2 = $$('#myCanvas2').data("foto1");
-                console.log(statusFoto2);
-                statusFoto3 = $$('#myCanvas3').data("foto1");
-                console.log(statusFoto3);
-                statusFoto4 = $$('#myCanvas4').data("foto1");
-                console.log(statusFoto4);
-                statusFoto5 = $$('#myCanvas5').data("foto1");
-                console.log(statusFoto5);
                 incidencia = $$('#incidencia').val();
-                if (statusFoto == 1 ) {
-                    canvas1 = $$('#myCanvas1')[0];
-                    foto1 = canvas1.toDataURL();
-                }else if (statusFoto2 == 1) {
-                    canvas2 = $$('#myCanvas2')[0];
-                    foto2 = canvas2.toDataURL();
-                }else if (statusFoto3 == 1 ) {
-                    canvas3 = $$('#myCanvas3')[0];
-                    foto3 = canvas3.toDataURL();
-                }else if (statusFoto4 == 1 ) {
-                    canvas4 = $$('#myCanvas4')[0];
-                    foto4 = canvas4.toDataURL();
-                }else if (statusFoto5 == 1 ) {
-                    canvas5 = $$('#myCanvas5')[0];
-                    foto5 = canvas5.toDataURL();
-                }
-
-                if (foto1 == "" || foto2 == "" || foto3 == "" || foto4 == "" || foto5 == "" || incidencia == "") {
+                if (incidencia == "") {
                     app.dialog.alert('La fotos y la incidencia son obligatorios');
                 } else {
                     validado = true;
@@ -1636,18 +1520,20 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         }
 
         var totalImg = $$('#totalImg').val();
-        if(totalImg>0) {
-            for (var i = 0; i <= totalImg; i++) {
+        if(totalImg > 0) {
+            for (var i = 1; i <= totalImg; i++) {
+                statusFoto = $$('#myCanvas' + i).data("foto1");
                 var canvas_img = $$('#myCanvas' + i)[0];
                 var foto = canvas_img.toDataURL();
-                if (foto != 0) {
+                if (foto == '' && statusFoto == 0) {
                     validado = false;
+                    app.dialog.alert('Foto '+ i + ' esta vacío');
                 }
             }
         }
 
         if (validado == true) {
-            console.log("entre");
+            console.log("entre en  validador");
             statusFoto = $$('#myCanvas1').data("foto1");
             if (statusFoto == 1) {
                 canvas1 = $$('#myCanvas1')[0];
@@ -1712,7 +1598,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                     }
                 }
             });
-            app.request.postJSON(
+            /*app.request.postJSON(
                 URL_WS + 'changestatus/' + $$('#num_gias').val(),
                 {
                     status: status,
@@ -1738,10 +1624,10 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                     app.preloader.hide();
                 },
                 'json'
-            );
+            );*/
 
         }
-    })
+    });
 
 });
 $$(document).on('page:init', '.page[data-name="escanear"]', function (e) {
