@@ -1111,7 +1111,6 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         app.request.get(
             URL_WS + 'consulta/' + num_guias[0],
             function (data) {
-                fnGuias.mostrarSttus(app, data['guia'][0].branch_number, data['guia'][0].client_code, 'status');
                 //console.log(data['guia'][0].num_guia);
                 $$('#num_guia').html(data['guia'][0].num_guia);
                 if (data['guia'][0].branch_number == '0004') {
@@ -1133,10 +1132,13 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 if (data['guia'][0].branch_number == '0003' || data['guia'][0].branch_number == '0006') {
                     $$('#cont_paquete').html(data['guia'][0].cont_paquete);
                     $$('#cont_paquete').append('<br>');
-                    if (data['guia'][0].branch_number == '0006' && data['guia'][0].num_guia != '') {
-                        verTarjetas('verTarjeta', data['guia'][0].num_guia);
+                    if(data['guia'][0].branch_number == '0006' && data['guia'][0].num_guia !=''){
+                        verTarjetas('verTarjeta',  data['guia'][0].num_guia);
                     }
+
                 }
+                console.log("generarStatus");
+                fnGuias.mostrarSttus(app, data['guia'][0].branch_number,data['guia'][0].client_code,'status','cdgcliente');
                 app.preloader.hide();
             },
             'json'
@@ -1150,7 +1152,6 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         var new_num_guias = new_num_guias.substr(0, new_num_guias.length - 1);
         $$('#num_gias').val(new_num_guias);
     }
-
     // Vertical Buttons
     $$('.open-foto-1').on('click', function () {
         app.dialog.create({
@@ -1432,7 +1433,6 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
             }
         });
     });
-
     $$('#status').on('change', function (e) {
         $$('#mostarfotos').html('');
         $$('.ocultar_campos').hide();
@@ -1443,8 +1443,8 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         var braNumbre = numeroguia.substring(3,7);
         fnGuias.mostrarCampos(app,codCliente,braNumbre,status);
     });
-
     $$('#btn_cambiar_status').on('click', function (e) {
+        console.log('btn_cambiar_status');
         var foto1, foto2, foto3, foto4, foto5;
         var canvas1, canvas2, canvas3, canvas4, canvas5;
         var statusFoto, statusFoto2, statusFoto3, statusFoto4, statusFoto5;
@@ -1490,8 +1490,8 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
             case '5':
                 //Incidencia
                 incidencia = $$('#incidencia').val();
-                if (incidencia == 0) {
-                    app.dialog.alert('Seleccionar el tipo incidencia es obligatorio');
+                if (incidencia == "") {
+                    app.dialog.alert('La fotos y la incidencia son obligatorios');
                 } else {
                     validado = true;
                 }
@@ -1518,20 +1518,22 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 }
                 break;
         }
+
         var totalImg = $$('#totalImg').val();
         if(totalImg > 0) {
             for (var i = 1; i <= totalImg; i++) {
-                var sttsFoto = $$('#myCanvas' + i).data("foto1");
+                statusFoto = $$('#myCanvas' + i).data("foto1");
                 var canvas_img = $$('#myCanvas' + i)[0];
                 var foto = canvas_img.toDataURL();
-                if (foto == '' || sttsFoto == 0) {
-                    app.dialog.alert('Foto '+ i + ' esta vacío');
+                if (foto == '' && statusFoto == 0) {
                     validado = false;
+                    app.dialog.alert('Foto '+ i + ' esta vacío');
                 }
             }
         }
 
         if (validado == true) {
+            console.log("entre en  validador");
             statusFoto = $$('#myCanvas1').data("foto1");
             if (statusFoto == 1) {
                 canvas1 = $$('#myCanvas1')[0];
@@ -1570,14 +1572,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
 
             persona_recibe = $$('#persona_recibe').val();
             incidencia = $$('#incidencia').val();
-            console.log(incidencia);
-            var incidenciaTxt = fnGuias.traducirIncidencia(incidencia);
-            console.log(incidenciaTxt);
             comentarios = $$('#comentarios').val();
-            if(incidencia != 0 ){
-                comentarios= incidencia+ ' '+ comentarios;
-                console.log(comentarios);
-            }
             proveedor_ocurre = $$('#proveedor_ocurre').val();
             if (proveedor_ocurre == 0) {
                 proveedor_ocurre = '';
@@ -1603,7 +1598,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                     }
                 }
             });
-            app.request.postJSON(
+            /*app.request.postJSON(
                 URL_WS + 'changestatus/' + $$('#num_gias').val(),
                 {
                     status: status,
@@ -1629,7 +1624,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                     app.preloader.hide();
                 },
                 'json'
-            );
+            );*/
 
         }
     });
@@ -2836,6 +2831,5 @@ $$(document).on('page:init', '.page[data-name="solicitudgasto"]', function (e) {
 
 /**Fotografias**/
 $$(document).on('page:init', '.page[data-name="fotoacuse"]', function (e) {
-    var numGuia = app.view.main.router.currentRoute.params.numGuia;
-    fotoacuse.index(app,numGuia);
+    fotoacuse.index(app);
 });

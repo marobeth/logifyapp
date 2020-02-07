@@ -46,8 +46,9 @@ var fnGuias = {
         }
         return statusResult;
     },
-    mostrarSttus:(app,branchnumber,clientcode,CById) => {
+    mostrarSttus:(app,branchnumber,clientcode,CById,CByCC) => {
         console.log("engtre mostrarSttus");
+        console.log(branchnumber+clientcode);
         var proyectoStatus;
         app.request.setup({
             headers: {
@@ -80,13 +81,16 @@ var fnGuias = {
                         '<option value="8">En Almacén</option>\n' +
                         '<option value="12">Conectado</option>';
                     $$('#' + CById).html(proyectoStatus);
+                    $$('#' + CByCC).html(clientcode);
                 }
             },
             'json'
         );
     },
     mostrarCampos:(app,codCliente,braNumbre,status)=>{
+        console.log("engtre mostrarCampos");
         var tipoFimg=codCliente+braNumbre+status;
+        var fotos;
         switch (status) {
             case '2':
                 //Recolectado
@@ -134,6 +138,35 @@ var fnGuias = {
             case defaults:
                 $$('.ocultar_campos').hide();
         }
+    },
+    mostrarImagen:(app,codCliente,braNumbre,status,tipo_aud)=>{
+        $$('#descripcion').html('');
+        $$('#linkimagen').html('');
+        app.request.setup({
+            headers: {
+                'apikey': localStorage.getItem('apikey')
+            },
+            beforeSend: function () {
+                app.preloader.show();
+            },
+            complete: function () {
+                app.preloader.hide();
+            }
+        });
+        app.request.get(
+            config.URL_WS + 'api/v2/permiso/operador/proyecto/' + codCliente+'/'+braNumbre+'/'+status+'/'+tipo_aud,
+            function (data) {
+                if (data.length > 0) {
+                    $$('#descripcion').html('<p>'+ data[0].nombre +'</p>');
+                    $$('#linkimagen').html('<img class="infoimg" src="'+ data[0].urlimgen +'">');
+                }else{
+                    $$('#descripcion').html('<p>Foto acuse firmado por el gerente <br> de la sucursal.</p>');
+                    $$('#linkimagen').html('<img class="infoimg" src="static/fotos/Foto4_Gerente.jpg">');
+                }
+
+            },
+            'json'
+        );
     },
     fnmostrarCampos:(app,codCliente,braNumbre,status,tipoFimg)=>{
         $$('#mostarfotos').html('');
@@ -212,52 +245,6 @@ var fnGuias = {
             },
             'json'
         );
-    },
-    traducirIncidencia: function (incidencia) {
-        var incidenciaResult = '';
-        switch (incidencia) {
-            case '1':
-                //Domicilio abandonado
-                incidenciaResult = 'Domicilio abandonado';
-                break;
-            case '2':
-                //Domicilio equivocado
-                incidenciaResult = 'Domicilio equivocado';
-                break;
-            case '3':
-                //Destinatario rechaza
-                incidenciaResult = 'Destinatario rechaza';
-                break;
-            case '4':
-                //Destinatario cambió de domicilio
-                incidenciaResult = 'Destinatario cambió de domicilio';
-                break;
-            case '5':
-                //No hay respuesta en el domicilio
-                incidenciaResult = 'No hay respuesta en el domicilio';
-                break;
-            case '6':
-                //Domicilio inexistente
-                incidenciaResult = 'Domicilio inexistente';
-                break;
-            case '7':
-                //Ocurre
-                incidenciaResult = 'Número equivocado';
-                break;
-            case '8':
-                //En almacén
-                incidenciaResult = 'Destinatario Falleció';
-                break;
-            case '9':
-                //En ruta
-                incidenciaResult = 'Zona de alto riesgo';
-                break;
-            case '10':
-                //En ruta
-                incidenciaResult = 'Otro';
-                break;
-        }
-        return incidenciaResult;
     }
 };
 export default fnGuias;

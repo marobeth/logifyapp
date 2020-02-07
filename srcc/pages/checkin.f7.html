@@ -1,0 +1,74 @@
+<template>
+  <div class="page" data-name="checkin">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+        <a href="#" class="link back">
+         <i class="material-icons">chevron_left</i>
+          <span class="if-not-md"></span>
+        </a>
+        </div>
+      <div class="title">Estoy en la sucursal</div>
+      <div class="right">
+        <a href="#" data-panel="right" class="panel-open">
+         <i class="material-icons">menu</i>
+          <span class="if-not-md"></span>
+        </a>
+        </div>
+    </div>
+  </div>
+  <div class="page-content">
+    <div class="block-title">Estoy en la sucursal</div>
+     <div class="list no-hairlines-md">
+      <ul>
+        <li>
+          <div class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Escriba el número de sucursal:</div>
+              <div class="item-input-wrap">
+                <input id="input_num_sucursal_checkin" type="number" placeholder="# de sucursal"/>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="block">
+            <div class="row">
+              <a id="btn_buscar_sucursal" class="col button button-fill">Buscar</a>
+              <p>&nbsp;</p>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="block-title">Información de sucursal:</div>
+    <div id="info_tienda" class="block">
+      <h1 id="nombre_tienda" style="margin-bottom: 3px;margin-top: 3px"></h1>
+      <h2 id="edo_mun_tienda" style="margin-bottom: 3px;margin-top: 3px"></h2>
+      <p id="direccion_tienda"> </p>
+    </div>
+    <div class="block-title"><strong>PPF:</strong></div>
+    <div id="info_billetes" class="list links-list">
+      <ul id="lista_billetes"></ul>
+    </div>
+
+    <div class="block-title"><strong>Archivo Muerto:</strong></div>
+    <div id="info_am" class="list links-list">
+      <ul id="lista_am"></ul>
+    </div>
+
+    <div class="block-title"><strong>TS:</strong></div>
+    <div id="info_ts" class="list links-list">
+      <ul id="lista_ts"></ul>
+    </div>
+
+    <div class="block-title"><strong>MKT:</strong></div>
+    <div id="info_ts" class="list links-list">
+      <ul id="lista_mkt"></ul>
+    </div>
+  </div>
+</div>
+</template>
+<script>
+  export default {};
+</script>
