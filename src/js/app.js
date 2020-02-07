@@ -1617,7 +1617,6 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                     comentarios: comentarios,
                     proveedor_ocurre: proveedor_ocurre,
                     guia_ocurre: guia_ocurre
-
                 },
                 function (data) {
                     app.preloader.hide();
