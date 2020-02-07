@@ -1,0 +1,206 @@
+<template>
+    <div class="page" data-name="solicitudgasto">
+        <div class="navbar">
+            <div class="navbar-inner sliding">
+                <div class="left">
+                    <a href="#" class="link back">
+                        <i class="material-icons">chevron_left</i>
+                        <span class="if-not-md"></span>
+                    </a>
+                </div>
+                <div class="title">Solicitud Combustible</div>
+                <div class="right">
+                    <a href="#" data-panel="right" class="panel-open">
+                        <i class="material-icons">menu</i>
+                        <span class="if-not-md"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="page-content">
+            <!--<div class="block-title"> Gasto</div>-->
+            <div class="list no-hairlines-md">
+                <form class="list">
+                    <ul>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Fecha</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" id="fgasto" name="fgasto" placeholder="Fecha"
+                                               readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Vehiculo</div>
+                                    <div class="item-input-wrap">
+                                        <select name="vehiculo" id="vehiculo" readonly>
+                                            <option value="">Seleccionar</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Monto</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" name="monto" id="monto" placeholder="00.00" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Odómetro</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" id="odometro" name="odometro" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Precio x Litro</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" id="prcltrs" name="prcltrs">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Total litros cargados</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" id="ltsttls" name="ltsttls">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Proveedor</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" placeholder="PEMEX" name="nameprovedor" id="nameprovedor">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Método de Pago</div>
+                                    <div class="item-input-wrap">
+                                        <select name="MtdPago" id="MtdPago">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Tipo Comprobante</div>
+                                    <div class="item-input-wrap">
+                                        <select name="TpoCmprbnt" id="TpoCmprbnt">
+                                            <option value="1" selected>Ticket</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Folio o No. del Comprobante</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" name="numticket" id="numticket">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Subir Comprobante<a id="openFotoGasto"><i
+                                            class="icon f7-icons color-gray"> photo_camera </i></a></div>
+                                    <div id="mediaColocar" data-status="0"></div>
+                                    <div class="item-input-wrap">
+                                        <canvas id="myCanvasGastos" data-foto1="0"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="TMtdPago">
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Subir PDF <i
+                                            class="material-icons color-gray">picture_as_pdf</i></div>
+                                    <div class="item-input-wrap">
+                                        <input type="file" name="PFDGastos" id="PFDGastos" placeholder="PFDGastos">
+                                        <div class="list links-list" id="pdfhrf">
+                                            <ul>
+                                                <li class="cmrStyle">
+                                                    <a href="#">
+                                                        <div id="pdfColocar" class="pdfColocar cmrStylelink"
+                                                             data-file="0" data-status="0"></div>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="TMtdPago">
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Subir XML<i
+                                            class="icon f7-icons color-gray">document_fill</i></div>
+                                    <div class="item-input-wrap">
+                                        <input type="file" name="XMLGastos" id="XMLGastos" placeholder="XMLGastos">
+                                        <div class="list links-list" id="xmlhrf">
+                                            <ul>
+                                                <li class="cmrStyle">
+                                                    <a href="#">
+                                                        <div id="xmlColocar" class="xmlColocar cmrStylelink"
+                                                             data-file="0" data-status="0"></div>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Observaciones</div>
+                                    <div class="item-input-wrap">
+                                        <textarea name="obs_comprobante" id="obs_comprobante"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="block row">
+                        <div class="col"><a class="col button button-fill" id="btn_gastos_solicitud">Agregar</a></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    export default {};
+</script>

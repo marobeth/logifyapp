@@ -47,7 +47,7 @@ var fnGuias = {
         return statusResult;
     },
     mostrarSttus:(app,branchnumber,clientcode,CById) => {
-        //console.log("engtre mostrarSttus");
+        console.log("engtre mostrarSttus");
         var proyectoStatus;
         app.request.setup({
             headers: {
@@ -86,7 +86,9 @@ var fnGuias = {
         );
     },
     mostrarCampos:(app,codCliente,braNumbre,status)=>{
+        console.log("engtre mostrarCampos");
         var tipoFimg=codCliente+braNumbre+status;
+        var fotos;
         switch (status) {
             case '2':
                 //Recolectado
@@ -135,6 +137,7 @@ var fnGuias = {
                 $$('.ocultar_campos').hide();
         }
     },
+
     fnmostrarCampos:(app,codCliente,braNumbre,status,tipoFimg)=>{
         $$('#mostarfotos').html('');
         var fotos ='';
@@ -212,52 +215,6 @@ var fnGuias = {
             },
             'json'
         );
-    },
-    traducirIncidencia: function (incidencia) {
-        var incidenciaResult = '';
-        switch (incidencia) {
-            case '1':
-                //Domicilio abandonado
-                incidenciaResult = 'Domicilio abandonado';
-                break;
-            case '2':
-                //Domicilio equivocado
-                incidenciaResult = 'Domicilio equivocado';
-                break;
-            case '3':
-                //Destinatario rechaza
-                incidenciaResult = 'Destinatario rechaza';
-                break;
-            case '4':
-                //Destinatario cambió de domicilio
-                incidenciaResult = 'Destinatario cambió de domicilio';
-                break;
-            case '5':
-                //No hay respuesta en el domicilio
-                incidenciaResult = 'No hay respuesta en el domicilio';
-                break;
-            case '6':
-                //Domicilio inexistente
-                incidenciaResult = 'Domicilio inexistente';
-                break;
-            case '7':
-                //Ocurre
-                incidenciaResult = 'Número equivocado';
-                break;
-            case '8':
-                //En almacén
-                incidenciaResult = 'Destinatario Falleció';
-                break;
-            case '9':
-                //En ruta
-                incidenciaResult = 'Zona de alto riesgo';
-                break;
-            case '10':
-                //En ruta
-                incidenciaResult = 'Otro';
-                break;
-        }
-        return incidenciaResult;
     }
 };
 export default fnGuias;

@@ -1,0 +1,107 @@
+<template>
+    <div class="page" data-name="addsolicitud">
+        <div class="navbar">
+            <div class="navbar-inner sliding">
+                <div class="left">
+                    <a href="#" class="link back">
+                        <i class="material-icons">chevron_left</i>
+                        <span class="if-not-md"></span>
+                    </a>
+                </div>
+                <div class="title">Agregar Solicitud</div>
+                <div class="right">
+                    <a href="#" data-panel="right" class="panel-open">
+                        <i class="material-icons">menu</i>
+                        <span class="if-not-md"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="page-content">
+            <div class="list no-hairlines-md">
+                <form class="list" id="myGastos">
+                    <ul>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Fecha</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" id="fsolicitud" name="fsolicitud" placeholder="Fecha"
+                                               readonly required>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Tipo de Unidad</div>
+                                    <div class="item-input-wrap">
+                                        <select name="TpoUnidad" id="TpoUnidad">
+                                            <option value="0">Seleccionar</option>
+                                            <option value="1">Logify</option>
+                                            <option value="2">Rentado</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Vehículo</div>
+                                    <div class="item-input-wrap">
+                                        <select name="vehiculo" id="vehiculo">
+                                            <option value="0">Seleccionar</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Monto</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" name="monto" id="monto" placeholder="00.00">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Odómetro</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" id="odometro" name="odometro"
+                                               placeholder="Odometro">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Subir Foto Odómetro
+                                        <a id="openFotoOdometro" class="openFotoOdometro">
+                                            <i class="icon f7-icons color-gray"> photo_camera_fill</i>
+                                        </a>
+                                    </div>
+                                    <div class="item-input-wrap">
+                                        <canvas id="myCanvasOdometro" data-foto1="0"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="block row">
+                        <div class="col"><a class="col button button-fill" id="btnsolicitud">Solicitar</a></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    export default {};
+</script>
