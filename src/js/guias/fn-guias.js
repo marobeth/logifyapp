@@ -1,6 +1,6 @@
 import $$ from "dom7";
 import config from '../config';
-import defaults from "@babel/runtime/helpers/esm/defaults";
+import funcionesCamara from "../funcionesCamara";
 
 
 var fnGuias = {
@@ -46,7 +46,7 @@ var fnGuias = {
         }
         return statusResult;
     },
-    mostrarSttus:(app,branchnumber,clientcode,CById) => {
+    mostrarSttus: (app, branchnumber, clientcode, CById) => {
         //console.log("engtre mostrarSttus");
         var proyectoStatus;
         app.request.setup({
@@ -61,16 +61,16 @@ var fnGuias = {
             }
         });
         app.request.get(
-            config.URL_WS + 'api/v2/permiso/operador/proyecto/' + clientcode+'/'+branchnumber,
+            config.URL_WS + 'api/v2/permiso/operador/proyecto/' + clientcode + '/' + branchnumber,
             function (data) {
                 if (data.length > 0) {
                     proyectoStatus = '<option value="">Seleccionar</option>';
                     data.forEach((val, index) => {
-                        proyectoStatus += '<option value="' + val.idstatus_guia + '">' +  val.label + '</option>';
+                        proyectoStatus += '<option value="' + val.idstatus_guia + '">' + val.label + '</option>';
                     });
                     $$('#' + CById).html(proyectoStatus);
-                }else{
-                    proyectoStatus='<option value="">Seleccione</option>\n' +
+                } else {
+                    proyectoStatus = '<option value="">Seleccione</option>\n' +
                         '<option value="2">Recolectado</option>\n' +
                         '<option value="3">En Ruta</option>\n' +
                         '<option value="4">Entregado</option>\n' +
@@ -86,16 +86,17 @@ var fnGuias = {
             'json'
         );
     },
-    mostrarCampos:(app,codCliente,braNumbre,status)=>{
-        console.log("engtre mostrarCampos");
-        var tipoFimg=codCliente+braNumbre+status;
-        var fotos;
+    mostrarCampos: (app, codCliente, braNumbre, status) => {
+        console.log("engtre mostrarCampos 1 sss");
+        var tipoFimg = codCliente + braNumbre + status;
+        console.log("status:" + status);
         switch (status) {
             case '2':
                 //Recolectado
+                console.log("Recolectado");
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_recolectado').show();
-                fnGuias.fnmostrarCampos(app,codCliente,braNumbre,status,tipoFimg);
+                fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
                 break;
             case '3':
                 //En ruta
@@ -106,13 +107,13 @@ var fnGuias = {
                 //Entregado
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_entregado').show();
-                fnGuias.fnmostrarCampos(app,codCliente,braNumbre,status,tipoFimg);
+                fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
                 break;
             case '5':
                 //Incidencia
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_incidencia').show();
-                fnGuias.fnmostrarCampos(app,codCliente,braNumbre,status,tipoFimg);
+                fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
                 break;
             case '6':
                 //Devuelto
@@ -138,7 +139,7 @@ var fnGuias = {
                 $$('.ocultar_campos').hide();
         }
     },
-    mostrarImagen:(app,codCliente,braNumbre,status,tipo_aud)=>{
+    mostrarImagen: (app, codCliente, braNumbre, status, tipo_aud) => {
         $$('#descripcion').html('');
         $$('#linkimagen').html('');
         app.request.setup({
@@ -153,12 +154,12 @@ var fnGuias = {
             }
         });
         app.request.get(
-            config.URL_WS + 'api/v2/permiso/operador/proyecto/' + codCliente+'/'+braNumbre+'/'+status+'/'+tipo_aud,
+            config.URL_WS + 'api/v2/permiso/operador/proyecto/' + codCliente + '/' + braNumbre + '/' + status + '/' + tipo_aud,
             function (data) {
                 if (data.length > 0) {
-                    $$('#descripcion').html('<p>'+ data[0].nombre +'</p>');
-                    $$('#linkimagen').html('<img class="infoimg" src="'+ data[0].urlimgen +'">');
-                }else{
+                    $$('#descripcion').html('<p>' + data[0].nombre + '</p>');
+                    $$('#linkimagen').html('<img class="infoimg" src="' + data[0].urlimgen + '">');
+                } else {
                     $$('#descripcion').html('<p>Foto acuse firmado por el gerente <br> de la sucursal.</p>');
                     $$('#linkimagen').html('<img class="infoimg" src="static/fotos/Foto4_Gerente.jpg">');
                 }
@@ -167,9 +168,9 @@ var fnGuias = {
             'json'
         );
     },
-    fnmostrarCampos:(app,codCliente,braNumbre,status,tipoFimg)=>{
+    fnmostrarCampos: (app, codCliente, braNumbre, status, tipoFimg) => {
         $$('#mostarfotos').html('');
-        var fotos ='';
+        var fotos = '';
         app.request.setup({
             headers: {
                 'apikey': localStorage.getItem('apikey')
@@ -184,9 +185,10 @@ var fnGuias = {
         app.request.get(
             config.URL_WS + 'api/v2/permiso/operador/proyecto/' + codCliente + '/' + braNumbre + '/' + status,
             function (data) {
+                console.log(data);
                 if (data.length > 0) {
                     data.forEach((val, index) => {
-                        fotos += '<li>\n' +
+                        fotos = '<li>\n' +
                             '                            <div class="item-content item-input">\n' +
                             '                                <div class="item-inner">\n' +
                             '                                    <div class="item-title item-label"></div>\n' +
@@ -194,7 +196,7 @@ var fnGuias = {
                             '                                        <table class="tablefoto">\n' +
                             '                                            <tr>\n' +
                             '                                                <td>\n' +
-                            '                                                    <button class="button open-foto-' + (index + 1) + '">' + val.nombre + '</button>\n' +
+                            '                                                    <button class="button open-foto" data-id="' + (index + 1) + '">' + val.nombre + '</button>\n' +
                             '                                                </td>\n' +
                             '                                                <td>\n' +
                             '                                                    <a href="/fotoacuse/' + tipoFimg + val.tipo_aud + '">\n' +
@@ -208,14 +210,19 @@ var fnGuias = {
                             '                                </div>\n' +
                             '                            </div>\n' +
                             '                        </li>';
+                        console.log((index + 1));
+
+                        $$('#mostarfotos').append(fotos);
                     });
-                    $$('#mostarfotos').html(fotos);
+                    var nav = navigator;
+                    funcionesCamara.fnInput(app, '.open-foto', 'data-id');
                     $$('#totalImg').val(data.length);
-                }else{
+                } else {
+                    var detAcuse = [{nombre: "Foto Acuse"}, {nombre: "Foto Guía"}, {nombre: "Foto Guía Logify"}, {nombre: "Foto Firma"}, {nombre: "Foto Selfi"},];
                     console.log('default campos');
-                    var val=5;
-                    data.forEach((val, index) => {
-                        fotos += '<li>\n' +
+                    var val = 5;
+                    detAcuse.forEach((val, index) => {
+                        fotos = '<li>\n' +
                             '                            <div class="item-content item-input">\n' +
                             '                                <div class="item-inner">\n' +
                             '                                    <div class="item-title item-label"></div>\n' +
@@ -223,11 +230,11 @@ var fnGuias = {
                             '                                        <table class="tablefoto">\n' +
                             '                                            <tr>\n' +
                             '                                                <td>\n' +
-                            '                                                    <button class="button open-foto-' + (index + 1) + '">' + val.nombre + '</button>\n' +
+                            '                                                    <button class="button open-foto" data-id="' + (index + 1) + '">' + val.nombre + '</button>\n' +
                             '                                                </td>\n' +
                             '                                                <td>\n' +
                             '                                                    <a href="/fotoacuse/' + tipoFimg + val.tipo_aud + '">\n' +
-                            '                                                        <i class="material-icons">info</i>\n' +
+                            '                                                        <!--<i class="material-icons">info</i>-->\n' +
                             '                                                    </a>\n' +
                             '                                                </td>\n' +
                             '                                            </tr>\n' +
@@ -237,9 +244,12 @@ var fnGuias = {
                             '                                </div>\n' +
                             '                            </div>\n' +
                             '                        </li>';
+
+                        $$('#mostarfotos').append(fotos);
                     });
-                    $$('#mostarfotos').html(fotos);
-                    $$('#totalImg').val(data.length);
+                    $$('#totalImg').val(detAcuse.length);
+                    funcionesCamara.fnInput(app, '.open-foto', 'data-id');
+                    console.log('#totalImg:' + detAcuse.length);
                 }
             },
             'json'

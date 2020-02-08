@@ -13,6 +13,7 @@ import routes from './routes.js';
 import fnGuias from './guias/fn-guias';
 import config from './config';
 import fotoacuse from './fotoacuse';
+import funcionesCamara from "./funcionesCamara";
 
 /**
  *
@@ -153,7 +154,8 @@ var resize_image = function (img, canvas, max_width, max_height) {
     canvas.width = img.width * ratio;
     canvas.height = img.height * ratio;
     ctx.drawImage(canvasCopy, 0, 0, canvasCopy.width, canvasCopy.height, 0, 0, canvas.width, canvas.height);
-}
+};
+
 function imageCapture() {
     var options = {limit: 1};
     navigator.device.capture.captureImage(onSuccess, onError, options);
@@ -194,7 +196,7 @@ function openCamera(idCanvas) {
     var pictureSource = navigator.camera.PictureSourceType;
     var destinationType = navigator.camera.DestinationType;
     var srcType = pictureSource.CAMERA;
-    navigator.device.capture.captureImage(function onSuccess(mediaFiles) {
+    navigator.device.capture.captureImage(function captureSuccess(mediaFiles) {
         //navigator.camera.getPicture(function onSuccess(mediaFiles) {
         $$('#' + idCanvas).show();
         ///var canvas = $$('#' + idCanvas)[0];
@@ -209,8 +211,8 @@ function openCamera(idCanvas) {
         img.src = mediaFiles[0].fullPath;
         $$('#' + idCanvas).data("foto1", 1);
         navigator.camera.cleanup();
-    }, function cameraError(error) {
-        console.debug("No se puede obtener una foto: " + error, "app");
+    }, function captureError(error) {
+        console.debug("No se puede obtener una foto openCamera: " + error, "app");
     }, {
         limit: 1,
         quality: 50,
@@ -243,7 +245,7 @@ function openFilePicker(idCanvas) {
         img.src = imageURI;
         $$('#' + idCanvas).data("foto1", 1);
     }, function cameraError(error) {
-        console.debug("No se puede obtener una foto: " + error, "app");
+        console.debug("No se puede obtener una foto openFilePicker: " + error, "app");
     }, {
         quality: 50,
         targetWidth: 800,
@@ -1441,7 +1443,57 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         var numeroguia=num_guias[0];
         var codCliente = numeroguia.substring(0,3);
         var braNumbre = numeroguia.substring(3,7);
-        fnGuias.mostrarCampos(app,codCliente,braNumbre,status);
+        console.log("engtre mostrarCampos"+status);
+        var tipoFimg=codCliente+braNumbre+status;
+        console.log("status:"+status);
+        switch (status) {
+            case '2':
+                //Recolectado
+                console.log("Recolectado");
+                $$('.ocultar_campos').hide();
+                $$('.mostrar_recolectado').show();
+                fnGuias.fnmostrarCampos(app,codCliente,braNumbre,status,tipoFimg);
+                break;
+            case '3':
+                //En ruta
+                $$('.ocultar_campos').hide();
+                $$('.mostrar_enruta').show();
+                break;
+            case '4':
+                //Entregado
+                $$('.ocultar_campos').hide();
+                $$('.mostrar_entregado').show();
+                fnGuias.fnmostrarCampos(app,codCliente,braNumbre,status,tipoFimg);
+                break;
+            case '5':
+                //Incidencia
+                $$('.ocultar_campos').hide();
+                $$('.mostrar_incidencia').show();
+                fnGuias.fnmostrarCampos(app,codCliente,braNumbre,status,tipoFimg);
+                break;
+            case '6':
+                //Devuelto
+                $$('.ocultar_campos').hide();
+                $$('.mostrar_devuelto').show();
+                break;
+            case '7':
+                //Ocurre
+                $$('.ocultar_campos').hide();
+                $$('.mostrar_ocurre').show();
+                break;
+            case '8':
+                //En almacén
+                $$('.ocultar_campos').hide();
+                $$('.mostrar_enalmacen').show();
+                break;
+            case '12':
+                //En conectado
+                $$('.ocultar_campos').hide();
+                $$('.mostrar_conectado').show();
+                break;
+            case defaults:
+                $$('.ocultar_campos').hide();
+        }
     });
 
     $$('#btn_cambiar_status').on('click', function (e) {
@@ -2838,3 +2890,91 @@ $$(document).on('page:init', '.page[data-name="fotoacuse"]', function (e) {
     var numGuia = app.view.main.router.currentRoute.params.numGuia;
     fotoacuse.index(app,numGuia);
 });
+
+function monstrarImagenes(codCliente,braNumbre,status,tipoFimg){
+    $$('#mostarfotos').html('');
+    var fotos ='';
+    app.request.setup({
+        headers: {
+            'apikey': localStorage.getItem('apikey')
+        },
+        beforeSend: function () {
+            app.preloader.show();
+        },
+        complete: function () {
+            app.preloader.hide();
+        }
+    });
+    app.request.get(
+        config.URL_WS + 'api/v2/permiso/operador/proyecto/' + codCliente + '/' + braNumbre + '/' + status,
+        function (data) {
+            console.log("#totalImg:"+data.length);
+            if (data.length > 0) {
+                console.log("default campos");
+                data.forEach((val, index) => {
+                    fotos = '<li>\n' +
+                        '                            <div class="item-content item-input">\n' +
+                        '                                <div class="item-inner">\n' +
+                        '                                    <div class="item-title item-label"></div>\n' +
+                        '                                    <div class="item-input-wrap">\n' +
+                        '                                        <table class="tablefoto">\n' +
+                        '                                            <tr>\n' +
+                        '                                                <td>\n' +
+                        '                                                    <button class="button open-foto" data-id="' + (index + 1) + '">' + val.nombre + '</button>\n' +
+                        '                                                </td>\n' +
+                        '                                                <td>\n' +
+                        '                                                    <a href="/fotoacuse/' + tipoFimg + val.tipo_aud + '">\n' +
+                        '                                                        <i class="material-icons">info</i>\n' +
+                        '                                                    </a>\n' +
+                        '                                                </td>\n' +
+                        '                                            </tr>\n' +
+                        '                                        </table>\n' +
+                        '                                        <canvas id="myCanvas' + (index + 1) + '" data-foto1="0"></canvas>\n' +
+                        '                                    </div>\n' +
+                        '                                </div>\n' +
+                        '                            </div>\n' +
+                        '                        </li>';
+                    console.log((index + 1));
+
+                    $$('#mostarfotos').append(fotos);
+                });
+                var nav = navigator;
+                funcionesCamara.fnInput(app,'.open-foto');
+                $$('#totalImg').val(data.length);
+            }else{
+                console.log('default campos');
+                var val=5;
+                data.forEach((val, index) => {
+                    fotos += '<li>\n' +
+                        '                            <div class="item-content item-input">\n' +
+                        '                                <div class="item-inner">\n' +
+                        '                                    <div class="item-title item-label"></div>\n' +
+                        '                                    <div class="item-input-wrap">\n' +
+                        '                                        <table class="tablefoto">\n' +
+                        '                                            <tr>\n' +
+                        '                                                <td>\n' +
+                        '                                                    <button class="button open-foto-' + (index + 1) + '" data-id="' + (index + 1) + '">' + val.nombre + '</button>\n' +
+                        '                                                </td>\n' +
+                        '                                                <td>\n' +
+                        '                                                    <a href="/fotoacuse/' + tipoFimg + val.tipo_aud + '">\n' +
+                        '                                                        <i class="material-icons">info</i>\n' +
+                        '                                                    </a>\n' +
+                        '                                                </td>\n' +
+                        '                                            </tr>\n' +
+                        '                                        </table>\n' +
+                        '                                        <canvas id="myCanvas' + (index + 1) + '" data-foto1="0"></canvas>\n' +
+                        '                                    </div>\n' +
+                        '                                </div>\n' +
+                        '                            </div>\n' +
+                        '                        </li>';
+
+                    $$('#mostarfotos').append(fotos);
+                });
+                $$('#totalImg').val(data.length);
+                funcionesCamara.fnInput(app,'.open-foto');
+                console.log('#totalImg:'+data.length);
+            }
+        },
+        'json'
+    );
+}

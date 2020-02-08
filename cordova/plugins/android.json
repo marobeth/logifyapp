@@ -7,59 +7,40 @@
     "files": {}
   },
   "installed_plugins": {
-    "cordova-plugin-keyboard": {
-      "PACKAGE_NAME": "com.graphicsandcode.logify"
-    },
-    "cordova-plugin-splashscreen": {
-      "PACKAGE_NAME": "com.graphicsandcode.logify"
-    },
-    "cordova-plugin-statusbar": {
-      "PACKAGE_NAME": "com.graphicsandcode.logify"
-    },
-    "cordova-plugin-whitelist": {
-      "PACKAGE_NAME": "com.graphicsandcode.logify"
-    },
-    "cordova-plugin-wkwebview-engine": {
+    "com.darktalker.cordova.screenshot": {
       "PACKAGE_NAME": "com.graphicsandcode.logify"
     },
     "cordova-plugin-android-permissions": {
       "PACKAGE_NAME": "com.graphicsandcode.logify"
     },
+    "cordova-plugin-media": {
+      "PACKAGE_NAME": "com.graphicsandcode.logify"
+    },
+    "org.apache.cordova.camera": {
+      "PACKAGE_NAME": "com.graphicsandcode.logify"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "com.graphicsandcode.logify"
+    },
     "cordova-plugin-media-capture": {
+      "PACKAGE_NAME": "com.graphicsandcode.logify"
+    },
+    "cordova-plugin-qr-barcode-scanner": {
+      "ANDROID_SUPPORT_V4_VERSION": "27.+",
       "PACKAGE_NAME": "com.graphicsandcode.logify"
     },
     "cordova-plugin-geolocation": {
       "PACKAGE_NAME": "com.graphicsandcode.logify"
     },
-    "phonegap-plugin-barcodescanner": {
-      "ANDROID_SUPPORT_V4_VERSION": "27.+",
+    "cordova-plugin-inappbrowser": {
       "PACKAGE_NAME": "com.graphicsandcode.logify"
     },
-    "com.darktalker.cordova.screenshot": {
-      "PACKAGE_NAME": "com.graphicsandcode.logify"
-    },
-    "phonegap-plugin-image-capture": {
-      "PACKAGE_NAME": "com.graphicsandcode.logify"
-    },
-    "cordova-plugin-media": {
+    "cordova-plugin-file": {
       "PACKAGE_NAME": "com.graphicsandcode.logify"
     },
     "cordova-plugin-file-transfer": {
       "PACKAGE_NAME": "com.graphicsandcode.logify"
-    },
-    "cordova-plugin-inappbrowser": {
-      "PACKAGE_NAME": "com.graphicsandcode.logify"
     }
   },
-  "dependent_plugins": {
-    "cordova-plugin-file": {
-      "PACKAGE_NAME": "com.graphicsandcode.logify"
-    },
-    "es6-promise-plugin": {
-      "PACKAGE_NAME": "com.graphicsandcode.logify"
-    },
-    "phonegap-plugin-media-stream": {
-      "PACKAGE_NAME": "com.graphicsandcode.logify"
-    }
-  }
+  "dependent_plugins": {}
 }
