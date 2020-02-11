@@ -4,17 +4,17 @@ import config from "./config";
 
 var fotoacuse = {
     index:(app,numGuia)=>{
-        var codCliente = numGuia.substring(0,3);
-        var braNumbre = numGuia.substring(3,7);
-        var status = numGuia.substring(7,8);
-        var tipo_aud = numGuia.substring(8,9);
-        console.log('entre mostrarimagen'+codCliente+braNumbre+status+tipo_aud);
+        var imgnumguia= numGuia.split("-");
+        //console.log(imgnumguia);
+        var codCliente = imgnumguia[0];
+        var braNumbre = imgnumguia[1];
+        var status = imgnumguia[2];
+        var tipo_aud = imgnumguia[3];
         fotoacuse.mostrarImagen(app,codCliente,braNumbre,status,tipo_aud);
     },
     mostrarImagen:(app,codCliente,braNumbre,status,tipo_aud)=>{
         $$('#descripcion').html('');
         $$('#linkimagen').html('');
-        console.log('entre funcionmostrarimagen'+codCliente+braNumbre+status+tipo_aud);
         app.request.setup({
             headers: {
                 'apikey': localStorage.getItem('apikey')

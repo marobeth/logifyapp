@@ -1443,13 +1443,13 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         var numeroguia=num_guias[0];
         var codCliente = numeroguia.substring(0,3);
         var braNumbre = numeroguia.substring(3,7);
-        console.log("engtre mostrarCampos"+status);
-        var tipoFimg=codCliente+braNumbre+status;
-        console.log("status:"+status);
+        //console.log("engtre mostrarCampos"+status);
+        var tipoFimg=codCliente+'-'+braNumbre+'-'+status;
+        //console.log("status:"+status);
         switch (status) {
             case '2':
                 //Recolectado
-                console.log("Recolectado");
+                //console.log("Recolectado");
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_recolectado').show();
                 fnGuias.fnmostrarCampos(app,codCliente,braNumbre,status,tipoFimg);
@@ -2888,6 +2888,7 @@ $$(document).on('page:init', '.page[data-name="solicitudgasto"]', function (e) {
 /**Fotografias**/
 $$(document).on('page:init', '.page[data-name="fotoacuse"]', function (e) {
     var numGuia = app.view.main.router.currentRoute.params.numGuia;
+    //console.log(numGuia);
     fotoacuse.index(app,numGuia);
 });
 
@@ -2908,7 +2909,7 @@ function monstrarImagenes(codCliente,braNumbre,status,tipoFimg){
     app.request.get(
         config.URL_WS + 'api/v2/permiso/operador/proyecto/' + codCliente + '/' + braNumbre + '/' + status,
         function (data) {
-            console.log("#totalImg:"+data.length);
+            //console.log("#totalImg:"+data.length);
             if (data.length > 0) {
                 console.log("default campos");
                 data.forEach((val, index) => {
@@ -2942,7 +2943,7 @@ function monstrarImagenes(codCliente,braNumbre,status,tipoFimg){
                 funcionesCamara.fnInput(app,'.open-foto');
                 $$('#totalImg').val(data.length);
             }else{
-                console.log('default campos');
+                //console.log('default campos');
                 var val=5;
                 data.forEach((val, index) => {
                     fotos += '<li>\n' +
@@ -2972,7 +2973,7 @@ function monstrarImagenes(codCliente,braNumbre,status,tipoFimg){
                 });
                 $$('#totalImg').val(data.length);
                 funcionesCamara.fnInput(app,'.open-foto');
-                console.log('#totalImg:'+data.length);
+               // console.log('#totalImg:'+data.length);
             }
         },
         'json'

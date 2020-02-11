@@ -87,9 +87,8 @@ var fnGuias = {
         );
     },
     mostrarCampos: (app, codCliente, braNumbre, status) => {
-        console.log("engtre mostrarCampos 1 sss");
         var tipoFimg = codCliente + braNumbre + status;
-        console.log("status:" + status);
+        //console.log("status:" + status);
         switch (status) {
             case '2':
                 //Recolectado
@@ -185,7 +184,7 @@ var fnGuias = {
         app.request.get(
             config.URL_WS + 'api/v2/permiso/operador/proyecto/' + codCliente + '/' + braNumbre + '/' + status,
             function (data) {
-                console.log(data);
+                //console.log(data);
                 if (data.length > 0) {
                     data.forEach((val, index) => {
                         fotos = '<li>\n' +
@@ -199,7 +198,7 @@ var fnGuias = {
                             '                                                    <button class="button open-foto" data-id="' + (index + 1) + '">' + val.nombre + '</button>\n' +
                             '                                                </td>\n' +
                             '                                                <td>\n' +
-                            '                                                    <a href="/fotoacuse/' + tipoFimg + val.tipo_aud + '">\n' +
+                            '                                                    <a href="/fotoacuse/' + tipoFimg +'-'+ val.tipo_aud + '">\n' +
                             '                                                        <i class="material-icons">info</i>\n' +
                             '                                                    </a>\n' +
                             '                                                </td>\n' +
@@ -210,8 +209,6 @@ var fnGuias = {
                             '                                </div>\n' +
                             '                            </div>\n' +
                             '                        </li>';
-                        console.log((index + 1));
-
                         $$('#mostarfotos').append(fotos);
                     });
                     var nav = navigator;
@@ -219,7 +216,7 @@ var fnGuias = {
                     $$('#totalImg').val(data.length);
                 } else {
                     var detAcuse = [{nombre: "Foto Acuse"}, {nombre: "Foto Guía"}, {nombre: "Foto Guía Logify"}, {nombre: "Foto Firma"}, {nombre: "Foto Selfi"},];
-                    console.log('default campos');
+                   // console.log('default campos');
                     var val = 5;
                     detAcuse.forEach((val, index) => {
                         fotos = '<li>\n' +
@@ -249,7 +246,7 @@ var fnGuias = {
                     });
                     $$('#totalImg').val(detAcuse.length);
                     funcionesCamara.fnInput(app, '.open-foto', 'data-id');
-                    console.log('#totalImg:' + detAcuse.length);
+                    //console.log('#totalImg:' + detAcuse.length);
                 }
             },
             'json'
