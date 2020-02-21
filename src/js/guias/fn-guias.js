@@ -70,7 +70,7 @@ var fnGuias = {
                     });
                     $$('#' + CById).html(proyectoStatus);
                 } else {
-                    proyectoStatus = '<option value="">Seleccione</option>\n' +
+                    proyectoStatus = '<option value="">Seleccionar</option>\n' +
                         '<option value="2">Recolectado</option>\n' +
                         '<option value="3">En Ruta</option>\n' +
                         '<option value="4">Entregado</option>\n' +

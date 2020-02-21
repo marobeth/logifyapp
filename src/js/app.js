@@ -1514,7 +1514,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
             app.dialog.alert('Seleccione un status');
         }
         switch (status) {
-            case 'Seleccione':
+            case 'Seleccionar':
                 app.dialog.alert('Seleccione un status');
                 break;
             case '2':
@@ -1636,6 +1636,10 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
             }
             guia_ocurre = $$('#guia_ocurre').val();
 
+            var guiaslista=$$('#num_gias').val();
+            guiaslista = guiaslista.split("|");
+            var TtlLista=guiaslista.length;
+
             app.request.setup({
                 headers: {
                     'apikey': localStorage.getItem('apikey')
@@ -1655,36 +1659,66 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                     }
                 }
             });
-            app.request.postJSON(
-                URL_WS + 'changestatus/' + $$('#num_gias').val(),
-                {
-                    status: status,
-                    latlong: latitud + ',' + longitud,
-                    foto1: foto1,
-                    foto2: foto2,
-                    foto3: foto3,
-                    foto4: foto4,
-                    foto5: foto5,
-                    persona_recibe: persona_recibe,
-                    comentarios: comentarios,
-                    proveedor_ocurre: proveedor_ocurre,
-                    guia_ocurre: guia_ocurre
-                },
-                function (data) {
-                    app.preloader.hide();
-                    app.dialog.alert("Datos guardados correctamente", function () {
-                        $$('#btn_buscar_sucursal').click();
-                    });
-                    app.views.main.router.back();
-                }, function (error) {
-                    app.preloader.hide();
-                },
-                'json'
-            );
-
+            if (TtlLista == 1) {
+                app.request.postJSON(
+                    URL_WS + 'changestatus/' + $$('#num_gias').val(),
+                    {
+                        status: status,
+                        latlong: latitud + ',' + longitud,
+                        foto1: foto1,
+                        foto2: foto2,
+                        foto3: foto3,
+                        foto4: foto4,
+                        foto5: foto5,
+                        persona_recibe: persona_recibe,
+                        comentarios: comentarios,
+                        proveedor_ocurre: proveedor_ocurre,
+                        guia_ocurre: guia_ocurre
+                    },
+                    function (data) {
+                        app.preloader.hide();
+                        app.dialog.alert("Datos guardados correctamente", function () {
+                            $$('#btn_buscar_sucursal').click();
+                        });
+                        app.views.main.router.back();
+                    }, function (error) {
+                        app.preloader.hide();
+                    },
+                    'json'
+                );
+            } else {
+                guiaslista.forEach(function (v, i) {
+                    var guiaMasivaInd = v;
+                    app.request.postJSON(
+                        URL_WS + 'changestatus/' + guiaMasivaInd,
+                        {
+                            status: status,
+                            latlong: latitud + ',' + longitud,
+                            foto1: foto1,
+                            foto2: foto2,
+                            foto3: foto3,
+                            foto4: foto4,
+                            foto5: foto5,
+                            persona_recibe: persona_recibe,
+                            comentarios: comentarios,
+                            proveedor_ocurre: proveedor_ocurre,
+                            guia_ocurre: guia_ocurre
+                        },
+                        function (data) {
+                            app.preloader.hide();
+                            app.dialog.alert("Datos guardados correctamente " + guiaMasivaInd, function () {
+                            });
+                            //app.views.main.router.back();
+                        }, function (error) {
+                            app.preloader.hide();
+                        },
+                        'json'
+                    );
+                    app.views.main.router.navigate('/escanear/', {reloadCurrent: false});
+                });
+            }
         }
     });
-
 });
 $$(document).on('page:init', '.page[data-name="escanear"]', function (e) {
     $$('#btn_escanear').on('click', function () {
@@ -1708,6 +1742,7 @@ $$(document).on('page:init', '.page[data-name="escanear"]', function (e) {
                             $$('#lista_guias_scan').append('<li>' + num_guia + ' - ' + detectarProyecto(num_guia) + '</li>');
                             $$('#hidden_guias_scan').val(num_guia + '|' + $$('#hidden_guias_scan').val());
                             var guias = $$('#hidden_guias_scan').val().substr(0, $$('#hidden_guias_scan').val().length - 1);
+                            console.log(guias);
                             $$('#btn_ir_cambiar_status').attr('href', '/cambiarstatus/' + guias);
                         }
                         $$('#btn_ir_cambiar_status').show();
