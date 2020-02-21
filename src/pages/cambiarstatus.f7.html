@@ -31,6 +31,7 @@
                 <div id="verTarjeta" data-ver="0"></div>
             </div>
             <input type="hidden" id="num_gias">
+            <input type="hidden" id="totalImg">
             <div class="list no-hairlines-md">
                 <ul>
                     <li>
@@ -39,7 +40,7 @@
                                 <div class="item-title item-label">Seleccione el Status:</div>
                                 <div class="item-input-wrap">
                                     <select id="status">
-                                        <option value="">Seleccione</option>
+                                        <option value="">Seleccionar</option>
                                         <option value="2">Recolectado</option>
                                         <option value="3">En Ruta</option>
                                         <option value="4">Entregado</option>
@@ -53,118 +54,9 @@
                             </div>
                         </div>
                     </li>
+                    <div id="mostarfotos"></div>
                     <!-- Status recolectado e incidencia-->
-                    <li class="mostrar_recolectado mostrar_entregado mostrar_incidencia ocultar_campos">
-                        <div class="item-content item-input">
-                            <div class="item-inner">
-                                <div class="item-title item-label"></div>
-                                <div class="item-input-wrap">
-                                    <table class="tablefoto">
-                                        <tr>
-                                            <td>
-                                                <button class="button open-foto-1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Foto acuse&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
-                                            </td>
-                                            <td>
-                                                <a href="/fotoacuse/">
-                                                    <i class="material-icons">info</i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <canvas id="myCanvas" data-foto1="0"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="mostrar_recolectado mostrar_entregado mostrar_incidencia ocultar_campos">
-                        <div class="item-content item-input">
-                            <div class="item-inner">
-                                <div class="item-title item-label"></div>
-                                <div class="item-input-wrap">
-                                    <table class="tablefoto">
-                                        <tr>
-                                            <td>
-                                                <button class="button open-foto-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Foto guía&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
-                                            </td>
-                                            <td>
-                                                <a href="/fotoguia/">
-                                                    <i class="material-icons">info</i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <canvas id="myCanvas2" data-foto1="0"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <!-- Status Entregado-->
-                    <li class="mostrar_entregado ocultar_campos">
-                        <div class="item-content item-input">
-                            <div class="item-inner">
-                                <div class="item-title item-label"></div>
-                                <div class="item-input-wrap">
-                                    <table class="tablefoto">
-                                        <tr>
-                                            <td>
-                                                <button class="button open-foto-3">&nbsp;&nbsp;&nbsp;Foto guía logify&nbsp;&nbsp;&nbsp;</button>
-                                            </td>
-                                            <td>
-                                                <a href="/fotoguialogify/">
-                                                    <i class="material-icons">info</i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <canvas id="myCanvas3" data-foto1="0"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="mostrar_entregado ocultar_campos">
-                        <div class="item-content item-input">
-                            <div class="item-inner">
-                                <div class="item-title item-label"></div>
-                                <div class="item-input-wrap">
-                                    <table class="tablefoto">
-                                        <tr>
-                                            <td>
-                                                <button class="button open-foto-4">Foto firma de acuse&nbsp;</button>
-                                            </td>
-                                            <td>
-                                                <a href="/fotogerente/">
-                                                    <i class="material-icons">info</i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <canvas id="myCanvas4" data-foto1="0"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="mostrar_entregado ocultar_campos">
-                        <div class="item-content item-input">
-                            <div class="item-inner">
-                                <div class="item-title item-label"></div>
-                                <div class="item-input-wrap">
-                                    <table class="tablefoto">
-                                        <tr>
-                                            <td>
-                                                <button class="button open-foto-5">Foto Selfie sucursal</button>
-                                            </td>
-                                            <td>
-                                                <a href="/fotoperador/">
-                                                    <i class="material-icons">info</i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <canvas id="myCanvas5" data-foto1="0"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
+
                     <!-- otros campos-->
                     <li class="mostrar_recolectado mostrar_entregado ocultar_campos">
                         <div class="item-content item-input">
@@ -183,7 +75,7 @@
                                 <div class="item-title item-label"></div>
                                 <div class="item-input-wrap">
                                     <select name="incidencia" id="incidencia">
-                                        <option value="">Seleccione la incidencia</option>
+                                        <option value="0">Seleccione la incidencia</option>
                                         <option value="1">Domicilio abandonado</option>
                                         <option value="2">Domicilio equivocado</option>
                                         <option value="3">Destinatario rechaza</option>
@@ -202,7 +94,6 @@
                     <li class="mostrar_recolectado mostrar_entregado mostrar_incidencia mostrar_devuelto ocultar_campos">
                         <div class="item-content item-input">
                             <div class="item-inner">
-                                <!--<div class="item-title item-label">Comentarios</div>-->
                                 <div class="item-input-wrap">
                                     <input id="comentarios" type="text" placeholder="Comentarios"/>
                                 </div>

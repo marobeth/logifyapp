@@ -10,58 +10,18 @@ import '../css/app.css';
 import cordovaApp from './cordova-app.js';
 // Import Routes
 import routes from './routes.js';
+import fnGuias from './guias/fn-guias';
+import config from './config';
+import fotoacuse from './fotoacuse';
+import funcionesCamara from "./funcionesCamara";
 
 /**
  *
  * URL API
  */
-var URL_WS = "https://api.logify.com.mx/";
-var URL_NEW_WS = "https://logisticus.logify.com.mx/";
+var URL_WS = config.URL_WS;
 
-/**
- * TRADUCIR STATUS
- * @param status
- * @returns {string}
- */
-function traducirStatus(status) {
-    switch (status) {
-        case '1':
-            //Solicitado
-            return 'Solicitado';
-        case '2':
-            //Recolectado
-            return 'Recolectado';
-            break;
-        case '3':
-            //En ruta
-            return 'En Ruta';
-            break;
-        case '4':
-            //Entregado
-            return 'Entregado';
-            break;
-        case '5':
-            //Incidencia
-            return 'Incidencia';
-            break;
-        case '6':
-            //Devuelto
-            return 'Devuelto';
-            break;
-        case '7':
-            //Ocurre
-            return 'Ocurre';
-            break;
-        case '8':
-            //En almacén
-            return 'En almacen';
-            break;
-        case '12':
-            //En ruta
-            return 'Conectado';
-            break;
-    }
-}
+
 /**
  *
  * @param num_guia
@@ -194,7 +154,8 @@ var resize_image = function (img, canvas, max_width, max_height) {
     canvas.width = img.width * ratio;
     canvas.height = img.height * ratio;
     ctx.drawImage(canvasCopy, 0, 0, canvasCopy.width, canvasCopy.height, 0, 0, canvas.width, canvas.height);
-}
+};
+
 function imageCapture() {
     var options = {limit: 1};
     navigator.device.capture.captureImage(onSuccess, onError, options);
@@ -203,8 +164,8 @@ function onError(error) {
     //app.dialog.alert('Error code: ' + error.code, null, 'Capture Error');
 }
 function onSuccess(mediaFiles) {
-    $$('#myCanvas').show();
-    var canvas = $$('#myCanvas')[0];
+    $$('#myCanvas1').show();
+    var canvas = $$('#myCanvas1')[0];
     var img = new Image();
     img.src = mediaFiles[0].fullPath;
     img.onload = function () {
@@ -235,7 +196,7 @@ function openCamera(idCanvas) {
     var pictureSource = navigator.camera.PictureSourceType;
     var destinationType = navigator.camera.DestinationType;
     var srcType = pictureSource.CAMERA;
-    navigator.device.capture.captureImage(function onSuccess(mediaFiles) {
+    navigator.device.capture.captureImage(function captureSuccess(mediaFiles) {
         //navigator.camera.getPicture(function onSuccess(mediaFiles) {
         $$('#' + idCanvas).show();
         ///var canvas = $$('#' + idCanvas)[0];
@@ -250,8 +211,8 @@ function openCamera(idCanvas) {
         img.src = mediaFiles[0].fullPath;
         $$('#' + idCanvas).data("foto1", 1);
         navigator.camera.cleanup();
-    }, function cameraError(error) {
-        console.debug("No se puede obtener una foto: " + error, "app");
+    }, function captureError(error) {
+        console.debug("No se puede obtener una foto openCamera: " + error, "app");
     }, {
         limit: 1,
         quality: 50,
@@ -284,7 +245,7 @@ function openFilePicker(idCanvas) {
         img.src = imageURI;
         $$('#' + idCanvas).data("foto1", 1);
     }, function cameraError(error) {
-        console.debug("No se puede obtener una foto: " + error, "app");
+        console.debug("No se puede obtener una foto openFilePicker: " + error, "app");
     }, {
         quality: 50,
         targetWidth: 800,
@@ -477,7 +438,8 @@ function NmPrvdr(CById, valor) {
  * @constructor
  */
 function RsltsPrvdr(valor) {
-    var autocompleteProveedor = app.autocomplete.create({
+    var autocompleteProveedor;
+    autocompleteProveedor = app.autocomplete.create({
         inputEl: '#OprProve',
         openIn: 'dropdown',
         preloader: true,
@@ -865,7 +827,7 @@ function validateOdometro(CById, idauto, valor) {
  * @param Numguia
  */
 function verBilletes(CById,Numguia) {
-    app.request.setup({
+        app.request.setup({
         headers: {
             'apikey': localStorage.getItem('apikey')
         },
@@ -874,16 +836,6 @@ function verBilletes(CById,Numguia) {
         },
         complete: function () {
             app.preloader.hide();
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            if (jqXHR.status === 401) {
-                localStorage.clear(); //quita todas las variables de local storage
-                app.preloader.hide(); // esconde el spinner
-                //app.dialog.alert('Tu sesión expiró, inicia sesión de nuevo','Aviso');
-                window.location.reload();
-            } else {
-                app.dialog.alert('Hubo un error, inténtelo de nuevo', 'Error');
-            }
         }
     });
     app.request.get(
@@ -928,18 +880,19 @@ function verTarjetas(CById, numguia) {
             app.preloader.hide();
         },
         error: function (jqXHR, textStatus, errorThrown) {
+            //console.log(jqXHR);
             if (jqXHR.status === 401) {
                 localStorage.clear(); //quita todas las variables de local storage
                 app.preloader.hide(); // esconde el spinner
                 //app.dialog.alert('Tu sesión expiró, inicia sesión de nuevo','Aviso');
-                window.location.reload();
+                //window.location.reload();
             } else {
-                app.dialog.alert('Hubo un error, inténtelo de nuevo', 'Error');
+               // app.dialog.alert('Hubo un error, no hay información detallada en tarjetas', 'Error');
             }
         }
     });
     app.request.get(
-        URL_WS + '/api/v2/consultar-tarjetas/' + numguia,
+        URL_WS + 'api/v2/consultar-tarjetas/' + numguia,
         function (data) {
             var tarjeta = '' + data.nombre_tarjeta + ' No.Lote: ' + data.numero_lote + ' Cantidad: ' + data.cantidad;
             $$('#' + CById).html(tarjeta);
@@ -948,10 +901,12 @@ function verTarjetas(CById, numguia) {
     );
 }
 
+
 /**
  *
  * @type {Framework7}
  */
+
 var app = new Framework7({
     root: '#app', // App root element
     id: 'com.graphicsandcode.logify', // App bundle ID
@@ -1014,12 +969,14 @@ $$('#btn_iniciar_sesion').on('click', function () {
 });
 $$(document).on('page:init', '.page[data-name="inicio"]', function (e) {
     $$('#nombre_usuario').html(localStorage.getItem('nombre') + ' ' + localStorage.getItem('paterno'));
+    /*logisticus
     ValidateApikeyNEW(localStorage.getItem('userid'), localStorage.getItem('apikey'));
     if (localStorage.getItem('verhj_gasto') == 1) {
         $$(".HGastosViews").show();
     } else {
         $$(".HGastosViews").hide();
     }
+    */
 });
 $$(document).on('page:init', '.page[data-name="home"]', function (e) {
     $$('#btn_iniciar_sesion').on('click', function () {
@@ -1029,7 +986,6 @@ $$(document).on('page:init', '.page[data-name="home"]', function (e) {
 
         ValidateApikey(username, password);
     });
-
     $$('#btn_olvide').on('click', function () {
         cordova.InAppBrowser.open('https://admin.logify.com.mx/restablecer-contrasena', '_blank', 'location=yes');
     });
@@ -1157,6 +1113,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         app.request.get(
             URL_WS + 'consulta/' + num_guias[0],
             function (data) {
+                fnGuias.mostrarSttus(app, data['guia'][0].branch_number, data['guia'][0].client_code, 'status');
                 //console.log(data['guia'][0].num_guia);
                 $$('#num_guia').html(data['guia'][0].num_guia);
                 if (data['guia'][0].branch_number == '0004') {
@@ -1178,10 +1135,9 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 if (data['guia'][0].branch_number == '0003' || data['guia'][0].branch_number == '0006') {
                     $$('#cont_paquete').html(data['guia'][0].cont_paquete);
                     $$('#cont_paquete').append('<br>');
-                    if(data['guia'][0].branch_number == '0006'){
-                        verTarjetas('verTarjeta', num_guias[0]);
+                    if (data['guia'][0].branch_number == '0006' && data['guia'][0].num_guia != '') {
+                        verTarjetas('verTarjeta', data['guia'][0].num_guia);
                     }
-
                 }
                 app.preloader.hide();
             },
@@ -1196,6 +1152,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         var new_num_guias = new_num_guias.substr(0, new_num_guias.length - 1);
         $$('#num_gias').val(new_num_guias);
     }
+
     // Vertical Buttons
     $$('.open-foto-1').on('click', function () {
         app.dialog.create({
@@ -1229,7 +1186,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 if (!status.hasPermission) {
                     error();
                 } else {
-                    openCamera('myCanvas');
+                    openCamera('myCanvas1');
                 }
             }
         });
@@ -1250,7 +1207,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 if (!status.hasPermission) {
                     error();
                 } else {
-                    openFilePicker('myCanvas');
+                    openFilePicker('myCanvas1');
                 }
             }
         });
@@ -1477,13 +1434,25 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
             }
         });
     });
+
     $$('#status').on('change', function (e) {
-        var status = $$(this).val();
+        $$('#mostarfotos').html('');
+        $$('.ocultar_campos').hide();
+        var status = $$('#status').val();
+        //console.log(status+num_guias);
+        var numeroguia=num_guias[0];
+        var codCliente = numeroguia.substring(0,3);
+        var braNumbre = numeroguia.substring(3,7);
+        //console.log("engtre mostrarCampos"+status);
+        var tipoFimg=codCliente+'-'+braNumbre+'-'+status;
+        //console.log("status:"+status);
         switch (status) {
             case '2':
                 //Recolectado
+                //console.log("Recolectado");
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_recolectado').show();
+                fnGuias.fnmostrarCampos(app,codCliente,braNumbre,status,tipoFimg);
                 break;
             case '3':
                 //En ruta
@@ -1494,11 +1463,13 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 //Entregado
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_entregado').show();
+                fnGuias.fnmostrarCampos(app,codCliente,braNumbre,status,tipoFimg);
                 break;
             case '5':
                 //Incidencia
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_incidencia').show();
+                fnGuias.fnmostrarCampos(app,codCliente,braNumbre,status,tipoFimg);
                 break;
             case '6':
                 //Devuelto
@@ -1520,116 +1491,59 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_conectado').show();
                 break;
+            case defaults:
+                $$('.ocultar_campos').hide();
         }
     });
-    $$('#btn_cambiar_status').on('click', function (e) {
-        var latitud = $$('#latitud').val();
-        var longitud = $$('#longitud').val();
-        var status = $$('#status').val();
-        var validado = false;
-        var foto1,foto2,foto3,foto4,foto5;
-        var canvas1,canvas2,canvas3,canvas4,canvas5;
-        var statusFoto,statusFoto2,statusFoto3,statusFoto4,statusFoto5;
-        var persona_recibe,incidencia,comentarios,proveedor_ocurre,guia_ocurre;
 
+    $$('#btn_cambiar_status').on('click', function (e) {
+        var foto1, foto2, foto3, foto4, foto5;
+        var canvas1, canvas2, canvas3, canvas4, canvas5;
+        var statusFoto, statusFoto2, statusFoto3, statusFoto4, statusFoto5;
+        var persona_recibe, incidencia, comentarios,status;
+        var proveedor_ocurre, guia_ocurre,latitud,longitud;
+
+        latitud = $$('#latitud').val();
+        longitud = $$('#longitud').val();
+        status = $$('#status').val();
+
+        var validado = false;
+
+        if(status == ''){
+            validado = false;
+            app.dialog.alert('Seleccione un status');
+        }
         switch (status) {
-            case 'Seleccione':
+            case 'Seleccionar':
                 app.dialog.alert('Seleccione un status');
                 break;
             case '2':
                 //Recolectado
-                statusFoto = $$('#myCanvas').data("foto1");
-                statusFoto2 = $$('#myCanvas2').data("foto1");
                 persona_recibe = $$('#persona_recibe').val();
-
-                if (statusFoto != 0) {
-                    canvas1 = $$('#myCanvas')[0];
-                    foto1 = canvas1.toDataURL();
-                } else {
-                    foto1 = '';
-                }
-                if (statusFoto2 != 0) {
-                    canvas2 = $$('#myCanvas2')[0];
-                    foto2 = canvas2.toDataURL();
-                } else {
-                    foto2 = '';
-                }
-
-                if (foto1 == "" || foto2 == "" || persona_recibe == "") {
-                    app.dialog.alert('La foto 1, la foto 2 y la persona que recibe / entrega son obligatorios');
+                if (persona_recibe == "") {
+                    app.dialog.alert('La persona que recibe / entrega son obligatorios');
                 } else {
                     validado = true;
                 }
                 break;
             case '3':
+                //Ruta
                 validado = true;
                 break;
             case '4':
                 //Entregado
-                statusFoto = $$('#myCanvas').data("foto1");
-                statusFoto2 = $$('#myCanvas2').data("foto1");
-                statusFoto3 = $$('#myCanvas3').data("foto1");
-                statusFoto4 = $$('#myCanvas4').data("foto1");
-                statusFoto5 = $$('#myCanvas5').data("foto1");
                 persona_recibe = $$('#persona_recibe').val();
-
-                if (statusFoto != 0) {
-                    canvas1 = $$('#myCanvas')[0];
-                    foto1 = canvas1.toDataURL();
-                } else {
-                    foto1 = '';
-                }
-                if (statusFoto2 != 0) {
-                    canvas2 = $$('#myCanvas2')[0];
-                    foto2 = canvas2.toDataURL();
-                } else {
-                    foto2 = '';
-                }
-                if (statusFoto3 != 0) {
-                    canvas3 = $$('#myCanvas3')[0];
-                    foto3 = canvas3.toDataURL();
-                } else {
-                    foto3 = '';
-                }
-                if (statusFoto4 != 0) {
-                    canvas4 = $$('#myCanvas4')[0];
-                    foto4 = canvas4.toDataURL();
-                } else {
-                    foto4 = '';
-                }
-                if (statusFoto5 != 0) {
-                    canvas5 = $$('#myCanvas5')[0];
-                    foto5 = canvas5.toDataURL();
-                } else {
-                    foto5 = '';
-                }
-                if (foto1 == "" || foto2 == "" || foto3 == "" || foto4 == "" || foto5 == "" || persona_recibe == "" ) {
-                    app.dialog.alert('La foto 1, la foto 2 , la foto 3, la foto 4 y la foto 5 y la persona que recibe / entrega son obligatorios');
+                if (persona_recibe == "") {
+                    app.dialog.alert('la persona que recibe / entrega son obligatorios');
                 } else {
                     validado = true;
                 }
                 break;
             case '5':
                 //Incidencia
-                statusFoto = $$('#myCanvas').data("foto1");
-                statusFoto2 = $$('#myCanvas2').data("foto1");
                 incidencia = $$('#incidencia').val();
-
-                if (statusFoto != 0) {
-                    canvas1 = $$('#myCanvas')[0];
-                    foto1 = canvas1.toDataURL();
-                } else {
-                    foto1 = '';
-                }
-                if (statusFoto2 != 0) {
-                    canvas2 = $$('#myCanvas2')[0];
-                    foto2 = canvas2.toDataURL();
-                } else {
-                    foto2 = '';
-                }
-
-                if (foto1 == "" || foto2 == "" || incidencia == "") {
-                    app.dialog.alert('La foto 1, la foto 2 y la incidencia son obligatorios');
+                if (incidencia == 0) {
+                    app.dialog.alert('Seleccionar el tipo incidencia es obligatorio');
                 } else {
                     validado = true;
                 }
@@ -1649,44 +1563,57 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
             case '12':
                 proveedor_ocurre = $$('#proveedor_ocurre').val();
                 guia_ocurre = $$('#guia_ocurre').val();
-                if(proveedor_ocurre != '' && guia_ocurre != ''){
-                    validado=true;
-                }else{
+                if (proveedor_ocurre != '' && guia_ocurre != '') {
+                    validado = true;
+                } else {
                     app.dialog.alert('El proveedor ocurre y la guía ocurre son obligatorios');
                 }
                 break;
         }
+        var totalImg = $$('#totalImg').val();
+        if(totalImg > 0) {
+            for (var i = 1; i <= totalImg; i++) {
+                var sttsFoto = $$('#myCanvas' + i).data("foto1");
+                var canvas_img = $$('#myCanvas' + i)[0];
+                var foto = canvas_img.toDataURL();
+                if (foto == '' || sttsFoto == 0) {
+                    app.dialog.alert('Foto '+ i + ' esta vacío');
+                    validado = false;
+                }
+            }
+        }
+
         if (validado == true) {
-            statusFoto = $$('#myCanvas').data("foto1");
-            if (statusFoto != 0) {
-                canvas1 = $$('#myCanvas')[0];
+            statusFoto = $$('#myCanvas1').data("foto1");
+            if (statusFoto == 1) {
+                canvas1 = $$('#myCanvas1')[0];
                 foto1 = canvas1.toDataURL();
             } else {
                 foto1 = '';
             }
             statusFoto2 = $$('#myCanvas2').data("foto1");
-            if (statusFoto2 != 0) {
+            if (statusFoto2 == 1) {
                 canvas2 = $$('#myCanvas2')[0];
                 foto2 = canvas2.toDataURL();
             } else {
                 foto2 = '';
             }
             statusFoto3 = $$('#myCanvas3').data("foto1");
-            if (statusFoto3 != 0) {
+            if (statusFoto3 == 1) {
                 canvas3 = $$('#myCanvas3')[0];
                 foto3 = canvas3.toDataURL();
             } else {
                 foto3 = '';
             }
             statusFoto4 = $$('#myCanvas4').data("foto1");
-            if (statusFoto4 != 0) {
+            if (statusFoto4 == 1) {
                 canvas4 = $$('#myCanvas4')[0];
                 foto4 = canvas4.toDataURL();
             } else {
                 foto4 = '';
             }
             statusFoto5 = $$('#myCanvas5').data("foto1");
-            if (statusFoto2 != 0) {
+            if (statusFoto5 == 1) {
                 canvas5 = $$('#myCanvas5')[0];
                 foto5 = canvas5.toDataURL();
             } else {
@@ -1695,12 +1622,23 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
 
             persona_recibe = $$('#persona_recibe').val();
             incidencia = $$('#incidencia').val();
+            console.log(incidencia);
+            var incidenciaTxt = fnGuias.traducirIncidencia(incidencia);
+            console.log(incidenciaTxt);
             comentarios = $$('#comentarios').val();
+            if(incidencia != 0 ){
+                comentarios= incidencia+ ' '+ comentarios;
+                console.log(comentarios);
+            }
             proveedor_ocurre = $$('#proveedor_ocurre').val();
-            if(proveedor_ocurre == 0){
-                proveedor_ocurre='';
+            if (proveedor_ocurre == 0) {
+                proveedor_ocurre = '';
             }
             guia_ocurre = $$('#guia_ocurre').val();
+
+            var guiaslista=$$('#num_gias').val();
+            guiaslista = guiaslista.split("|");
+            var TtlLista=guiaslista.length;
 
             app.request.setup({
                 headers: {
@@ -1721,36 +1659,66 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                     }
                 }
             });
-            app.request.postJSON(
-                URL_WS + 'changestatus/' + $$('#num_gias').val(),
-                {
-                    status: status,
-                    latlong: latitud + ',' + longitud,
-                    foto1: foto1,
-                    foto2: foto2,
-                    foto3: foto3,
-                    foto4: foto4,
-                    foto5: foto5,
-                    persona_recibe: persona_recibe,
-                    comentarios: comentarios,
-                    proveedor_ocurre:proveedor_ocurre,
-                    guia_ocurre:guia_ocurre
-
-                },
-                function (data) {
-                    app.preloader.hide();
-                    app.dialog.alert("Datos guardados correctamente", function () {
-                        $$('#btn_buscar_sucursal').click();
-                    });
-                    app.views.main.router.back();
-                }, function (error) {
-                    app.preloader.hide();
-                },
-                'json'
-            );
+            if (TtlLista == 1) {
+                app.request.postJSON(
+                    URL_WS + 'changestatus/' + $$('#num_gias').val(),
+                    {
+                        status: status,
+                        latlong: latitud + ',' + longitud,
+                        foto1: foto1,
+                        foto2: foto2,
+                        foto3: foto3,
+                        foto4: foto4,
+                        foto5: foto5,
+                        persona_recibe: persona_recibe,
+                        comentarios: comentarios,
+                        proveedor_ocurre: proveedor_ocurre,
+                        guia_ocurre: guia_ocurre
+                    },
+                    function (data) {
+                        app.preloader.hide();
+                        app.dialog.alert("Datos guardados correctamente", function () {
+                            $$('#btn_buscar_sucursal').click();
+                        });
+                        app.views.main.router.back();
+                    }, function (error) {
+                        app.preloader.hide();
+                    },
+                    'json'
+                );
+            } else {
+                guiaslista.forEach(function (v, i) {
+                    var guiaMasivaInd = v;
+                    app.request.postJSON(
+                        URL_WS + 'changestatus/' + guiaMasivaInd,
+                        {
+                            status: status,
+                            latlong: latitud + ',' + longitud,
+                            foto1: foto1,
+                            foto2: foto2,
+                            foto3: foto3,
+                            foto4: foto4,
+                            foto5: foto5,
+                            persona_recibe: persona_recibe,
+                            comentarios: comentarios,
+                            proveedor_ocurre: proveedor_ocurre,
+                            guia_ocurre: guia_ocurre
+                        },
+                        function (data) {
+                            app.preloader.hide();
+                            app.dialog.alert("Datos guardados correctamente " + guiaMasivaInd, function () {
+                            });
+                            //app.views.main.router.back();
+                        }, function (error) {
+                            app.preloader.hide();
+                        },
+                        'json'
+                    );
+                    app.views.main.router.navigate('/escanear/', {reloadCurrent: false});
+                });
+            }
         }
     });
-
 });
 $$(document).on('page:init', '.page[data-name="escanear"]', function (e) {
     $$('#btn_escanear').on('click', function () {
@@ -1774,6 +1742,7 @@ $$(document).on('page:init', '.page[data-name="escanear"]', function (e) {
                             $$('#lista_guias_scan').append('<li>' + num_guia + ' - ' + detectarProyecto(num_guia) + '</li>');
                             $$('#hidden_guias_scan').val(num_guia + '|' + $$('#hidden_guias_scan').val());
                             var guias = $$('#hidden_guias_scan').val().substr(0, $$('#hidden_guias_scan').val().length - 1);
+                            console.log(guias);
                             $$('#btn_ir_cambiar_status').attr('href', '/cambiarstatus/' + guias);
                         }
                         $$('#btn_ir_cambiar_status').show();
@@ -1803,7 +1772,7 @@ $$(document).on('page:init', '.page[data-name="consultar"]', function (e) {
                     app.request.get(
                         URL_WS + 'guideinfo/' + num_guia,
                         function (data) {
-                            $$('#status_guia_consulta').html(traducirStatus(data[0].status));
+                            $$('#status_guia_consulta').html(fnGuias.traducirStatus(data[0].status));
                             $$('#espacio_proyecto').html(detectarProyecto(num_guia));
                             $$('#espacio_destinatario').html(data[0].nombre_dest + ' ' + data[0].paterno_dest + ' ' + data[0].materno_dest + '<br>' + data[0].edo_dest + ' ' + data[0].mun_dest + ' ' + data[0].asent_dest);
                             $$('#testigoreal1').attr('src', URL_WS + data[0].foto1);
@@ -2950,3 +2919,98 @@ $$(document).on('page:init', '.page[data-name="solicitudgasto"]', function (e) {
     });
 
 });
+
+/**Fotografias**/
+$$(document).on('page:init', '.page[data-name="fotoacuse"]', function (e) {
+    var numGuia = app.view.main.router.currentRoute.params.numGuia;
+    //console.log(numGuia);
+    fotoacuse.index(app,numGuia);
+});
+
+function monstrarImagenes(codCliente,braNumbre,status,tipoFimg){
+    $$('#mostarfotos').html('');
+    var fotos ='';
+    app.request.setup({
+        headers: {
+            'apikey': localStorage.getItem('apikey')
+        },
+        beforeSend: function () {
+            app.preloader.show();
+        },
+        complete: function () {
+            app.preloader.hide();
+        }
+    });
+    app.request.get(
+        config.URL_WS + 'api/v2/permiso/operador/proyecto/' + codCliente + '/' + braNumbre + '/' + status,
+        function (data) {
+            //console.log("#totalImg:"+data.length);
+            if (data.length > 0) {
+                console.log("default campos");
+                data.forEach((val, index) => {
+                    fotos = '<li>\n' +
+                        '                            <div class="item-content item-input">\n' +
+                        '                                <div class="item-inner">\n' +
+                        '                                    <div class="item-title item-label"></div>\n' +
+                        '                                    <div class="item-input-wrap">\n' +
+                        '                                        <table class="tablefoto">\n' +
+                        '                                            <tr>\n' +
+                        '                                                <td>\n' +
+                        '                                                    <button class="button open-foto" data-id="' + (index + 1) + '">' + val.nombre + '</button>\n' +
+                        '                                                </td>\n' +
+                        '                                                <td>\n' +
+                        '                                                    <a href="/fotoacuse/' + tipoFimg + val.tipo_aud + '">\n' +
+                        '                                                        <i class="material-icons">info</i>\n' +
+                        '                                                    </a>\n' +
+                        '                                                </td>\n' +
+                        '                                            </tr>\n' +
+                        '                                        </table>\n' +
+                        '                                        <canvas id="myCanvas' + (index + 1) + '" data-foto1="0"></canvas>\n' +
+                        '                                    </div>\n' +
+                        '                                </div>\n' +
+                        '                            </div>\n' +
+                        '                        </li>';
+                    console.log((index + 1));
+
+                    $$('#mostarfotos').append(fotos);
+                });
+                var nav = navigator;
+                funcionesCamara.fnInput(app,'.open-foto');
+                $$('#totalImg').val(data.length);
+            }else{
+                //console.log('default campos');
+                var val=5;
+                data.forEach((val, index) => {
+                    fotos += '<li>\n' +
+                        '                            <div class="item-content item-input">\n' +
+                        '                                <div class="item-inner">\n' +
+                        '                                    <div class="item-title item-label"></div>\n' +
+                        '                                    <div class="item-input-wrap">\n' +
+                        '                                        <table class="tablefoto">\n' +
+                        '                                            <tr>\n' +
+                        '                                                <td>\n' +
+                        '                                                    <button class="button open-foto-' + (index + 1) + '" data-id="' + (index + 1) + '">' + val.nombre + '</button>\n' +
+                        '                                                </td>\n' +
+                        '                                                <td>\n' +
+                        '                                                    <a href="/fotoacuse/' + tipoFimg + val.tipo_aud + '">\n' +
+                        '                                                        <i class="material-icons">info</i>\n' +
+                        '                                                    </a>\n' +
+                        '                                                </td>\n' +
+                        '                                            </tr>\n' +
+                        '                                        </table>\n' +
+                        '                                        <canvas id="myCanvas' + (index + 1) + '" data-foto1="0"></canvas>\n' +
+                        '                                    </div>\n' +
+                        '                                </div>\n' +
+                        '                            </div>\n' +
+                        '                        </li>';
+
+                    $$('#mostarfotos').append(fotos);
+                });
+                $$('#totalImg').val(data.length);
+                funcionesCamara.fnInput(app,'.open-foto');
+               // console.log('#totalImg:'+data.length);
+            }
+        },
+        'json'
+    );
+}
