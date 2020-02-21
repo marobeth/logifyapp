@@ -3,40 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="232bfe81-5379-4a5a-8314-3fb762c606de" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/www/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/www/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cordova/www/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/www/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/app.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fonts/Framework7Icons-Regular.eot" beforeDir="false" afterPath="$PROJECT_DIR$/src/fonts/Framework7Icons-Regular.eot" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fonts/Framework7Icons-Regular.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/src/fonts/Framework7Icons-Regular.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fonts/Framework7Icons-Regular.woff" beforeDir="false" afterPath="$PROJECT_DIR$/src/fonts/Framework7Icons-Regular.woff" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fonts/Framework7Icons-Regular.woff2" beforeDir="false" afterPath="$PROJECT_DIR$/src/fonts/Framework7Icons-Regular.woff2" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/routes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/activarhojagastos.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/activarhojagastos.f7.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/addgastos.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/addgastos.f7.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/addproveedor.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/addproveedor.f7.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/addsolicitud.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/addsolicitud.f7.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/cambiarstatus.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/cambiarstatus.f7.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/deletegastos.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/deletegastos.f7.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/editgastos.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/editgastos.f7.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/fotoacuse.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/fotoacuse.f7.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/fotogerente.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/fotogerente.f7.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/fotoguia.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/fotoguia.f7.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/fotoguialogify.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/fotoguialogify.f7.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/fotoperador.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/fotoperador.f7.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/fotoproveedor.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/fotoproveedor.f7.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/hojagastos.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/hojagastos.f7.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/inicio.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/inicio.f7.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/solicitudes.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/solicitudes.f7.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/solicitudgasto.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/solicitudgasto.f7.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/static/fotos/Foto1_Acuse.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/static/fotos/Foto1_Acuse.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/static/fotos/Foto2_Guia.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/static/fotos/Foto2_Guia.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/static/fotos/Foto3_Guia_Logify.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/static/fotos/Foto3_Guia_Logify.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/static/fotos/Foto4_Gerente.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/static/fotos/Foto4_Gerente.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/static/fotos/Foto5_Operador.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/static/fotos/Foto5_Operador.jpg" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
