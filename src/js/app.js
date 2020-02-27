@@ -1622,14 +1622,10 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
 
             persona_recibe = $$('#persona_recibe').val();
             incidencia = $$('#incidencia').val();
-            console.log(incidencia);
-            var incidenciaTxt = fnGuias.traducirIncidencia(incidencia);
-            console.log(incidenciaTxt);
-            comentarios = $$('#comentarios').val();
-            if(incidencia != 0 ){
-                comentarios= incidencia+ ' '+ comentarios;
-                console.log(comentarios);
+            if (incidencia == 0 && status!= 5) {
+                incidencia = null;
             }
+            comentarios = $$('#comentarios').val();
             proveedor_ocurre = $$('#proveedor_ocurre').val();
             if (proveedor_ocurre == 0) {
                 proveedor_ocurre = '';
@@ -1672,6 +1668,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                         foto5: foto5,
                         persona_recibe: persona_recibe,
                         comentarios: comentarios,
+                        incidencia:incidencia,
                         proveedor_ocurre: proveedor_ocurre,
                         guia_ocurre: guia_ocurre
                     },
@@ -1701,6 +1698,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                             foto5: foto5,
                             persona_recibe: persona_recibe,
                             comentarios: comentarios,
+                            incidencia:incidencia,
                             proveedor_ocurre: proveedor_ocurre,
                             guia_ocurre: guia_ocurre
                         },
@@ -1726,9 +1724,9 @@ $$(document).on('page:init', '.page[data-name="escanear"]', function (e) {
             function (result) {
                 if (!result.cancelled) {
                     var num_guia = result.text;
-                    if (num_guia.length != 18) {
+                    if (num_guia.length <= 17) {
                         app.dialog.alert("Guía no válida: Las guías logify tienen 18 caracteres");
-                    } else {
+                    }else {
                         //Váido
                         //Revisar si ya está agregada esa guía:
                         var guias_actuales = $$('#hidden_guias_scan').val();
@@ -1742,7 +1740,7 @@ $$(document).on('page:init', '.page[data-name="escanear"]', function (e) {
                             $$('#lista_guias_scan').append('<li>' + num_guia + ' - ' + detectarProyecto(num_guia) + '</li>');
                             $$('#hidden_guias_scan').val(num_guia + '|' + $$('#hidden_guias_scan').val());
                             var guias = $$('#hidden_guias_scan').val().substr(0, $$('#hidden_guias_scan').val().length - 1);
-                            console.log(guias);
+                           // console.log(guias);
                             $$('#btn_ir_cambiar_status').attr('href', '/cambiarstatus/' + guias);
                         }
                         $$('#btn_ir_cambiar_status').show();
@@ -1884,7 +1882,7 @@ $$(document).on('page:init', '.page[data-name="hojagastos"]', function (e) {
     $$('#btn_delete_gastos').on('click', function (e) {
         app.views.main.router.navigate('/deletegastos/', {reloadCurrent: false});
     });
-})
+});
 $$(document).on('page:init', '.page[data-name="addgastos"]', function (e) {
     $$("#Gcomentario").hide();
     $$("#kmi").hide();
@@ -2946,7 +2944,7 @@ function monstrarImagenes(codCliente,braNumbre,status,tipoFimg){
         function (data) {
             //console.log("#totalImg:"+data.length);
             if (data.length > 0) {
-                console.log("default campos");
+                //console.log("default campos");
                 data.forEach((val, index) => {
                     fotos = '<li>\n' +
                         '                            <div class="item-content item-input">\n' +
