@@ -80,7 +80,7 @@ var fnGuias = {
                         '<option value="8">En Almacén</option>\n' +
                         '<option value="12">Conectado</option>';
                     $$('#' + CById).html(proyectoStatus);
-                    $$('#' + CByCC).html(clientcode);
+                    //$$('#' + CByCC).html(clientcode);
                 }
             },
             'json'
@@ -92,7 +92,7 @@ var fnGuias = {
         switch (status) {
             case '2':
                 //Recolectado
-                console.log("Recolectado");
+                //console.log("Recolectado");
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_recolectado').show();
                 fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);

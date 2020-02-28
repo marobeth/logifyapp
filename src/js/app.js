@@ -1437,6 +1437,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
 
     $$('#status').on('change', function (e) {
         $$('#mostarfotos').html('');
+        $$('#totalImg').val('');
         $$('.ocultar_campos').hide();
         var status = $$('#status').val();
         //console.log(status+num_guias);
@@ -1725,7 +1726,7 @@ $$(document).on('page:init', '.page[data-name="escanear"]', function (e) {
                 if (!result.cancelled) {
                     var num_guia = result.text;
                     if (num_guia.length <= 17) {
-                        app.dialog.alert("Guía no válida: Las guías logify tienen 18 caracteres");
+                        app.dialog.alert("Guía no válida: Las guías logify tienen más caracteres");
                     }else {
                         //Váido
                         //Revisar si ya está agregada esa guía:
@@ -2968,7 +2969,7 @@ function monstrarImagenes(codCliente,braNumbre,status,tipoFimg){
                         '                                </div>\n' +
                         '                            </div>\n' +
                         '                        </li>';
-                    console.log((index + 1));
+                    //console.log((index + 1));
 
                     $$('#mostarfotos').append(fotos);
                 });
