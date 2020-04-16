@@ -13,8 +13,16 @@ var funcionesCamara = {
             var con = canva.getContext('2d');
             var img = new Image();
             img.onload = function () {
-                canva.width = img.width / 6;
-                canva.height = img.height / 6;
+                if(img.width == '3456'){
+                    canva.width = img.width / 3;
+                    canva.height = img.height / 4;
+                }else if(img.width == '4608'){
+                    canva.width = img.width / 4;
+                    canva.height = img.height / 3;
+                }else{
+                    canva.width = img.width / 3;
+                    canva.height = img.height / 3;
+                }
                 con.drawImage(img, 0, 0, img.width, img.height, 0, 0, canva.width, canva.height);
             };
             img.src = mediaFiles[0].fullPath;
@@ -24,8 +32,8 @@ var funcionesCamara = {
             console.debug("No se puede obtener una foto openCamera: " + error, "app");
         }, {
             limit: 1,
-            quality: 50,
-            targetWidth: 800,
+            quality: 100,
+            targetWidth: 1200,
             targetHeight: 1200,
             destinationType: destinationType.DATA_URL,
             encodingType: navigator.camera.EncodingType.PNG,
@@ -42,8 +50,8 @@ var funcionesCamara = {
             var context = canvass.getContext('2d');
             var img = new Image();
             img.onload = function () {
-                canvass.width = img.width / 2;
-                canvass.height = img.height / 2;
+                canvass.width = img.width;
+                canvass.height = img.height;
                 context.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvass.width, canvass.height);
             };
             img.src = imageURI;
@@ -51,8 +59,8 @@ var funcionesCamara = {
         }, function cameraError(error) {
             console.debug("No se puede obtener una foto openFilePicker: " + error, "app");
         }, {
-            quality: 50,
-            targetWidth: 800,
+            quality: 100,
+            targetWidth: 1200,
             targetHeight: 1200,
             destinationType: destinationType.FILE_URI,
             sourceType: srcType
