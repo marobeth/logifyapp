@@ -3043,6 +3043,7 @@ $$(document).on('page:init', '.page[data-name="asignarguiahijo"]', function (e) 
 
 });
 $$(document).on('page:init', '.page[data-name="cambiarstatushijos"]', function (e) {
+    $$('#mostrarResutl').hide();
     var id_operador = localStorage.getItem('user_id');
     $$('#btn_escanear_hjs').on('click', function () {
         cordova.plugins.barcodeScanner.scan(
@@ -3081,13 +3082,18 @@ $$(document).on('page:init', '.page[data-name="cambiarstatushijos"]', function (
         );
     });
     $$('#btn_cambiar_status_guias').on('click', function () {
-         var selectStatus= $$('#selectStatus').val();
-        if(selectStatus > 0){
-            fnGuiasHijos.ValidarNGHJIDV(app,guiasHjs);
-        }else{
-            alert("Seleccionar Status");
-        }
+        var idoperador = localStorage.getItem('userid');
+        var selectStatus= $$('#selectStatus').val();
+        var guiasHjs= $$("#guiasscan").val();
+        var latitud= $$("#latitud").val();
+        var longitud= $$("#longitud").val();
+        var lanlog=(latitud +','+ longitud);
+        fnGuiasHijos.ValidarNGHJIDV(app,idoperador,guiasHjs,lanlog,selectStatus);
 
+    });
+    $$('#btn_regresar').on('click', function () {
+        var guiapadre= $$("#infoguiapadre").val();
+        app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
     });
 
 });

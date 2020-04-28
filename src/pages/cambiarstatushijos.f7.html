@@ -24,7 +24,7 @@
                         <div class="item-content">
                             <div class="item-inner">
                                 <div class="item-title-row">
-                                    <div class="item-title">Scan guía Hijo
+                                    <div class="item-title">Escanea guía Hijo
                                         <span style="padding-left: 30px;" id="btn_escanear_hjs">
                                         <i class="icon f7-icons"
                                            style="border: 2px solid #dbdddc !important;font-size: 70px;cursor: pointer;">qrcode</i>
@@ -37,38 +37,73 @@
                     </li>
                 </ul>
             </div>
-            <div class="block-title">Guías escaneadas (<span id="total_guias_escaneadas">0</span>):</div>
             <div class="block">
-                <div class="list no-hairlines-md">
-                    <input type="hidden" id="hidden_guias_scan">
-                    <ul id="lista_guias_scan_hjs"></ul>
-                    <input type="hidden" id="guiasscan">
-                </div>
-            </div>
-            <div class="block">
-                <div class="list no-hairlines-md">
-                    <select id="selectStatus">
-                        <option value="2">Recolectado</option>
-                        <!--<option value="4">Entregado</option>
-                        <option value="5">Incidencia</option>
-                        <option value="8">Almacén</option>-->
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="list no-hairlines-md">
-            <ul>
-                <li>
-                    <div class="block">
-                        <div class="row">
-                            <a id="btn_cambiar_status_guias" class="col button button-fill"
-                               style="background: #4cd964 !important; border: 1px solid #4cd964 !important;">
-                                Cambiar Status
-                            </a>
+                <div class="item-title item-label">Seleccione el Status:</div>
+                <div class="item-content item-input">
+                    <div class="item-inner">
+                        <div class="item-input-wrap">
+                            <select id="selectStatus">
+                                <option value="0">Seleccionar</option>
+                                <option value="2">Recolectado</option>
+                                <option value="4">Entregado</option>
+                                <option value="5">Incidencia</option>
+                                <option value="8">Almacén</option>
+                            </select>
                         </div>
                     </div>
-                </li>
-            </ul>
+                </div>
+            </div>
+            <div id="mostrarqr">
+                <div class="block-title">Guías escaneadas (<span id="total_guias_escaneadas">0</span>):</div>
+                <div class="block">
+                    <div class="list no-hairlines-md">
+                        <input type="hidden" id="hidden_guias_scan">
+                        <ul id="lista_guias_scan_hjs"></ul>
+                        <input type="hidden" id="guiasscan">
+                        <div id="latitud"></div>
+                        <div id="longitud"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="btnmostrarQR">
+                <div class="list no-hairlines-md">
+                    <ul>
+                        <li>
+                            <div class="block">
+                                <div class="row">
+                                    <a id="btn_cambiar_status_guias" class="col button button-fill"
+                                       style="background: #4cd964 !important; border: 1px solid #4cd964 !important;">
+                                        Cambiar Status
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="mostrarResutl">
+                <div class="block-title">Resultado:</div>
+                <div class="block">
+                    <div class="list no-hairlines-md">
+                        <ul id="resltadoapi"></ul>
+                    </div>
+                </div>
+                <div class="list no-hairlines-md">
+                    <ul>
+                        <li class="Listadosize">
+                            <div class="block">
+                                <div class="row">
+                                    <a id="btn_regresar" class="col button button-fill"
+                                       style="background: #4cd964 !important; border: 1px solid #4cd964 !important;">
+                                        regresar
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
         </div>
     </div>
 </template>

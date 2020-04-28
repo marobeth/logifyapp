@@ -38,56 +38,105 @@ var fnGuiasHijos = {
     ValidarNGHJ: (app,idoperador,guiapadre,guiasHjs,lanlog) => {
         var resultado='';
         //alert(idoperador+' '+guiapadre+' '+guiasHjs+' '+lanlog);
-        app.request.setup({
-            headers: {
-                'apikey': localStorage.getItem('apikey')
-            },
-            beforeSend: function () {
-                app.preloader.show();
-            },
-            complete: function () {
-                app.preloader.hide();
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                if (jqXHR.status === 401) {
-                    localStorage.clear();
+        if(idoperador !='' && guiasHjs != '' && lanlog != '' && guiapadre !='') {
+            app.request.setup({
+                headers: {
+                    'apikey': localStorage.getItem('apikey')
+                },
+                beforeSend: function () {
+                    app.preloader.show();
+                },
+                complete: function () {
                     app.preloader.hide();
-                } else {
-                    // app.dialog.alert('Hubo un error, no hay información detallada en tarjetas', 'Error');
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    if (jqXHR.status === 401) {
+                        localStorage.clear();
+                        app.preloader.hide();
+                    } else {
+                        // app.dialog.alert('Hubo un error, no hay información detallada en tarjetas', 'Error');
+                    }
                 }
-            }
-        });
+            });
+            app.request.postJSON(
+                config.URL_WS + 'api/v2/asignar/qrshijos',
+                {
+                    guiapadre: guiapadre,
+                    folioshijos: guiasHjs,
+                    idOperador: idoperador,
+                    latlong: lanlog
+                },
+                function (data) {
+                    var result = data.data;
+                    if (result != '') {
+                        $$('#mostrarQRJR').hide();
+                        $$('#mostrarResutl').show();
+                    }
+                    result.forEach(function (val, index) {
+                        resultado += '<li>' + val + '</li>';
+                    });
+                    $$('#resltadoapi').html(resultado);
 
-        app.request.postJSON(
-            config.URL_WS + 'api/v2/asignar/qrshijos',
-            {
-                guiapadre:guiapadre,
-                folioshijos:guiasHjs,
-                idOperador:idoperador,
-                latlong:lanlog
-            },
-            function (data) {
-                var result= data.data;
-                if(result !=''){
-                    $$('#mostrarQRJR').hide();
-                    $$('#mostrarResutl').show();
-                }
-                result.forEach(function (val, index) {
-                    resultado += '<li>' + val + '</li>';
-                });
-                $$('#resltadoapi').html(resultado);
-
-                app.preloader.hide();
-            }, function (error) {
-                console.log(error);
-            },
-            'json'
-        );
-
-        //app.views.main.router.navigate('/cambiarstatus/'+guiasHjs, {reloadCurrent: false});
+                    app.preloader.hide();
+                }, function (error) {
+                    console.log(error);
+                },
+                'json'
+            );
+        }else{
+            alert("Faltan Campos");
+        }
     },
-    ValidarNGHJIDV: (app, infoguiapadre, guiasHjs) =>{
-        alert(guiasHjs + infoguiapadre);
+    ValidarNGHJIDV: (app,idoperador,guiasHjs,lanlog,selectStatus) =>{
+        var resultado='';
+        if(idoperador !='' && guiasHjs != '' && lanlog != '' && selectStatus !=0){
+            app.request.setup({
+                headers: {
+                    'apikey': localStorage.getItem('apikey')
+                },
+                beforeSend: function () {
+                    app.preloader.show();
+                },
+                complete: function () {
+                    app.preloader.hide();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    if (jqXHR.status === 401) {
+                        localStorage.clear();
+                        app.preloader.hide();
+                    } else {
+                        // app.dialog.alert('Hubo un error, no hay información detallada en tarjetas', 'Error');
+                    }
+                }
+            });
+            app.request.postJSON(
+                config.URL_WS + 'api/v2/cambiarstatus/qrshijos',
+                {
+                    folioshijos:guiasHjs,
+                    idOperador:idoperador,
+                    latlong:lanlog,
+                    status:selectStatus
+                },
+                function (data) {
+                    var result= data.data;
+                    if(result !=''){
+                        $$('#btnmostrarQR').hide();
+                        $$('#mostrarResutl').show();
+                    }
+                    result.forEach(function (val, index) {
+                        resultado += '<li>' + val + '</li>';
+                    });
+                    $$('#resltadoapi').html(resultado);
+                    app.preloader.hide();
+
+                }, function (error) {
+                    console.log(error);
+                },
+                'json'
+            );
+        }else{
+            alert('Campos vacios');
+        }
     },
     MostrarNGH:(app, CById,Numguia) =>{
         app.request.setup({
@@ -133,27 +182,6 @@ var fnGuiasHijos = {
             'json'
         );
     },
-    CambiarStatusNGHijos:(app,Numguia) =>{
-        app.request.setup({
-            headers: {
-                'apikey': localStorage.getItem('apikey')
-            },
-            beforeSend: function () {
-                app.preloader.show();
-            },
-            complete: function () {
-                app.preloader.hide();
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                if (jqXHR.status === 401) {
-                    localStorage.clear();
-                    app.preloader.hide();
-                } else {
-                    // app.dialog.alert('Hubo un error, no hay información detallada en tarjetas', 'Error');
-                }
-            }
-        });
-    }
 };
 
 export default fnGuiasHijos;

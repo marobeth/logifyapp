@@ -3,20 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="232bfe81-5379-4a5a-8314-3fb762c606de" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/config.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/res/xml/config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/res/xml/config.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/www/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/www/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cordova/www/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/www/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/app.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/routes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/cambiarstatus.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/cambiarstatus.f7.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/inicio.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/inicio.f7.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/guias/fnguiashijos.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/guias/fnguiashijos.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/asignarguiahijo.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/asignarguiahijo.f7.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/cambiarstatushijos.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/cambiarstatushijos.f7.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -174,7 +166,7 @@
       <workItem from="1576162467123" duration="13352000" />
       <workItem from="1576706169149" duration="12074000" />
       <workItem from="1587590112509" duration="48117000" />
-      <workItem from="1587917097343" duration="20305000" />
+      <workItem from="1587917097343" duration="26356000" />
     </task>
     <servers />
   </component>
@@ -217,11 +209,11 @@
       <screen x="0" y="-1057" width="1920" height="1057" />
     </state>
     <state x="698" y="-812" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.23.1440.804/0.-1057.1920.1057@0.-1057.1920.1057" timestamp="1587764121245" />
-    <state x="133" y="-925" width="1787" height="804" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1587998885762">
+    <state x="133" y="-925" width="1787" height="804" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1588040231632">
       <screen x="0" y="-1057" width="1920" height="1057" />
     </state>
     <state x="100" y="123" width="1340" height="608" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.1440.800/1440.-157.1920.1057@0.23.1440.800" timestamp="1582838266676" />
-    <state x="133" y="-925" width="1787" height="804" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.1440.801/0.-1057.1920.1057@0.-1057.1920.1057" timestamp="1587998885762" />
+    <state x="133" y="-925" width="1787" height="804" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.1440.801/0.-1057.1920.1057@0.-1057.1920.1057" timestamp="1588040231632" />
     <state x="133" y="-925" width="1787" height="804" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.1440.804/0.-1057.1920.1057@0.-1057.1920.1057" timestamp="1587764046490" />
     <state x="623" y="-914" width="673" height="693" key="find.popup" timestamp="1587762937622">
       <screen x="0" y="-1057" width="1920" height="1057" />
