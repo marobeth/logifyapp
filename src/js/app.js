@@ -14,6 +14,7 @@ import fnGuias from './guias/fn-guias';
 import config from './config';
 import fotoacuse from './fotoacuse';
 import funcionesCamara from "./funcionesCamara";
+import fnGuiasHijos from "./guias/fnguiashijos";
 
 /**
  *
@@ -805,7 +806,7 @@ function validateOdometro(CById, idauto, valor) {
         URL_NEW_WS + 'api/v2/latestodometro/' + idauto,
         function (data) {
             var odometro = $$("#odometro").val();
-            console.log(odometro,data.odometro);
+            //console.log(odometro,data.odometro);
             if (odometro <= data.odometro) {
                 result = true;
                 document.getElementById(CById).value = "";
@@ -880,12 +881,9 @@ function verTarjetas(CById, numguia) {
             app.preloader.hide();
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            //console.log(jqXHR);
             if (jqXHR.status === 401) {
-                localStorage.clear(); //quita todas las variables de local storage
-                app.preloader.hide(); // esconde el spinner
-                //app.dialog.alert('Tu sesión expiró, inicia sesión de nuevo','Aviso');
-                //window.location.reload();
+                localStorage.clear();
+                app.preloader.hide();
             } else {
                // app.dialog.alert('Hubo un error, no hay información detallada en tarjetas', 'Error');
             }
@@ -900,7 +898,41 @@ function verTarjetas(CById, numguia) {
         'json'
     );
 }
-
+/**
+ *
+ * @param CById
+ * @param Numguia
+ */
+function verAM(CById,Numguia) {
+    app.request.setup({
+        headers: {
+            'apikey': localStorage.getItem('apikey')
+        },
+        beforeSend: function () {
+            app.preloader.show();
+        },
+        complete: function () {
+            app.preloader.hide();
+        }, error: function (jqXHR, textStatus, errorThrown) {
+            if (jqXHR.status === 401) {
+                localStorage.clear();
+                app.preloader.hide();
+            } else {
+                // app.dialog.alert('Hubo un error, no hay información detallada en tarjetas', 'Error');
+            }
+        }
+    });
+    app.request.get(
+        URL_WS + 'api/v2/consultar-archivomuerto/' + Numguia,
+        function (data) {
+            if(data.cajas !=''){
+                var tarjeta = '' + data.gerencia + ' Zona: ' + data.zona + ' Cajas: ' + data.cajas;
+                $$('#' + CById).html(tarjeta);
+            }
+        },
+        'json'
+    );
+}
 
 /**
  *
@@ -1138,7 +1170,11 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                     if (data['guia'][0].branch_number == '0006' && data['guia'][0].num_guia != '') {
                         verTarjetas('verTarjeta', data['guia'][0].num_guia);
                     }
+                    if (data['guia'][0].branch_number == '0003' && data['guia'][0].num_guia != '') {
+                       verAM('verTarjeta', data['guia'][0].num_guia);
+                    }
                 }
+                fnGuiasHijos.MostrarNGH(app,'NGHijos', data['guia'][0].num_guia);
                 app.preloader.hide();
             },
             'json'
@@ -2924,6 +2960,136 @@ $$(document).on('page:init', '.page[data-name="fotoacuse"]', function (e) {
     var numGuia = app.view.main.router.currentRoute.params.numGuia;
     //console.log(numGuia);
     fotoacuse.index(app,numGuia);
+});
+/**GuiasHijos**/
+$$(document).on('page:init', '.page[data-name="asignarguiahijo"]', function (e) {
+    $$('#mostrarQRSR').show();
+    $$('#mostrarQRJR').hide();
+    $$('#mostrarResutl').hide();
+    $$('#btn_escanear_papa').on('click', function () {
+        cordova.plugins.barcodeScanner.scan(
+            function (result) {
+                if (!result.cancelled) {
+                    var num_guia_padre = result.text;
+                    if(num_guia_padre.length > 17){
+                        fnGuiasHijos.validarNG(app,num_guia_padre);
+                    }else{
+                        app.dialog.alert("Guía no válida: no tiene los caracteres permitidos");
+                    }
+                } else {
+                    app.dialog.alert('El scan fue cancelado');
+                }
+            }, function (error) {
+                app.dialog.alert("El scan falló: " + error);
+            },
+            {
+                showTorchButton: true, // iOS and Android
+                torchOn: false, // Android, launch with the torch switched on (if available)
+                saveHistory: true, // Android, save scan history (default false)
+                prompt: "Ponga el código QR dentro del área de escaneo" // Android
+            }
+        );
+    });
+    $$('#btn_escanear_hjs').on('click', function () {
+        cordova.plugins.barcodeScanner.scan(
+            function (result) {
+                if (!result.cancelled) {
+                    var num_guia_hijo = result.text;
+                    if(num_guia_hijo.length > 17){
+                        var guias_actuales = $$('#hidden_guias_scan').val();
+                        if (guias_actuales.includes(num_guia_hijo)) {
+                            app.dialog.alert("Ya habías agregado esta guía");
+                        } else {
+                            var cantidad_guias = parseInt($$('#total_guias_escaneadas').html());
+                            cantidad_guias++;
+                            $$('#total_guias_escaneadas').html(cantidad_guias);
+                            $$('#total_guias_escaneadas').html();
+                            $$('#lista_guias_scan_hjs').append('<li>' + num_guia_hijo + '</li>');
+                            $$('#hidden_guias_scan').val(num_guia_hijo + '|' + $$('#hidden_guias_scan').val());
+                            var guiasHjs = $$('#hidden_guias_scan').val().substr(0, $$('#hidden_guias_scan').val().length - 1);
+                            $$("#guiasscan").val(guiasHjs);
+                        }
+                    }else{
+                        app.dialog.alert("Guía no válida: no tiene los caracteres permitidos");
+                    }
+                } else {
+                    app.dialog.alert('El scan fue cancelado');
+                }
+            }, function (error) {
+                app.dialog.alert("El scan falló: " + error);
+            },
+            {
+                showTorchButton: true, // iOS and Android
+                torchOn: false, // Android, launch with the torch switched on (if available)
+                saveHistory: true, // Android, save scan history (default false)
+                prompt: "Ponga el código QR dentro del área de escaneo" // Android
+            }
+        );
+    });
+    $$('#btn_asignar_guias').on('click', function () {
+        var idoperador = localStorage.getItem('userid');
+        var guiasHjs= $$("#guiasscan").val();
+        var guiapadre= $$("#infoguiapadre").val();
+        var latitud= $$("#latitud").val();
+        var longitud= $$("#longitud").val();
+        var lanlog=(latitud +','+ longitud);
+        fnGuiasHijos.ValidarNGHJ(app,idoperador,guiapadre,guiasHjs,lanlog);
+    });
+    $$('#btn_regresar_guias').on('click', function () {
+        var guiapadre= $$("#infoguiapadre").val();
+        app.views.main.router.navigate('/cambiarstatus/'+guiapadre, {reloadCurrent: false});
+    });
+
+
+});
+$$(document).on('page:init', '.page[data-name="cambiarstatushijos"]', function (e) {
+    var id_operador = localStorage.getItem('user_id');
+    $$('#btn_escanear_hjs').on('click', function () {
+        cordova.plugins.barcodeScanner.scan(
+            function (result) {
+                if (!result.cancelled) {
+                    var num_guia_hijo = result.text;
+                    if(num_guia_hijo.length > 17){
+                        var guias_actuales = $$('#hidden_guias_scan').val();
+                        if (guias_actuales.includes(num_guia_hijo)) {
+                            app.dialog.alert("Ya habías agregado esta guía");
+                        } else {
+                            var cantidad_guias = parseInt($$('#total_guias_escaneadas').html());
+                            cantidad_guias++;
+                            $$('#total_guias_escaneadas').html(cantidad_guias);
+                            $$('#total_guias_escaneadas').html();
+                            $$('#lista_guias_scan_hjs').append('<li>' + num_guia_hijo + '</li>');
+                            $$('#hidden_guias_scan').val(num_guia_hijo + '|' + $$('#hidden_guias_scan').val());
+                            var guiasHjs = $$('#hidden_guias_scan').val().substr(0, $$('#hidden_guias_scan').val().length - 1);
+                            $$("#guiasscan").val(guiasHjs);
+                        }
+                    }else{
+                        app.dialog.alert("Guía no válida: no tiene los caracteres permitidos");
+                    }
+                } else {
+                    app.dialog.alert('El scan fue cancelado');
+                }
+            }, function (error) {
+                app.dialog.alert("El scan falló: " + error);
+            },
+            {
+                showTorchButton: true, // iOS and Android
+                torchOn: false, // Android, launch with the torch switched on (if available)
+                saveHistory: true, // Android, save scan history (default false)
+                prompt: "Ponga el código QR dentro del área de escaneo" // Android
+            }
+        );
+    });
+    $$('#btn_cambiar_status_guias').on('click', function () {
+         var selectStatus= $$('#selectStatus').val();
+        if(selectStatus > 0){
+            fnGuiasHijos.ValidarNGHJIDV(app,guiasHjs);
+        }else{
+            alert("Seleccionar Status");
+        }
+
+    });
+
 });
 
 function monstrarImagenes(codCliente,braNumbre,status,tipoFimg){

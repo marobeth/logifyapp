@@ -145,3 +145,7 @@ form#myGastos.list ul:after { /*background-color: none;*/background-color: initi
 .tablefoto{width: 100%;}
 .espacio{padding-left: 30px;}
 .guiasize{font-size: 22px;}
+.cenTer{text-align: center;}
+.infoguia{padding: 5px;}
+.guiahjssize{font-size: 18px;}
+.Listadosize{font-size: 10px;}

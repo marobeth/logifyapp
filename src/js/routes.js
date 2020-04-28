@@ -18,6 +18,9 @@ import FotoAcusePage from '../pages/fotoacuse.f7.html';
 import FotoGuiaLogifyPage from '../pages/fotoguialogify.f7.html';
 import FotoGerentePage from '../pages/fotogerente.f7.html';*/
 import MostrarFotoPage from '../pages/mostrarfoto.f7.html';
+import OpcionesGuiasHijos from '../pages/opcionesguiashjs.f7.html';
+import AsignarGuiasHijos from '../pages/asignarguiahijo.f7.html';
+import CambiarStatusHijos from '../pages/cambiarstatushijos.f7.html';
 
 
 import NotFoundPage from '../pages/404.f7.html';
@@ -107,6 +110,19 @@ var routes = [
         path: '/mostrarfoto/:numGuia',
         component: MostrarFotoPage,
     },
+    {
+        path: '/opcionesguiashjs/',
+        component: OpcionesGuiasHijos,
+    },
+    {
+        path: '/asignarguiahijo/',
+        component: AsignarGuiasHijos,
+    },
+    {
+        path: '/cambiarstatushijos/',
+        component: CambiarStatusHijos,
+    },
+
     {
         path: '(.*)',
         component: NotFoundPage,

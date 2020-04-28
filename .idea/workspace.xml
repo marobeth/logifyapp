@@ -5,10 +5,18 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cordova/config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/config.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/js/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/res/xml/config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/res/xml/config.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cordova/www/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/www/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cordova/www/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/www/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/funcionesCamara.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/funcionesCamara.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/app.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/routes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/cambiarstatus.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/cambiarstatus.f7.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/inicio.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/inicio.f7.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,6 +45,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="JavaScript File" />
         <option value="HTML File" />
       </list>
     </option>
@@ -164,6 +173,8 @@
       <workItem from="1576094057727" duration="2781000" />
       <workItem from="1576162467123" duration="13352000" />
       <workItem from="1576706169149" duration="12074000" />
+      <workItem from="1587590112509" duration="48117000" />
+      <workItem from="1587917097343" duration="20305000" />
     </task>
     <servers />
   </component>
@@ -198,22 +209,24 @@
     </option>
   </component>
   <component name="WindowStateProjectService">
-    <state x="184" y="85" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1576696533166">
-      <screen x="0" y="23" width="1440" height="797" />
+    <state x="424" y="-904" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1587704850071">
+      <screen x="0" y="-1057" width="1920" height="1057" />
     </state>
-    <state x="184" y="85" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1440.797/1440.-157.1920.1057@0.23.1440.797" timestamp="1576696533166" />
-    <state x="445" y="231" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1576796183755">
-      <screen x="0" y="23" width="1440" height="797" />
+    <state x="424" y="-904" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1440.801/0.-1057.1920.1057@0.-1057.1920.1057" timestamp="1587704850071" />
+    <state x="698" y="-812" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1587764121245">
+      <screen x="0" y="-1057" width="1920" height="1057" />
     </state>
-    <state x="445" y="231" key="#com.intellij.fileTypes.FileTypeChooser/0.23.1440.797/1440.-157.1920.1057@0.23.1440.797" timestamp="1576796183755" />
-    <state x="229" y="60" key="SettingsEditor" timestamp="1576188543908">
-      <screen x="0" y="23" width="1440" height="803" />
-    </state>
-    <state x="229" y="60" key="SettingsEditor/0.23.1440.803/1440.-157.1920.1057@0.23.1440.803" timestamp="1576188543908" />
-    <state x="100" y="123" width="1340" height="608" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1582838266676">
-      <screen x="0" y="23" width="1440" height="800" />
+    <state x="698" y="-812" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.23.1440.804/0.-1057.1920.1057@0.-1057.1920.1057" timestamp="1587764121245" />
+    <state x="133" y="-925" width="1787" height="804" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1587998885762">
+      <screen x="0" y="-1057" width="1920" height="1057" />
     </state>
     <state x="100" y="123" width="1340" height="608" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.1440.800/1440.-157.1920.1057@0.23.1440.800" timestamp="1582838266676" />
+    <state x="133" y="-925" width="1787" height="804" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.1440.801/0.-1057.1920.1057@0.-1057.1920.1057" timestamp="1587998885762" />
+    <state x="133" y="-925" width="1787" height="804" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.1440.804/0.-1057.1920.1057@0.-1057.1920.1057" timestamp="1587764046490" />
+    <state x="623" y="-914" width="673" height="693" key="find.popup" timestamp="1587762937622">
+      <screen x="0" y="-1057" width="1920" height="1057" />
+    </state>
+    <state x="623" y="-914" width="673" height="693" key="find.popup/0.23.1440.804/0.-1057.1920.1057@0.-1057.1920.1057" timestamp="1587762937622" />
   </component>
   <component name="masterDetails">
     <states>
