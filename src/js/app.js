@@ -3039,6 +3039,9 @@ $$(document).on('page:init', '.page[data-name="asignarguiahijo"]', function (e) 
         var guiapadre= $$("#infoguiapadre").val();
         app.views.main.router.navigate('/cambiarstatus/'+guiapadre, {reloadCurrent: false});
     });
+    $$('#btnregresarguias').on('click', function () {
+        app.views.main.router.navigate('/opcionesguiashjs/', {reloadCurrent: false});
+    });
 
 
 });
@@ -3089,11 +3092,9 @@ $$(document).on('page:init', '.page[data-name="cambiarstatushijos"]', function (
         var longitud= $$("#longitud").val();
         var lanlog=(latitud +','+ longitud);
         fnGuiasHijos.ValidarNGHJIDV(app,idoperador,guiasHjs,lanlog,selectStatus);
-
     });
     $$('#btn_regresar').on('click', function () {
-        var guiapadre= $$("#infoguiapadre").val();
-        app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
+        app.views.main.router.navigate('/opcionesguiashjs/', {reloadCurrent: false});
     });
 
 });

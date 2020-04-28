@@ -18,42 +18,42 @@
             </div>
         </div>
         <div class="page-content">
-            <div class="list media-list sortable">
-                <ul>
-                    <li>
-                        <div class="item-content">
-                            <div class="item-inner">
-                                <div class="item-title-row">
-                                    <div class="item-title">Escanea guía Hijo
-                                        <span style="padding-left: 30px;" id="btn_escanear_hjs">
-                                        <i class="icon f7-icons"
-                                           style="border: 2px solid #dbdddc !important;font-size: 70px;cursor: pointer;">qrcode</i>
-                                    </span>
-                                    </div>
-                                </div>
+            <div id="btnmostrarQR">
+                <div class="block">
+                    <div class="item-title item-label">Seleccione el Status:</div>
+                    <div class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <select id="selectStatus">
+                                    <option value="0">Seleccionar</option>
+                                    <option value="2">Recolectado</option>
+                                    <option value="4">Entregado</option>
+                                    <option value="5">Incidencia</option>
+                                    <option value="8">Almacén</option>
+                                </select>
                             </div>
-                        </div>
-                        <div class="sortable-handler"></div>
-                    </li>
-                </ul>
-            </div>
-            <div class="block">
-                <div class="item-title item-label">Seleccione el Status:</div>
-                <div class="item-content item-input">
-                    <div class="item-inner">
-                        <div class="item-input-wrap">
-                            <select id="selectStatus">
-                                <option value="0">Seleccionar</option>
-                                <option value="2">Recolectado</option>
-                                <option value="4">Entregado</option>
-                                <option value="5">Incidencia</option>
-                                <option value="8">Almacén</option>
-                            </select>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div id="mostrarqr">
+                <div class="list media-list sortable">
+                    <ul>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title-row">
+                                        <div class="item-title">Escanea guía Hijo
+                                            <span style="padding-left: 30px;" id="btn_escanear_hjs">
+                                        <i class="icon f7-icons"
+                                           style="border: 2px solid #dbdddc !important;font-size: 70px;cursor: pointer;">qrcode</i>
+                                    </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sortable-handler"></div>
+                        </li>
+                    </ul>
+                </div>
                 <div class="block-title">Guías escaneadas (<span id="total_guias_escaneadas">0</span>):</div>
                 <div class="block">
                     <div class="list no-hairlines-md">
@@ -64,8 +64,6 @@
                         <div id="longitud"></div>
                     </div>
                 </div>
-            </div>
-            <div id="btnmostrarQR">
                 <div class="list no-hairlines-md">
                     <ul>
                         <li>
@@ -95,7 +93,7 @@
                                 <div class="row">
                                     <a id="btn_regresar" class="col button button-fill"
                                        style="background: #4cd964 !important; border: 1px solid #4cd964 !important;">
-                                        regresar
+                                        Regresar
                                     </a>
                                 </div>
                             </div>
@@ -103,7 +101,6 @@
                     </ul>
                 </div>
             </div>
-
         </div>
     </div>
 </template>

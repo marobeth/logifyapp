@@ -87,9 +87,9 @@ var fnGuiasHijos = {
             alert("Faltan Campos");
         }
     },
-    ValidarNGHJIDV: (app,idoperador,guiasHjs,lanlog,selectStatus) =>{
+    ValidarNGHJIDV: (app,idoperador,guiasHjs,lanlog, selectStatus ) =>{
         var resultado='';
-        if(idoperador !='' && guiasHjs != '' && lanlog != '' && selectStatus !=0){
+        if(idoperador !='' && guiasHjs != '' && lanlog != '' && selectStatus != 0){
             app.request.setup({
                 headers: {
                     'apikey': localStorage.getItem('apikey')
@@ -138,7 +138,7 @@ var fnGuiasHijos = {
             alert('Campos vacios');
         }
     },
-    MostrarNGH:(app, CById,Numguia) =>{
+    MostrarNGH:(app, CById, Numguia ) =>{
         app.request.setup({
             headers: {
                 'apikey': localStorage.getItem('apikey')
