@@ -1040,6 +1040,7 @@ $$(document).on('page:reinit', '.page[data-name="checkin"]', function (e) {
     $$('#btn_buscar_sucursal').click();
 });
 $$(document).on('page:init', '.page[data-name="checkin"]', function (e) {
+    $$('#mostrarDivHijos').hide();
     $$('#btn_buscar_sucursal').on('click', function () {
         if ($$('#input_num_sucursal_checkin').val() == "") {
             app.dialog.alert('Escriba el número de sucursal');
@@ -1101,6 +1102,14 @@ $$(document).on('page:init', '.page[data-name="checkin"]', function (e) {
                     $$('#edo_mun_tienda').html(data_tienda.estado + ' ' + data_tienda.municipio);
                     $$('#direccion_tienda').html(data_tienda.calle + ' ' + data_tienda.no_ext + ' ' + data_tienda.colonia);
                     app.preloader.hide();
+
+                    if(data_am.length > 0 ) {
+                        var input_num_sucursal = $$('#input_num_sucursal_checkin').val();
+                        $$("#numguiaPadre").attr("href", "/asignarhijos/"+ input_num_sucursal);
+                        $$('#mostrarDivHijos').show();
+                    }else{
+                        $$('#mostrarDivHijos').hide();
+                    }
                 },
                 function (error) {
                     app.dialog.alert('Hubo un error, inténtelo de nuevo');
@@ -1110,7 +1119,6 @@ $$(document).on('page:init', '.page[data-name="checkin"]', function (e) {
             );
         }
     });
-
 });
 $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
     var num_guias = app.view.main.router.currentRoute.params.numGuia;
@@ -1164,18 +1172,21 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                     $$('#cont_paquete').html(ouput_parsear_billetes);
                     verBilletes('fbillete', num_guias[0]);
                 }
+
                 if (data['guia'][0].branch_number == '0003' || data['guia'][0].branch_number == '0006') {
                     $$('#cont_paquete').html(data['guia'][0].cont_paquete);
                     $$('#cont_paquete').append('<br>');
                     if (data['guia'][0].branch_number == '0006' && data['guia'][0].num_guia != '') {
                         verTarjetas('verTarjeta', data['guia'][0].num_guia);
                     }
-                    if (data['guia'][0].branch_number == '0003' && data['guia'][0].num_guia != '') {
+                   if (data['guia'][0].branch_number == '0003' && data['guia'][0].num_guia != '') {
                        verAM('verTarjeta', data['guia'][0].num_guia);
+                           fnGuiasHijos.btnScanHjs(app,data['guia'][0].num_guia);
                     }
                 }
                 fnGuiasHijos.MostrarNGH(app,'NGHijos', data['guia'][0].num_guia);
                 app.preloader.hide();
+
             },
             'json'
         );
@@ -2963,9 +2974,14 @@ $$(document).on('page:init', '.page[data-name="fotoacuse"]', function (e) {
 });
 /**GuiasHijos**/
 $$(document).on('page:init', '.page[data-name="asignarguiahijo"]', function (e) {
+    //var sucursal = app.view.main.router.currentRoute.params.numGuia;
     $$('#mostrarQRSR').show();
     $$('#mostrarQRJR').hide();
     $$('#mostrarResutl').hide();
+    $$('#btnValidarNGP').on('click',function () {
+        var valor = $$('#NGuiaPadre').val();
+        fnGuiasHijos.validarNG(app,valor);
+    });
     $$('#btn_escanear_papa').on('click', function () {
         cordova.plugins.barcodeScanner.scan(
             function (result) {
@@ -3040,14 +3056,16 @@ $$(document).on('page:init', '.page[data-name="asignarguiahijo"]', function (e) 
         app.views.main.router.navigate('/cambiarstatus/'+guiapadre, {reloadCurrent: false});
     });
     $$('#btnregresarguias').on('click', function () {
-        app.views.main.router.navigate('/opcionesguiashjs/', {reloadCurrent: false});
+        app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
     });
 
 
 });
-$$(document).on('page:init', '.page[data-name="cambiarstatushijos"]', function (e) {
-    $$('#mostrarResutl').hide();
+$$(document).on('page:init', '.page[data-name="asignarhijos"]', function (e) {
+    var sucursal = app.view.main.router.currentRoute.params.numsucursal;
     var id_operador = localStorage.getItem('user_id');
+    $$('#numSucursal').val(sucursal);
+    $$('#mostrarResutl').hide();
     $$('#btn_escanear_hjs').on('click', function () {
         cordova.plugins.barcodeScanner.scan(
             function (result) {
@@ -3091,14 +3109,72 @@ $$(document).on('page:init', '.page[data-name="cambiarstatushijos"]', function (
         var latitud= $$("#latitud").val();
         var longitud= $$("#longitud").val();
         var lanlog=(latitud +','+ longitud);
-        fnGuiasHijos.ValidarNGHJIDV(app,idoperador,guiasHjs,lanlog,selectStatus);
+        fnGuiasHijos.ValidarNGHJIDV(app,idoperador,guiasHjs,lanlog,selectStatus,sucursal);
     });
     $$('#btn_regresar').on('click', function () {
-        app.views.main.router.navigate('/opcionesguiashjs/', {reloadCurrent: false});
+        app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
     });
-
 });
 
+$$(document).on('page:init', '.page[data-name="asignarpadre"]', function (e) {
+    var guiapadre = app.view.main.router.currentRoute.params.numGuia;
+    $$('#NGuiaPadre').val(guiapadre);
+    $$('#mostrarResutl').hide();
+
+    $$('#btn_escanear_hjs').on('click', function () {
+        cordova.plugins.barcodeScanner.scan(
+            function (result) {
+                if (!result.cancelled) {
+                    var num_guia_hijo = result.text;
+                    if(num_guia_hijo.length > 17){
+                        var guias_actuales = $$('#hidden_guias_scan').val();
+                        if (guias_actuales.includes(num_guia_hijo)) {
+                            app.dialog.alert("Ya habías agregado esta guía");
+                        } else {
+                            var cantidad_guias = parseInt($$('#total_guias_escaneadas').html());
+                            cantidad_guias++;
+                            $$('#total_guias_escaneadas').html(cantidad_guias);
+                            $$('#total_guias_escaneadas').html();
+                            $$('#lista_guias_scan_hjs').append('<li>' + num_guia_hijo + '</li>');
+                            $$('#hidden_guias_scan').val(num_guia_hijo + '|' + $$('#hidden_guias_scan').val());
+                            var guiasHjs = $$('#hidden_guias_scan').val().substr(0, $$('#hidden_guias_scan').val().length - 1);
+                            $$("#guiasscan").val(guiasHjs);
+                        }
+                    }else{
+                        app.dialog.alert("Guía no válida: no tiene los caracteres permitidos");
+                    }
+                } else {
+                    app.dialog.alert('El scan fue cancelado');
+                }
+            }, function (error) {
+                app.dialog.alert("El scan falló: " + error);
+            },
+            {
+                showTorchButton: true, // iOS and Android
+                torchOn: false, // Android, launch with the torch switched on (if available)
+                saveHistory: true, // Android, save scan history (default false)
+                prompt: "Ponga el código QR dentro del área de escaneo" // Android
+            }
+        );
+    });
+    $$('#btn_asignar_guias').on('click', function () {
+        var idoperador = localStorage.getItem('userid');
+        var guiasHjs= $$("#guiasscan").val();
+        //var guiapadre= $$("#infoguiapadre").val();
+        var latitud= $$("#latitud").val();
+        var longitud= $$("#longitud").val();
+        var lanlog=(latitud +','+ longitud);
+        fnGuiasHijos.ValidarNGHJ(app,idoperador,guiapadre,guiasHjs,lanlog);
+    });
+    $$('#btn_regresar_guias').on('click', function () {
+        app.views.main.router.navigate('/cambiarstatus/'+guiapadre, {reloadCurrent: false});
+    });
+    $$('#btnregresarguias').on('click', function () {
+        app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
+    });
+
+
+});
 function monstrarImagenes(codCliente,braNumbre,status,tipoFimg){
     $$('#mostarfotos').html('');
     var fotos ='';

@@ -32,12 +32,11 @@ var fnGuiasHijos = {
                 'json'
             );
         } else {
-            alert("No exite la guía");
+            alert("Campo Vacío");
         }
     },
     ValidarNGHJ: (app,idoperador,guiapadre,guiasHjs,lanlog) => {
         var resultado='';
-        //alert(idoperador+' '+guiapadre+' '+guiasHjs+' '+lanlog);
         if(idoperador !='' && guiasHjs != '' && lanlog != '' && guiapadre !='') {
             app.request.setup({
                 headers: {
@@ -68,7 +67,7 @@ var fnGuiasHijos = {
                 },
                 function (data) {
                     var result = data.data;
-                    if (result != '') {
+                    if (result !== '') {
                         $$('#mostrarQRJR').hide();
                         $$('#mostrarResutl').show();
                     }
@@ -87,7 +86,7 @@ var fnGuiasHijos = {
             alert("Faltan Campos");
         }
     },
-    ValidarNGHJIDV: (app,idoperador,guiasHjs,lanlog, selectStatus ) =>{
+    ValidarNGHJIDV: (app,idoperador,guiasHjs,lanlog, selectStatus, sucursal ) =>{
         var resultado='';
         if(idoperador !='' && guiasHjs != '' && lanlog != '' && selectStatus != 0){
             app.request.setup({
@@ -115,7 +114,8 @@ var fnGuiasHijos = {
                     folioshijos:guiasHjs,
                     idOperador:idoperador,
                     latlong:lanlog,
-                    status:selectStatus
+                    status:selectStatus,
+                    numsucursal:sucursal
                 },
                 function (data) {
                     var result= data.data;
@@ -182,6 +182,26 @@ var fnGuiasHijos = {
             'json'
         );
     },
+    btnScanHjs:( app,Numguia )=>{
+        var Scan='/asignarpadre/'+Numguia;
+        var $html='<div class="list" id="mostrarDivHijos" >\n' +
+        '                    <ul>\n' +
+        '                        <li id="scanHijos">\n' +
+        '                            <a href="'+ Scan +'" class="item-link item-content">\n' +
+        '                                <div class="item-media"><i class="icon icon-f7"></i></div>\n' +
+        '                                <div class="item-inner">\n' +
+        '                                    <div class="item-title">\n' +
+        '                                        <div class="item-header"></div>\n' +
+        '                                        <i class="icon f7-icons">qrcode</i> | Escanear\n' +
+        '                                    </div>\n' +
+        '                                    <div class="item-after">Guías Hijos</div>\n' +
+        '                                </div>\n' +
+        '                            </a>\n' +
+        '                        </li>\n' +
+        '                    </ul>\n' +
+        '                </div>';
+        $$('#LinkNGHijos').html($html);
+    }
 };
 
 export default fnGuiasHijos;

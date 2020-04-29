@@ -3,12 +3,18 @@
   <component name="ChangeListManager">
     <list default="true" id="232bfe81-5379-4a5a-8314-3fb762c606de" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cordova/www/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/www/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cordova/www/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/www/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/js/guias/fnguiashijos.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/guias/fnguiashijos.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/routes.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/asignarguiahijo.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/asignarguiahijo.f7.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/cambiarstatushijos.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/cambiarstatushijos.f7.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/cambiarstatus.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/cambiarstatus.f7.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/checkin.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/checkin.f7.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/inicio.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/inicio.f7.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,6 +74,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="editorconfig.notification" value="null# tab | space" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
@@ -201,10 +208,11 @@
     </option>
   </component>
   <component name="WindowStateProjectService">
-    <state x="424" y="-904" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1587704850071">
+    <state x="424" y="-904" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1588129049826">
       <screen x="0" y="-1057" width="1920" height="1057" />
     </state>
     <state x="424" y="-904" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1440.801/0.-1057.1920.1057@0.-1057.1920.1057" timestamp="1587704850071" />
+    <state x="424" y="-904" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1440.806/0.-1057.1920.1057@0.-1057.1920.1057" timestamp="1588129049826" />
     <state x="698" y="-812" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1587764121245">
       <screen x="0" y="-1057" width="1920" height="1057" />
     </state>
@@ -215,9 +223,10 @@
     <state x="100" y="123" width="1340" height="608" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.1440.800/1440.-157.1920.1057@0.23.1440.800" timestamp="1582838266676" />
     <state x="133" y="-925" width="1787" height="804" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.1440.801/0.-1057.1920.1057@0.-1057.1920.1057" timestamp="1588040231632" />
     <state x="133" y="-925" width="1787" height="804" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.1440.804/0.-1057.1920.1057@0.-1057.1920.1057" timestamp="1587764046490" />
-    <state x="623" y="-914" width="673" height="693" key="find.popup" timestamp="1587762937622">
+    <state x="623" y="-914" width="673" height="693" key="find.popup" timestamp="1588114429032">
       <screen x="0" y="-1057" width="1920" height="1057" />
     </state>
+    <state x="623" y="-914" width="673" height="693" key="find.popup/0.23.1440.801/0.-1057.1920.1057@0.-1057.1920.1057" timestamp="1588114429032" />
     <state x="623" y="-914" width="673" height="693" key="find.popup/0.23.1440.804/0.-1057.1920.1057@0.-1057.1920.1057" timestamp="1587762937622" />
   </component>
   <component name="masterDetails">
