@@ -18,11 +18,11 @@ import FotoAcusePage from '../pages/fotoacuse.f7.html';
 import FotoGuiaLogifyPage from '../pages/fotoguialogify.f7.html';
 import FotoGerentePage from '../pages/fotogerente.f7.html';*/
 import MostrarFotoPage from '../pages/mostrarfoto.f7.html';
+import OpcionesGuiasHijos from '../pages/opcionesguiashjs.f7.html';
+import CambiarStatusGuiaHijos from '../pages/cambiarstatushijos.f7.html';
 import AsignarPadre from '../pages/asignarpadre.f7.html';
 import AsignarGuiasHijos from '../pages/asignarguiahijo.f7.html';
 import AsignarHijos from '../pages/asignarhijos.f7.html';
-
-
 import NotFoundPage from '../pages/404.f7.html';
 
 var routes = [
@@ -111,6 +111,14 @@ var routes = [
         component: MostrarFotoPage,
     },
     {
+        path: '/opcionesguiashjs/',
+        component: OpcionesGuiasHijos,
+    },
+    {
+        path: '/cambiarstatushijos/',
+        component: CambiarStatusGuiaHijos,
+    },
+    {
         path: '/asignarguiahijo/',
         component: AsignarGuiasHijos,
     },
@@ -122,7 +130,6 @@ var routes = [
         path: '/asignarhijos/:numsucursal',
         component: AsignarHijos,
     },
-
     {
         path: '(.*)',
         component: NotFoundPage,

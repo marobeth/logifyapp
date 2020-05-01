@@ -1103,13 +1103,13 @@ $$(document).on('page:init', '.page[data-name="checkin"]', function (e) {
                     $$('#direccion_tienda').html(data_tienda.calle + ' ' + data_tienda.no_ext + ' ' + data_tienda.colonia);
                     app.preloader.hide();
 
-                    if(data_am.length > 0 ) {
+                    /*if(data_am.length > 0 ) {*/
                         var input_num_sucursal = $$('#input_num_sucursal_checkin').val();
                         $$("#numguiaPadre").attr("href", "/asignarhijos/"+ input_num_sucursal);
                         $$('#mostrarDivHijos').show();
-                    }else{
+                   /* }else{
                         $$('#mostrarDivHijos').hide();
-                    }
+                    }*/
                 },
                 function (error) {
                     app.dialog.alert('Hubo un error, inténtelo de nuevo');
@@ -2977,6 +2977,59 @@ $$(document).on('page:init', '.page[data-name="fotoacuse"]', function (e) {
     fotoacuse.index(app,numGuia);
 });
 /**GuiasHijos**/
+$$(document).on('page:init', '.page[data-name="cambiarstatushijos"]', function (e) {
+    $$('#mostrarResutl').hide();
+    var id_operador = localStorage.getItem('user_id');
+    $$('#btn_escanear_hjs').on('click', function () {
+        cordova.plugins.barcodeScanner.scan(
+            function (result) {
+                if (!result.cancelled) {
+                    var num_guia_hijo = result.text;
+                    if(num_guia_hijo.length > 17){
+                        var guias_actuales = $$('#hidden_guias_scan').val();
+                        if (guias_actuales.includes(num_guia_hijo)) {
+                            app.dialog.alert("Ya habías agregado esta guía");
+                        } else {
+                            var cantidad_guias = parseInt($$('#total_guias_escaneadas').html());
+                            cantidad_guias++;
+                            $$('#total_guias_escaneadas').html(cantidad_guias);
+                            $$('#total_guias_escaneadas').html();
+                            $$('#lista_guias_scan_hjs').append('<li>' + num_guia_hijo + '</li>');
+                            $$('#hidden_guias_scan').val(num_guia_hijo + '|' + $$('#hidden_guias_scan').val());
+                            var guiasHjs = $$('#hidden_guias_scan').val().substr(0, $$('#hidden_guias_scan').val().length - 1);
+                            $$("#guiasscan").val(guiasHjs);
+                        }
+                    }else{
+                        app.dialog.alert("Guía no válida: no tiene los caracteres permitidos");
+                    }
+                } else {
+                    app.dialog.alert('El scan fue cancelado');
+                }
+            }, function (error) {
+                app.dialog.alert("El scan falló: " + error);
+            },
+            {
+                showTorchButton: true, // iOS and Android
+                torchOn: false, // Android, launch with the torch switched on (if available)
+                saveHistory: true, // Android, save scan history (default false)
+                prompt: "Ponga el código QR dentro del área de escaneo" // Android
+            }
+        );
+    });
+    $$('#btn_cambiar_status_guias').on('click', function () {
+        var idoperador = localStorage.getItem('userid');
+        var selectStatus= $$('#selectStatus').val();
+        var guiasHjs= $$("#guiasscan").val();
+        var latitud= $$("#latitud").val();
+        var longitud= $$("#longitud").val();
+        var lanlog=(latitud +','+ longitud);
+        fnGuiasHijos.ValidarNGHJIDV(app,idoperador,guiasHjs,lanlog,selectStatus);
+    });
+    $$('#btn_regresar').on('click', function () {
+        app.views.main.router.navigate('/opcionesguiashjs/', {reloadCurrent: false});
+    });
+
+});
 $$(document).on('page:init', '.page[data-name="asignarguiahijo"]', function (e) {
     //var sucursal = app.view.main.router.currentRoute.params.numGuia;
     $$('#mostrarQRSR').show();
@@ -3119,7 +3172,6 @@ $$(document).on('page:init', '.page[data-name="asignarhijos"]', function (e) {
         app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
     });
 });
-
 $$(document).on('page:init', '.page[data-name="asignarpadre"]', function (e) {
     var guiapadre = app.view.main.router.currentRoute.params.numGuia;
     $$('#NGuiaPadre').val(guiapadre);
