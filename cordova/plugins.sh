@@ -1,0 +1,10 @@
+sudo cordova plugin add cordova-plugin-media
+sudo cordova plugin add cordova-plugin-camera
+sudo cordova plugin add cordova-plugin-media-capture
+sudo cordova plugin add cordova-plugin-qr-barcode-scanner
+sudo cordova plugin add cordova-plugin-geolocation
+sudo cordova plugin add cordova-plugin-inappbrowser
+sudo cordova plugin add cordova-plugin-file
+sudo cordova plugin add cordova-plugin-file-transfer
+sudo cordova plugin add cordova-plugin-android-permissions
+sudo cordova plugin add cordova-plugin-background-mode

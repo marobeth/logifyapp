@@ -1,19 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.graphicsandcode.logify" version="2.2.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-    <feature name="Keyboard">
-        <param name="android-package" onload="true" value="org.apache.cordova.labs.keyboard.Keyboard" />
-    </feature>
-    <feature name="SplashScreen">
-        <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
-        <param name="onload" value="true" />
-    </feature>
-    <feature name="StatusBar">
-        <param name="android-package" value="org.apache.cordova.statusbar.StatusBar" />
-        <param name="onload" value="true" />
-    </feature>
-    <feature name="Whitelist">
-        <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin" />
-        <param name="onload" value="true" />
+<widget id="com.graphicsandcode.logify" version="2.3.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+    <feature name="Screenshot">
+        <param name="android-package" value="com.darktalker.cordova.screenshot.Screenshot" />
     </feature>
     <feature name="Permissions">
         <param name="android-package" value="com.android.plugins.Permissions" />
@@ -23,32 +11,30 @@
         <param name="onload" value="true" />
     </feature>
     <allow-navigation href="cdvfile:*" />
+    <feature name="Media">
+        <param name="android-package" value="org.apache.cordova.media.AudioHandler" />
+    </feature>
     <feature name="Capture">
         <param name="android-package" value="org.apache.cordova.mediacapture.Capture" />
-    </feature>
-    <feature name="Geolocation">
-        <param name="android-package" value="org.apache.cordova.geolocation.Geolocation" />
     </feature>
     <feature name="BarcodeScanner">
         <param name="android-package" value="com.phonegap.plugins.barcodescanner.BarcodeScanner" />
     </feature>
-    <feature name="Screenshot">
-        <param name="android-package" value="com.darktalker.cordova.screenshot.Screenshot" />
+    <feature name="Geolocation">
+        <param name="android-package" value="org.apache.cordova.geolocation.Geolocation" />
     </feature>
-    <feature name="MediaStreams">
-        <param name="android-package" value="com.adobe.phonegap.media.MediaStreamsPlugin" />
-    </feature>
-    <feature name="Camera">
-        <param name="android-package" value="org.apache.cordova.camera.CameraLauncher" />
-    </feature>
-    <feature name="Media">
-        <param name="android-package" value="org.apache.cordova.media.AudioHandler" />
+    <feature name="InAppBrowser">
+        <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser" />
     </feature>
     <feature name="FileTransfer">
         <param name="android-package" value="org.apache.cordova.filetransfer.FileTransfer" />
     </feature>
-    <feature name="InAppBrowser">
-        <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser" />
+    <feature name="Camera">
+        <param name="android-package" value="org.apache.cordova.camera.CameraLauncher" />
+    </feature>
+    <feature name="Whitelist">
+        <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin" />
+        <param name="onload" value="true" />
     </feature>
     <name>Logify</name>
     <description>
@@ -94,6 +80,7 @@
     <preference name="Allow3DTouchLinkPreview" value="false" />
     <preference name="CordovaWebViewEngine" value="CDVWKWebViewEngine" />
     <preference name="AllowInlineMediaPlayback" value="true" />
+    <preference name="AndroidPersistentFileLocation" value="Compatibility" />
     <preference name="loadUrlTimeoutValue" value="700000" />
     <preference name="StatusBarOverlaysWebView" value="false" />
     <preference name="android-minSdkVersion" value="21" />

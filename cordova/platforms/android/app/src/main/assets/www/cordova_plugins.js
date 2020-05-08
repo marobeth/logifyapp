@@ -1,27 +1,11 @@
 cordova.define('cordova/plugin_list', function(require, exports, module) {
   module.exports = [
     {
-      "id": "cordova-plugin-keyboard.keyboard",
-      "file": "plugins/cordova-plugin-keyboard/www/keyboard.js",
-      "pluginId": "cordova-plugin-keyboard",
-      "clobbers": [
-        "window.Keyboard"
-      ]
-    },
-    {
-      "id": "cordova-plugin-splashscreen.SplashScreen",
-      "file": "plugins/cordova-plugin-splashscreen/www/splashscreen.js",
-      "pluginId": "cordova-plugin-splashscreen",
-      "clobbers": [
-        "navigator.splashscreen"
-      ]
-    },
-    {
-      "id": "cordova-plugin-statusbar.statusbar",
-      "file": "plugins/cordova-plugin-statusbar/www/statusbar.js",
-      "pluginId": "cordova-plugin-statusbar",
-      "clobbers": [
-        "window.StatusBar"
+      "id": "com.darktalker.cordova.screenshot.screenshot",
+      "file": "plugins/com.darktalker.cordova.screenshot/www/Screenshot.js",
+      "pluginId": "com.darktalker.cordova.screenshot",
+      "merges": [
+        "navigator.screenshot"
       ]
     },
     {
@@ -206,6 +190,22 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       "runs": true
     },
     {
+      "id": "cordova-plugin-media.MediaError",
+      "file": "plugins/cordova-plugin-media/www/MediaError.js",
+      "pluginId": "cordova-plugin-media",
+      "clobbers": [
+        "window.MediaError"
+      ]
+    },
+    {
+      "id": "cordova-plugin-media.Media",
+      "file": "plugins/cordova-plugin-media/www/Media.js",
+      "pluginId": "cordova-plugin-media",
+      "clobbers": [
+        "window.Media"
+      ]
+    },
+    {
       "id": "cordova-plugin-media-capture.CaptureAudioOptions",
       "file": "plugins/cordova-plugin-media-capture/www/CaptureAudioOptions.js",
       "pluginId": "cordova-plugin-media-capture",
@@ -274,6 +274,14 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       "runs": true
     },
     {
+      "id": "cordova-plugin-qr-barcode-scanner.BarcodeScanner",
+      "file": "plugins/cordova-plugin-qr-barcode-scanner/www/barcodescanner.js",
+      "pluginId": "cordova-plugin-qr-barcode-scanner",
+      "clobbers": [
+        "cordova.plugins.barcodeScanner"
+      ]
+    },
+    {
       "id": "cordova-plugin-geolocation.geolocation",
       "file": "plugins/cordova-plugin-geolocation/www/android/geolocation.js",
       "pluginId": "cordova-plugin-geolocation",
@@ -288,33 +296,28 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       "runs": true
     },
     {
-      "id": "phonegap-plugin-barcodescanner.BarcodeScanner",
-      "file": "plugins/phonegap-plugin-barcodescanner/www/barcodescanner.js",
-      "pluginId": "phonegap-plugin-barcodescanner",
+      "id": "cordova-plugin-inappbrowser.inappbrowser",
+      "file": "plugins/cordova-plugin-inappbrowser/www/inappbrowser.js",
+      "pluginId": "cordova-plugin-inappbrowser",
       "clobbers": [
-        "cordova.plugins.barcodeScanner"
+        "cordova.InAppBrowser.open",
+        "window.open"
       ]
     },
     {
-      "id": "com.darktalker.cordova.screenshot.screenshot",
-      "file": "plugins/com.darktalker.cordova.screenshot/www/Screenshot.js",
-      "pluginId": "com.darktalker.cordova.screenshot",
-      "merges": [
-        "navigator.screenshot"
+      "id": "cordova-plugin-file-transfer.FileTransferError",
+      "file": "plugins/cordova-plugin-file-transfer/www/FileTransferError.js",
+      "pluginId": "cordova-plugin-file-transfer",
+      "clobbers": [
+        "window.FileTransferError"
       ]
     },
     {
-      "id": "es6-promise-plugin.Promise",
-      "file": "plugins/es6-promise-plugin/www/promise.js",
-      "pluginId": "es6-promise-plugin",
-      "runs": true
-    },
-    {
-      "id": "phonegap-plugin-media-stream.MediaDevices",
-      "file": "plugins/phonegap-plugin-media-stream/www/android/MediaDevices.js",
-      "pluginId": "phonegap-plugin-media-stream",
+      "id": "cordova-plugin-file-transfer.FileTransfer",
+      "file": "plugins/cordova-plugin-file-transfer/www/FileTransfer.js",
+      "pluginId": "cordova-plugin-file-transfer",
       "clobbers": [
-        "navigator.mediaDevices"
+        "window.FileTransfer"
       ]
     },
     {
@@ -348,67 +351,19 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       "clobbers": [
         "CameraPopoverHandle"
       ]
-    },
-    {
-      "id": "cordova-plugin-media.MediaError",
-      "file": "plugins/cordova-plugin-media/www/MediaError.js",
-      "pluginId": "cordova-plugin-media",
-      "clobbers": [
-        "window.MediaError"
-      ]
-    },
-    {
-      "id": "cordova-plugin-media.Media",
-      "file": "plugins/cordova-plugin-media/www/Media.js",
-      "pluginId": "cordova-plugin-media",
-      "clobbers": [
-        "window.Media"
-      ]
-    },
-    {
-      "id": "cordova-plugin-file-transfer.FileTransferError",
-      "file": "plugins/cordova-plugin-file-transfer/www/FileTransferError.js",
-      "pluginId": "cordova-plugin-file-transfer",
-      "clobbers": [
-        "window.FileTransferError"
-      ]
-    },
-    {
-      "id": "cordova-plugin-file-transfer.FileTransfer",
-      "file": "plugins/cordova-plugin-file-transfer/www/FileTransfer.js",
-      "pluginId": "cordova-plugin-file-transfer",
-      "clobbers": [
-        "window.FileTransfer"
-      ]
-    },
-    {
-      "id": "cordova-plugin-inappbrowser.inappbrowser",
-      "file": "plugins/cordova-plugin-inappbrowser/www/inappbrowser.js",
-      "pluginId": "cordova-plugin-inappbrowser",
-      "clobbers": [
-        "cordova.InAppBrowser.open",
-        "window.open"
-      ]
     }
   ];
   module.exports.metadata = {
-    "cordova-plugin-keyboard": "1.2.0",
-    "cordova-plugin-splashscreen": "5.0.2",
-    "cordova-plugin-statusbar": "2.4.2",
-    "cordova-plugin-whitelist": "1.3.3",
-    "cordova-plugin-wkwebview-engine": "1.1.4",
+    "com.darktalker.cordova.screenshot": "0.1.6",
     "cordova-plugin-android-permissions": "1.0.0",
     "cordova-plugin-file": "6.0.1",
-    "cordova-plugin-media-capture": "3.0.2",
-    "cordova-plugin-geolocation": "4.0.1",
-    "phonegap-plugin-barcodescanner": "8.0.1",
-    "com.darktalker.cordova.screenshot": "0.1.6",
-    "es6-promise-plugin": "4.2.2",
-    "phonegap-plugin-media-stream": "1.2.1",
-    "phonegap-plugin-image-capture": "1.1.2",
-    "cordova-plugin-camera": "4.1.0",
     "cordova-plugin-media": "5.0.3",
+    "cordova-plugin-media-capture": "3.0.2",
+    "cordova-plugin-qr-barcode-scanner": "8.0.3",
+    "cordova-plugin-geolocation": "4.0.1",
+    "cordova-plugin-inappbrowser": "3.1.0",
     "cordova-plugin-file-transfer": "1.7.1",
-    "cordova-plugin-inappbrowser": "3.1.0"
+    "cordova-plugin-camera": "4.1.0",
+    "cordova-plugin-whitelist": "1.3.3"
   };
 });

@@ -5,29 +5,20 @@ var funcionesCamara = {
         var pictureSource = navigator.camera.PictureSourceType;
         var destinationType = navigator.camera.DestinationType;
         var srcType = pictureSource.CAMERA;
-        navigator.device.capture.captureImage(function captureSuccess(mediaFiles) {
-            //navigator.camera.getPicture(function onSuccess(mediaFiles) {
+        navigator.camera.getPicture(function cameraSuccess(imageURI) {
             $$('#' + idCanvas).show();
-            ///var canvas = $$('#' + idCanvas)[0];
-            var canva = document.getElementById(idCanvas);
-            var con = canva.getContext('2d');
+            //var canvas = $$('#' + idCanvas);
+            var canvass = document.getElementById(idCanvas);
+            var context = canvass.getContext('2d');
             var img = new Image();
             img.onload = function () {
-                if(img.width == '3456'){
-                    canva.width = img.width / 3;
-                    canva.height = img.height / 4;
-                }else if(img.width == '4608'){
-                    canva.width = img.width / 4;
-                    canva.height = img.height / 3;
-                }else{
-                    canva.width = img.width / 3;
-                    canva.height = img.height / 3;
-                }
-                con.drawImage(img, 0, 0, img.width, img.height, 0, 0, canva.width, canva.height);
+                canvass.width = img.width;
+                canvass.height = img.height;
+                //console.log( img.width +'revisando'+ img.height);
+                context.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvass.width, canvass.height);
             };
-            img.src = mediaFiles[0].fullPath;
+            img.src = imageURI;
             $$('#' + idCanvas).data("foto1", 1);
-            navigator.camera.cleanup();
         }, function captureError(error) {
             console.debug("No se puede obtener una foto openCamera: " + error, "app");
         }, {
@@ -35,8 +26,9 @@ var funcionesCamara = {
             quality: 100,
             targetWidth: 1200,
             targetHeight: 1200,
-            destinationType: destinationType.DATA_URL,
+            destinationType: destinationType.FILE_URI,
             encodingType: navigator.camera.EncodingType.PNG,
+            saveToPhotoAlbum:true,
             sourceType: srcType
         });
     }, openFilePicker: (idCanvas) => {
