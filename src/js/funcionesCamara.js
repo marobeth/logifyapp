@@ -1,4 +1,6 @@
+import config from './config';
 import $$ from "dom7";
+
 
 var funcionesCamara = {
     openCamera: (idCanvas) => {
@@ -12,8 +14,8 @@ var funcionesCamara = {
             var context = canvass.getContext('2d');
             var img = new Image();
             img.onload = function () {
-                canvass.width = img.width / 2;
-                canvass.height = img.height / 2;
+                canvass.width = img.width ;
+                canvass.height = img.height ;
                 //console.log( img.width +'revisando'+ img.height);
                 context.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvass.width, canvass.height);
             };
@@ -23,7 +25,7 @@ var funcionesCamara = {
             console.debug("No se puede obtener una foto openCamera: " + error, "app");
         }, {
             limit: 1,
-            quality: 60,
+            quality: config.Quality,
             targetWidth: 1200,
             targetHeight: 1200,
             destinationType: destinationType.FILE_URI,
@@ -42,8 +44,8 @@ var funcionesCamara = {
             var context = canvass.getContext('2d');
             var img = new Image();
             img.onload = function () {
-                canvass.width = img.width / 2;
-                canvass.height = img.height / 2;
+                canvass.width = img.width ;
+                canvass.height = img.height ;
                 context.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvass.width, canvass.height);
             };
             img.src = imageURI;
@@ -51,7 +53,7 @@ var funcionesCamara = {
         }, function cameraError(error) {
             console.debug("No se puede obtener una foto openFilePicker: " + error, "app");
         }, {
-            quality: 60,
+            quality: config.Quality,
             targetWidth: 1200,
             targetHeight: 1200,
             destinationType: destinationType.FILE_URI,

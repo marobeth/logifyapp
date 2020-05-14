@@ -1690,7 +1690,8 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
 
             app.request.setup({
                 headers: {
-                    'apikey': localStorage.getItem('apikey')
+                    'apikey': localStorage.getItem('apikey'),
+                     'Connection': 'Keep-Alive'
                 },
                 beforeSend: function () {
                     app.preloader.show();
