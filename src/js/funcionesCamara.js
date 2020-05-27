@@ -1,4 +1,5 @@
 import $$ from "dom7";
+import config from "./config";
 
 var funcionesCamara = {
     openCamera: (idCanvas) => {
@@ -23,7 +24,7 @@ var funcionesCamara = {
             console.debug("No se puede obtener una foto openCamera: " + error, "app");
         }, {
             limit: 1,
-            quality: config.Quality,
+            quality: config.QUALITY,
             targetWidth: 1200,
             targetHeight: 1200,
             destinationType: destinationType.FILE_URI,
@@ -51,7 +52,7 @@ var funcionesCamara = {
         }, function cameraError(error) {
             console.debug("No se puede obtener una foto openFilePicker: " + error, "app");
         }, {
-            quality: config.Quality,
+            quality: config.QUALITY,
             targetWidth: 1200,
             targetHeight: 1200,
             destinationType: destinationType.FILE_URI,
