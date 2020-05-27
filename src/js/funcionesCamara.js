@@ -23,7 +23,7 @@ var funcionesCamara = {
             console.debug("No se puede obtener una foto openCamera: " + error, "app");
         }, {
             limit: 1,
-            quality: 60,
+            quality: config.Quality,
             targetWidth: 1200,
             targetHeight: 1200,
             destinationType: destinationType.FILE_URI,
@@ -51,7 +51,7 @@ var funcionesCamara = {
         }, function cameraError(error) {
             console.debug("No se puede obtener una foto openFilePicker: " + error, "app");
         }, {
-            quality: 60,
+            quality: config.Quality,
             targetWidth: 1200,
             targetHeight: 1200,
             destinationType: destinationType.FILE_URI,

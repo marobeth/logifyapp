@@ -1543,8 +1543,9 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_conectado').show();
                 break;
-            case defaults:
+            default:
                 $$('.ocultar_campos').hide();
+                break;
         }
     });
 
@@ -1619,6 +1620,11 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                     validado = true;
                 } else {
                     app.dialog.alert('El proveedor ocurre y la guía ocurre son obligatorios');
+                }
+                break;
+            default:
+                if(status > 12){
+                    validado = true;
                 }
                 break;
         }
@@ -3231,6 +3237,68 @@ $$(document).on('page:init', '.page[data-name="asignarpadre"]', function (e) {
 
 
 });
+$$(document).on('page:init', '.page[data-name="asignarsucursalhijos"]', function (e) {
+    $$('#btnmostrarQR').hide();
+    $$('#mostrarResutl').hide();
+    var id_operador = localStorage.getItem('user_id');
+
+    $$('#btn_validar_sucursal').on('click', function (){
+        var numSucursal = $$('#numSucursal').val();
+        fnGuiasHijos.validarSucursalNGHJ(app,numSucursal);
+    });
+
+    $$('#btn_escanear_hjs').on('click', function () {
+        cordova.plugins.barcodeScanner.scan(
+            function (result) {
+                if (!result.cancelled) {
+                    var num_guia_hijo = result.text;
+                    if(num_guia_hijo.length > 17){
+                        var guias_actuales = $$('#hidden_guias_scan').val();
+                        if (guias_actuales.includes(num_guia_hijo)) {
+                            app.dialog.alert("Ya habías agregado esta guía");
+                        } else {
+                            var cantidad_guias = parseInt($$('#total_guias_escaneadas').html());
+                            cantidad_guias++;
+                            $$('#total_guias_escaneadas').html(cantidad_guias);
+                            $$('#total_guias_escaneadas').html();
+                            $$('#lista_guias_scan_hjs').append('<li>' + num_guia_hijo + '</li>');
+                            $$('#hidden_guias_scan').val(num_guia_hijo + '|' + $$('#hidden_guias_scan').val());
+                            var guiasHjs = $$('#hidden_guias_scan').val().substr(0, $$('#hidden_guias_scan').val().length - 1);
+                            $$("#guiasscan").val(guiasHjs);
+                        }
+                    }else{
+                        app.dialog.alert("Guía no válida: no tiene los caracteres permitidos");
+                    }
+                } else {
+                    app.dialog.alert('El scan fue cancelado');
+                }
+            }, function (error) {
+                app.dialog.alert("El scan falló: " + error);
+            },
+            {
+                showTorchButton: true, // iOS and Android
+                torchOn: false, // Android, launch with the torch switched on (if available)
+                saveHistory: true, // Android, save scan history (default false)
+                prompt: "Ponga el código QR dentro del área de escaneo" // Android
+            }
+        );
+    });
+
+    $$('#btn_cambiar_status_guias').on('click', function () {
+        var idoperador = localStorage.getItem('userid');
+        var sucursal= $$("#numSucursal").val();
+        var selectStatus= $$('#selectStatus').val();
+        var guiasHjs= $$("#guiasscan").val();
+        var latitud= $$("#latitud").val();
+        var longitud= $$("#longitud").val();
+        var lanlog=(latitud +','+ longitud);
+        fnGuiasHijos.ValidarNGHJIDV(app,idoperador,guiasHjs,lanlog,selectStatus,sucursal);
+    });
+    /*$$('#btn_regresar').on('click', function () {
+        app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
+    });*/
+});
+
 function monstrarImagenes(codCliente,braNumbre,status,tipoFimg){
     $$('#mostarfotos').html('');
     var fotos ='';

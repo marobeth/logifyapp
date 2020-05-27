@@ -23,6 +23,7 @@ import CambiarStatusGuiaHijos from '../pages/cambiarstatushijos.f7.html';
 import AsignarPadre from '../pages/asignarpadre.f7.html';
 import AsignarGuiasHijos from '../pages/asignarguiahijo.f7.html';
 import AsignarHijos from '../pages/asignarhijos.f7.html';
+import AsignarSucursalHijos from '../pages/asignarsuchijos.f7.html';
 import NotFoundPage from '../pages/404.f7.html';
 
 var routes = [
@@ -129,6 +130,10 @@ var routes = [
     {
         path: '/asignarhijos/:numsucursal',
         component: AsignarHijos,
+    },
+    {
+        path: '/asignarsucursalhijos/',
+        component: AsignarSucursalHijos,
     },
     {
         path: '(.*)',
