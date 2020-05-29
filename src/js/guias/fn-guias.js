@@ -43,6 +43,10 @@ var fnGuias = {
                 //En ruta
                 statusResult = 'Conectado';
                 break;
+            case '15':
+                //En Almacén GDL
+                statusResult = '>Almacén GDL';
+                break;
         }
         return statusResult;
     },
@@ -71,6 +75,7 @@ var fnGuias = {
                     $$('#' + CById).html(proyectoStatus);
                 } else {
                     proyectoStatus = '<option value="">Seleccionar</option>\n' +
+                        '<option value="15">Almacén GDL</option>\n' +
                         '<option value="2">Recolectado</option>\n' +
                         '<option value="3">En Ruta</option>\n' +
                         '<option value="4">Entregado</option>\n' +
@@ -134,7 +139,7 @@ var fnGuias = {
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_conectado').show();
                 break;
-            case defaults:
+            default:
                 $$('.ocultar_campos').hide();
         }
     },
