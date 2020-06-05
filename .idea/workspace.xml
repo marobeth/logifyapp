@@ -8,8 +8,9 @@
       <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/js/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/res/xml/config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/res/xml/config.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cordova/www/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/www/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/js/guias/fn-guias.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/guias/fn-guias.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/cambiarstatus.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/cambiarstatus.f7.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/consultar.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/consultar.f7.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -173,6 +174,8 @@
       <workItem from="1588974631503" duration="1429000" />
       <workItem from="1588977012132" duration="690000" />
       <workItem from="1590672139404" duration="5883000" />
+      <workItem from="1591290359330" duration="5540000" />
+      <workItem from="1591374074489" duration="5994000" />
     </task>
     <servers />
   </component>

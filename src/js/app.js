@@ -1820,6 +1820,9 @@ $$(document).on('page:init', '.page[data-name="escanear"]', function (e) {
 });
 $$(document).on('page:init', '.page[data-name="consultar"]', function (e) {
     $$('#btn_escanear_consulta').on('click', function () {
+        var tel_dest='';
+        var info_comp_dest='';
+        var dir2_dest='';
         cordova.plugins.barcodeScanner.scan(
             function (result) {
                 if (!result.cancelled) {
@@ -1828,9 +1831,30 @@ $$(document).on('page:init', '.page[data-name="consultar"]', function (e) {
                     app.request.get(
                         URL_WS + 'guideinfo/' + num_guia,
                         function (data) {
+                            if( data[0].tel_dest != ''  && !!data[0].tel_dest){
+                                 tel_dest= 'Tel.: '+ data[0].tel_dest + '<br>';
+                            }
+                            if( data[0].info_comp_dest != '' && !!data[0].info_comp_dest){
+                                info_comp_dest= 'Referencias: '+ data[0].info_comp_dest + '<br>';
+                            }
+
+                            if( data[0].dir2_dest != ''  && !!data[0].dir2_dest){
+                                dir2_dest= 'Dirección alternativa: '+ data[0].dir2_dest + '<br>';
+                            }
                             $$('#status_guia_consulta').html(fnGuias.traducirStatus(data[0].status));
                             $$('#espacio_proyecto').html(detectarProyecto(num_guia));
-                            $$('#espacio_destinatario').html(data[0].nombre_dest + ' ' + data[0].paterno_dest + ' ' + data[0].materno_dest + '<br>' + data[0].edo_dest + ' ' + data[0].mun_dest + ' ' + data[0].asent_dest);
+                            $$('#espacio_destinatario').html(
+                                data[0].nombre_dest + ' ' +
+                                data[0].paterno_dest + ' ' +
+                                data[0].materno_dest + '<br>' +
+                                data[0].dir1_dest + '<br>' +
+                                data[0].asent_dest + '<br>' +
+                                data[0].mun_dest + ', ' +
+                                data[0].edo_dest + ', ' +
+                                data[0].cp_dest + '<br>'+
+                                tel_dest + info_comp_dest +dir2_dest
+                            );
+                            fnGuias.LogComentarios(app,data[0].id);
                             $$('#testigoreal1').attr('src', URL_WS + data[0].foto1);
                             $$('#testigoreal2').attr('src', URL_WS + data[0].foto2);
                             if (detectarProyecto(num_guia) == 'PPF') {
