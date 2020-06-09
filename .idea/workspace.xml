@@ -9,7 +9,9 @@
       <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/res/xml/config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/res/xml/config.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cordova/www/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/www/js/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/config.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/js/guias/fn-guias.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/guias/fn-guias.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/cambiarstatus.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/cambiarstatus.f7.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/consultar.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/consultar.f7.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -226,6 +228,10 @@
     <state x="424" y="-904" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1440.801/0.-1057.1920.1057@0.-1057.1920.1057" timestamp="1587704850071" />
     <state x="424" y="-904" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1440.804/0.-1057.1920.1057@0.-1057.1920.1057" timestamp="1588682796704" />
     <state x="424" y="-904" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1440.806/0.-1057.1920.1057@0.-1057.1920.1057" timestamp="1588129049826" />
+    <state x="2064" y="141" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1591714874987">
+      <screen x="1440" y="-157" width="1920" height="977" />
+    </state>
+    <state x="2064" y="141" key="#com.intellij.fileTypes.FileTypeChooser/0.23.1440.877/1440.-157.1920.977@1440.-157.1920.977" timestamp="1591714874987" />
     <state x="698" y="-812" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1587764121245">
       <screen x="0" y="-1057" width="1920" height="1057" />
     </state>
@@ -241,16 +247,16 @@
     <state x="93" y="91" width="1272" height="612" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1588687588536">
       <screen x="0" y="23" width="1440" height="804" />
     </state>
-    <state x="100" y="123" width="1340" height="608" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.1440.800/1440.-157.1920.1057@0.23.1440.800" timestamp="1582838266676" />
     <state x="133" y="-925" width="1787" height="804" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.1440.801/0.-1057.1920.1057@0.-1057.1920.1057" timestamp="1588040231632" />
     <state x="124" y="-967" width="1695" height="804" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.1440.804/0.-1057.1920.1057@0.-1057.1920.1057" timestamp="1588289558126" />
     <state x="93" y="91" width="1272" height="612" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.1440.804/0.-1057.1920.1057@0.23.1440.804" timestamp="1588687588536" />
-    <state x="623" y="-914" width="824" height="693" key="find.popup" timestamp="1590585584411">
-      <screen x="0" y="-1057" width="1920" height="1057" />
+    <state x="2063" y="-25" width="824" height="641" key="find.popup" timestamp="1591714761992">
+      <screen x="1440" y="-157" width="1920" height="977" />
     </state>
     <state x="623" y="-914" width="673" height="693" key="find.popup/0.23.1440.801/0.-1057.1920.1057@0.-1057.1920.1057" timestamp="1588114429032" />
     <state x="623" y="-914" width="824" height="693" key="find.popup/0.23.1440.804/0.-1057.1920.1057@0.-1057.1920.1057" timestamp="1590585584411" />
     <state x="562" y="-927" width="673" height="693" key="find.popup/0.23.1440.812/0.-1057.1920.1057@0.-1057.1920.1057" timestamp="1588985631007" />
+    <state x="2063" y="-25" width="824" height="641" key="find.popup/0.23.1440.877/1440.-157.1920.977@1440.-157.1920.977" timestamp="1591714761992" />
     <state x="608" y="-607" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1588651322608">
       <screen x="0" y="-1057" width="1920" height="1057" />
     </state>

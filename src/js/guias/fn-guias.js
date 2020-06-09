@@ -306,7 +306,6 @@ var fnGuias = {
     LogComentarios:(app,idguia)=>{
         if (idguia != '') {
             let url = config.URL_WS + 'api/v2/historial/comentarios/' + idguia;
-            console.log(url);
             app.request.setup({
                 headers: {
                     'apikey': localStorage.getItem('apikey')
@@ -331,7 +330,7 @@ var fnGuias = {
                         data.forEach(function (val, index) {
                             comentarios += '<li><i class="material-icons">comment</i> ' + val.comentarios +'</li>';
                         });
-                        comentarios+='<p></div>\n' +
+                        comentarios+='</p></div>\n' +
                             '</div>\n' +
                             '</li>\n' +
                             '</ul>\n' +
@@ -339,6 +338,45 @@ var fnGuias = {
                             '</ul></div>';
                         $$('#log_comentarios').html(comentarios);
                     }
+                },
+                'json'
+            );
+        }
+
+    },
+    LogIncidencias:(app,client_code,idguia)=>{
+        if (idguia != '' && client_code === 'CVD') {
+            let url = config.URL_WS + 'api/v2/historial/incidencias/' + idguia;
+            app.request.setup({
+                headers: {
+                    'apikey': localStorage.getItem('apikey')
+                },
+                beforeSend: function () {
+                    app.preloader.show();
+                },
+                complete: function () {
+                    app.preloader.hide();
+                }
+            });
+            app.request.get(
+                url,
+                function (data) {
+                    var total= data.length;
+                    if( total > 0 ){
+                        var comentarios = '<div class="list accordion-list">\n' +
+                            '<ul><li class="accordion-item"><a href="#" class="item-content">\n' +
+                            '<div class="item-inner"><div class="item-title" style="color: #ff1e0e;">Incidencias ('+ total +')</div></div></a>\n' +
+                            '<div class="accordion-item-content"><div class="block"><p>\n' +
+                            '<div class="list accordion-list"><ul>\n';
+                        comentarios+='</p></div>\n' +
+                            '</div>\n' +
+                            '</li>\n' +
+                            '</ul>\n' +
+                            '</div>\n'+
+                            '</ul></div>';
+                        $$('#log_incidencias').html(comentarios);
+                    }
+
                 },
                 'json'
             );

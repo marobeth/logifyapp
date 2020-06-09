@@ -1185,6 +1185,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                     }
                 }
                 fnGuiasHijos.MostrarNGH(app,'NGHijos', data['guia'][0].num_guia);
+                fnGuias.LogIncidencias(app, data['guia'][0].client_code, data['guia'][0].id);
                 app.preloader.hide();
 
             },
@@ -1855,6 +1856,7 @@ $$(document).on('page:init', '.page[data-name="consultar"]', function (e) {
                                 tel_dest + info_comp_dest +dir2_dest
                             );
                             fnGuias.LogComentarios(app,data[0].id);
+                            fnGuias.LogIncidencias(app,data[0].client_code,data[0].id);
                             $$('#testigoreal1').attr('src', URL_WS + data[0].foto1);
                             $$('#testigoreal2').attr('src', URL_WS + data[0].foto2);
                             if (detectarProyecto(num_guia) == 'PPF') {
