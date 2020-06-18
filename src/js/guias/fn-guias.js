@@ -47,6 +47,14 @@ var fnGuias = {
                 //En Almacén GDL
                 statusResult = '>Almacén GDL';
                 break;
+            case '16':
+                //En Almacén BJ
+                statusResult = '>Almacén BJ';
+                break;
+            case '17':
+                //En Almacén MTY
+                statusResult = '>Almacén MTY';
+                break;
         }
         return statusResult;
     },
@@ -75,7 +83,9 @@ var fnGuias = {
                     $$('#' + CById).html(proyectoStatus);
                 } else {
                     proyectoStatus = '<option value="">Seleccionar</option>\n' +
+                        '<option value="16">Almacén BJ</option>\n' +
                         '<option value="15">Almacén GDL</option>\n' +
+                        '<option value="17">Almacén MTY</option>\n' +
                         '<option value="2">Recolectado</option>\n' +
                         '<option value="3">En Ruta</option>\n' +
                         '<option value="4">Entregado</option>\n' +

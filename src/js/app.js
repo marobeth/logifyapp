@@ -1524,7 +1524,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 //Devuelto
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_devuelto').show();
-                console.log(codCliente+"entre");
+                //console.log(codCliente+"entre");
                 if(codCliente === 'CVD'){
                     fnGuias.fnmostrarCampos(app,codCliente,braNumbre,status,tipoFimg);
                 }
