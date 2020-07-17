@@ -88,7 +88,7 @@ var fnGuiasHijos = {
     },
     ValidarNGHJIDV: (app,idoperador,guiasHjs,lanlog, selectStatus, sucursal ) =>{
         var resultado='';
-        if(idoperador !='' && guiasHjs != '' && lanlog != '' && selectStatus != 0){
+        if(idoperador !='' && guiasHjs != '' && lanlog != '' && selectStatus != 0 ){
             app.request.setup({
                 headers: {
                     'apikey': localStorage.getItem('apikey')
@@ -135,7 +135,7 @@ var fnGuiasHijos = {
                 'json'
             );
         }else{
-            alert('Campos vacios');
+            alert('Hay campos vacíos');
         }
     },
     MostrarNGH:(app, CById, Numguia ) =>{
@@ -201,6 +201,39 @@ var fnGuiasHijos = {
         '                    </ul>\n' +
         '                </div>';
         $$('#LinkNGHijos').html($html);
+    },
+    validarSucursalNGHJ:(app,num_sucursal) =>{
+        if (num_sucursal != '') {
+            let url = config.URL_WS + 'info-sucursal/' + num_sucursal;
+            app.request.setup({
+                headers: {
+                    'apikey': localStorage.getItem('apikey')
+                },
+                beforeSend: function () {
+                    app.preloader.show();
+                },
+                complete: function () {
+                    app.preloader.hide();
+                }
+            });
+            app.request.get(
+                url,
+                function (data) {
+                    if( data !== null){
+                        var infoSucursal ='<p> No. Sucursal: '+data.id +' <strong> "'+data.nombre +'"</strong></p>';
+                        $$('#infoSucursal').html(infoSucursal);
+                        $$('#btnValdiarS').hide();
+                        $$('#btnmostrarQR').show();
+                        $$('#mostrarResutl').hide();
+                    }else{
+                        app.dialog.alert("La sucursal "+ num_sucursal +" no existe");
+                    }
+                },
+                'json'
+            );
+        } else {
+            alert("Campo Vacío");
+        }
     }
 };
 

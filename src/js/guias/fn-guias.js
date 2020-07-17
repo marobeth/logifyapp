@@ -43,6 +43,18 @@ var fnGuias = {
                 //En ruta
                 statusResult = 'Conectado';
                 break;
+            case '15':
+                //En Almacén GDL
+                statusResult = '>Almacén GDL';
+                break;
+            case '16':
+                //En Almacén BJ
+                statusResult = '>Almacén BJ';
+                break;
+            case '17':
+                //En Almacén MTY
+                statusResult = '>Almacén MTY';
+                break;
         }
         return statusResult;
     },
@@ -71,6 +83,9 @@ var fnGuias = {
                     $$('#' + CById).html(proyectoStatus);
                 } else {
                     proyectoStatus = '<option value="">Seleccionar</option>\n' +
+                        '<option value="16">Almacén BJ</option>\n' +
+                        '<option value="15">Almacén GDL</option>\n' +
+                        '<option value="17">Almacén MTY</option>\n' +
                         '<option value="2">Recolectado</option>\n' +
                         '<option value="3">En Ruta</option>\n' +
                         '<option value="4">Entregado</option>\n' +
@@ -134,7 +149,7 @@ var fnGuias = {
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_conectado').show();
                 break;
-            case defaults:
+            default:
                 $$('.ocultar_campos').hide();
         }
     },
@@ -297,6 +312,86 @@ var fnGuias = {
                 break;
         }
         return incidenciaResult;
+    },
+    LogComentarios:(app,idguia)=>{
+        if (idguia != '') {
+            let url = config.URL_WS + 'api/v2/historial/comentarios/' + idguia;
+            app.request.setup({
+                headers: {
+                    'apikey': localStorage.getItem('apikey')
+                },
+                beforeSend: function () {
+                    app.preloader.show();
+                },
+                complete: function () {
+                    app.preloader.hide();
+                }
+            });
+            app.request.get(
+                url,
+                function (data) {
+                    var total= data.length;
+                    if( total > 0 ){
+                        var comentarios = '<div class="list accordion-list">\n' +
+                            '<ul><li class="accordion-item"><a href="#" class="item-content item-link">\n' +
+                            '<div class="item-inner"><div class="item-title">Comentarios ('+ total +')</div></div></a>\n' +
+                            '<div class="accordion-item-content"><div class="block"><p>\n' +
+                            '<div class="list accordion-list"><ul>\n';
+                        data.forEach(function (val, index) {
+                            comentarios += '<li><i class="material-icons">comment</i> ' + val.comentarios +'</li>';
+                        });
+                        comentarios+='</p></div>\n' +
+                            '</div>\n' +
+                            '</li>\n' +
+                            '</ul>\n' +
+                            '</div>\n'+
+                            '</ul></div>';
+                        $$('#log_comentarios').html(comentarios);
+                    }
+                },
+                'json'
+            );
+        }
+
+    },
+    LogIncidencias:(app,client_code,idguia)=>{
+        if (idguia != '' && client_code === 'CVD') {
+            let url = config.URL_WS + 'api/v2/historial/incidencias/' + idguia;
+            app.request.setup({
+                headers: {
+                    'apikey': localStorage.getItem('apikey')
+                },
+                beforeSend: function () {
+                    app.preloader.show();
+                },
+                complete: function () {
+                    app.preloader.hide();
+                }
+            });
+            app.request.get(
+                url,
+                function (data) {
+                    var total= data.length;
+                    if( total > 0 ){
+                        var comentarios = '<div class="list accordion-list">\n' +
+                            '<ul><li class="accordion-item"><a href="#" class="item-content">\n' +
+                            '<div class="item-inner"><div class="item-title" style="color: #ff1e0e;">Incidencias ('+ total +')</div></div></a>\n' +
+                            '<div class="accordion-item-content"><div class="block"><p>\n' +
+                            '<div class="list accordion-list"><ul>\n';
+                        comentarios+='</p></div>\n' +
+                            '</div>\n' +
+                            '</li>\n' +
+                            '</ul>\n' +
+                            '</div>\n'+
+                            '</ul></div>';
+                        $$('#log_incidencias').html(comentarios);
+                    }
+
+                },
+                'json'
+            );
+        }
+
     }
 };
 export default fnGuias;
