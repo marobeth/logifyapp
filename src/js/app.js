@@ -71,6 +71,24 @@ function detectarProyecto(num_guia) {
     if (num_guia.includes('DIA0001')) {
         return "Diageo General";
     }
+    if (num_guia.includes('CVD0001')) {
+        return "CVDirecto General";
+    }
+    if (num_guia.includes('EUR0001')) {
+        return "Euronek General";
+    }
+    if (num_guia.includes('PUR0001')) {
+        return "PuroEgo General";
+    }
+    if (num_guia.includes('CEL0001')) {
+        return "Celio General";
+    }
+    if (num_guia.includes('EGO0001')) {
+        return "EGO General";
+    }
+    if (num_guia.includes('CEL0002')) {
+        return "Celio";
+    }
 }
 /* GEOLOCATION */
 function getLocation() {
@@ -394,7 +412,7 @@ function RsltsGastos(valor) {
             $$('#ConceptoGasto').html(gatosConceptos);
         },
         function (error) {
-            console.log(error);
+            //console.log(error);
         },
         'json'
     );
@@ -422,13 +440,13 @@ function NmPrvdr(CById, valor) {
         URL_NEW_WS + 'api/v2/proveedor-operador-nombre/' + valor,
         function (data) {
             data.forEach(function (val, index) {
-                console.log(val);
+                //console.log(val);
                 document.getElementById(CById).value = val.nombre;
                 $$('#' + CById).data('idPrvdr', val.id);
             });
         },
         function (error) {
-            console.log(error);
+            //console.log(error);
         },
         'json'
     );
@@ -499,6 +517,7 @@ function validateMonto(valor) {
         app.dialog.alert("El formato no corresponde Ej. 120.00 ó 23.65");
     }
 }
+
 /**
  *
  * @param valor
@@ -692,7 +711,7 @@ function RsltsVehiculo(CById, type, valor) {
             $$('#' + CById).html(vehiculos);
         },
         function (error) {
-            console.log(error);
+           // console.log(error);
         },
         'json'
     );
@@ -814,11 +833,11 @@ function validateOdometro(CById, idauto, valor) {
             }
         },
         function (error) {
-            console.log(error);
+            //console.log(error);
         },
         'json'
     );
-    console.log("result:"+result);
+    //console.log("result:"+result);
     return result;
 }
 
@@ -1153,7 +1172,8 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         app.request.get(
             URL_WS + 'consulta/' + num_guias[0],
             function (data) {
-                fnGuias.mostrarSttus(app, data['guia'][0].branch_number, data['guia'][0].client_code, 'status');
+                fnGuias.leyendaGuia(app,data['guia'][0].id,data['guia'][0].client_code,data['guia'][0].branch_number);
+                fnGuias.mostrarSttus(app, data['guia'][0].id,data['guia'][0].branch_number, data['guia'][0].client_code, 'status');
                 //console.log(data['guia'][0].num_guia);
                 $$('#num_guia').html(data['guia'][0].num_guia);
                 if (data['guia'][0].branch_number == '0004') {
@@ -1544,6 +1564,19 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_conectado').show();
                 break;
+            case '22':
+                //Recolectado
+                //console.log("Recolectado");
+                $$('.ocultar_campos').hide();
+                $$('.mostrar_recolectado').show();
+                fnGuias.fnmostrarCampos(app,codCliente,braNumbre,status,tipoFimg);
+                break;
+            case '23':
+                //Incidencia
+                $$('.ocultar_campos').hide();
+                $$('.mostrar_incidencia').show();
+                fnGuias.fnmostrarCampos(app,codCliente,braNumbre,status,tipoFimg);
+                break;
             default:
                 $$('.ocultar_campos').hide();
                 break;
@@ -1799,7 +1832,7 @@ $$(document).on('page:init', '.page[data-name="escanear"]', function (e) {
                             $$('#lista_guias_scan').append('<li>' + num_guia + ' - ' + detectarProyecto(num_guia) + '</li>');
                             $$('#hidden_guias_scan').val(num_guia + '|' + $$('#hidden_guias_scan').val());
                             var guias = $$('#hidden_guias_scan').val().substr(0, $$('#hidden_guias_scan').val().length - 1);
-                           // console.log(guias);
+                            //console.log(guias);
                             $$('#btn_ir_cambiar_status').attr('href', '/cambiarstatus/' + guias);
                         }
                         $$('#btn_ir_cambiar_status').show();
@@ -1832,31 +1865,9 @@ $$(document).on('page:init', '.page[data-name="consultar"]', function (e) {
                     app.request.get(
                         URL_WS + 'guideinfo/' + num_guia,
                         function (data) {
-                            if( data[0].tel_dest != ''  && !!data[0].tel_dest){
-                                 tel_dest= 'Tel.: '+ data[0].tel_dest + '<br>';
-                            }
-                            if( data[0].info_comp_dest != '' && !!data[0].info_comp_dest){
-                                info_comp_dest= 'Referencias: '+ data[0].info_comp_dest + '<br>';
-                            }
-
-                            if( data[0].dir2_dest != ''  && !!data[0].dir2_dest){
-                                dir2_dest= 'Dirección alternativa: '+ data[0].dir2_dest + '<br>';
-                            }
                             $$('#status_guia_consulta').html(fnGuias.traducirStatus(data[0].status));
                             $$('#espacio_proyecto').html(detectarProyecto(num_guia));
-                            $$('#espacio_destinatario').html(
-                                data[0].nombre_dest + ' ' +
-                                data[0].paterno_dest + ' ' +
-                                data[0].materno_dest + '<br>' +
-                                data[0].dir1_dest + '<br>' +
-                                data[0].asent_dest + '<br>' +
-                                data[0].mun_dest + ', ' +
-                                data[0].edo_dest + ', ' +
-                                data[0].cp_dest + '<br>'+
-                                tel_dest + info_comp_dest +dir2_dest
-                            );
-                            fnGuias.LogComentarios(app,data[0].id);
-                            fnGuias.LogIncidencias(app,data[0].client_code,data[0].id);
+                            $$('#espacio_destinatario').html(data[0].nombre_dest + ' ' + data[0].paterno_dest + ' ' + data[0].materno_dest + '<br>' + data[0].edo_dest + ' ' + data[0].mun_dest + ' ' + data[0].asent_dest);
                             $$('#testigoreal1').attr('src', URL_WS + data[0].foto1);
                             $$('#testigoreal2').attr('src', URL_WS + data[0].foto2);
                             if (detectarProyecto(num_guia) == 'PPF') {

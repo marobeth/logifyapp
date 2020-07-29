@@ -58,9 +58,10 @@ var fnGuias = {
         }
         return statusResult;
     },
-    mostrarSttus: (app, branchnumber, clientcode, CById) => {
+    mostrarSttus: (app, idguia, branchnumber, clientcode, CById) => {
         //console.log("engtre mostrarSttus");
         var proyectoStatus;
+        var status;
         app.request.setup({
             headers: {
                 'apikey': localStorage.getItem('apikey')
@@ -82,20 +83,20 @@ var fnGuias = {
                     });
                     $$('#' + CById).html(proyectoStatus);
                 } else {
-                    proyectoStatus = '<option value="">Seleccionar</option>\n' +
-                        '<option value="16">Almacén BJ</option>\n' +
-                        '<option value="15">Almacén GDL</option>\n' +
-                        '<option value="17">Almacén MTY</option>\n' +
-                        '<option value="2">Recolectado</option>\n' +
-                        '<option value="3">En Ruta</option>\n' +
-                        '<option value="4">Entregado</option>\n' +
-                        '<option value="5">Incidencia</option>\n' +
-                        '<option value="6">Devuelto</option>\n' +
-                        '<option value="7">Ocurre</option>\n' +
-                        '<option value="8">En Almacén</option>\n' +
-                        '<option value="12">Conectado</option>';
-                    $$('#' + CById).html(proyectoStatus);
-                    //$$('#' + CByCC).html(clientcode);
+                    app.request.get(
+                        config.URL_WS + 'api/v2/status/default/' + idguia  + '/' + clientcode + '/' + branchnumber,
+                        function (datos) {
+                           if(datos.length > 0){
+                               status = '<option value="">Seleccionar</option>';
+                               datos.forEach( (valstaus, index) => {
+                                   status += '<option value="' + valstaus.id + '">' + valstaus.nombre + '</option>';
+                               });
+                               $$('#' + CById).html(status);
+                           }
+
+                        },
+                        'json'
+                    );
                 }
             },
             'json'
@@ -392,6 +393,39 @@ var fnGuias = {
             );
         }
 
+    },
+    leyendaGuia:(app,idguia,clientCode,braNumbre) => {
+        var tipoguia='';
+        var guia_referencia='';
+        let url = config.URL_WS + 'api/v2/leyenda/'+idguia+'/'+clientCode+'/'+ braNumbre;
+        app.request.setup({
+            headers: {
+                'apikey': localStorage.getItem('apikey')
+            },
+            beforeSend: function () {
+                app.preloader.show();
+            },
+            complete: function () {
+                app.preloader.hide();
+            }
+        });
+        app.request.get(
+            url,
+            function (data) {
+                tipoguia=data.tipoguia;
+                guia_referencia=data.guia_referencia;
+                if (guia_referencia === undefined || guia_referencia === null || guia_referencia === '') {
+                    guia_referencia='';
+                }else{
+                    guia_referencia='<span><br>&nbsp;&nbsp;&nbsp;referencia: '+ data.guia_referencia +'</span>';
+                }
+                if( tipoguia != '' ){
+                    var leyenda = '<div class="alert alert-info">' + tipoguia + guia_referencia + '</div>';
+                    $$('#leyenda').html(leyenda);
+                }
+            },
+            'json'
+        );
     }
 };
 export default fnGuias;
