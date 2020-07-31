@@ -49,7 +49,7 @@ var fnGuias = {
                 break;
             case '16':
                 //En Almacén BJ
-                statusResult = '>Almacén BJ';
+                statusResult = '>Almacén BJX';
                 break;
             case '17':
                 //En Almacén MTY
