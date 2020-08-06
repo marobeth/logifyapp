@@ -1,51 +1,88 @@
 <template>
-  <div class="page" data-name="consultar">
-    <div class="navbar">
-      <div class="navbar-inner sliding">
-        <div class="left">
-        <a href="#" class="link back">
-         <i class="material-icons">chevron_left</i>
-          <span class="if-not-md"></span>
-        </a>
-        </div>
-      <div class="title">Consultar información de guía</div>
-      <div class="right">
-        <a href="#" data-panel="right" class="panel-open">
-         <i class="material-icons">menu</i>
-          <span class="if-not-md"></span>
-        </a>
-        </div>
-    </div>
-  </div>
-  <div class="page-content">
-    <div class="block-title">Consultar información de guía <span id="num_guia_consulta"></span></div>
-     <div class="list no-hairlines-md">
-      <ul>
-        <li>
-          <div class="block">
-            <div class="row">
-              <a id="btn_escanear_consulta" class="col button button-fill">Escanear</a>
-              <p>&nbsp;</p>
+    <div class="page" data-name="consultar">
+        <div class="navbar">
+            <div class="navbar-inner sliding">
+                <div class="left">
+                    <a href="#" class="link back">
+                        <i class="material-icons">chevron_left</i>
+                        <span class="if-not-md"></span>
+                    </a>
+                </div>
+                <div class="title">Consultar información de guía</div>
+                <div class="right">
+                    <a href="#" data-panel="right" class="panel-open">
+                        <i class="material-icons">menu</i>
+                        <span class="if-not-md"></span>
+                    </a>
+                </div>
             </div>
-          </div>
-        </li>
-      </ul>
+        </div>
+        <div class="page-content">
+            <div class="block-title">Consultar información de guía<br>
+                <strong>
+                    <span id="num_guia_consulta"></span>
+                </strong>
+            </div>
+            <div id="mostrarBtnScan">
+                <div class="list no-hairlines-md">
+                    <ul>
+                        <li>
+                            <div class="block">
+                                <div class="row">
+                                    <a id="btn_escanear_consulta" class="col button button-fill">Escanear</a>
+                                    <p>&nbsp;</p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="mostrarInputGuia">
+                <div class="list no-hairlines-md">
+                    <ul>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Guía</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" id="infoGuia" name="infoGuia" placeholder="Número Guia">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="mostrarBtnInfo">
+                <div class="list no-hairlines-md">
+                    <ul>
+                        <li>
+                            <div class="block">
+                                <div class="row">
+                                    <a id="btn_info_guia" class="col button button-fill">Generar</a>
+                                    <p>&nbsp;</p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="block">
+                <h1 id="num_guia_consulta"></h1>
+                <h2 id="espacio_proyecto"></h2>
+                <h2 id="status_guia_consulta"></h2>
+                <div id="log_incidencias"></div>
+                <p id="espacio_destinatario"></p>
+                <div id="log_comentarios"></div>
+                <div id="cont_paquete"></div>
+                <div id="ocurre"></div>
+                <h2 id="titulo_testigos">Testigos:</h2>
+                <img src="" alt="" id="testigoreal1">
+                <img src="" alt="" id="testigoreal2">
+            </div>
+        </div>
     </div>
-    <div class="block">
-      <h1 id="num_guia_consulta"></h1>
-      <h2 id="espacio_proyecto"></h2>
-      <h2 id="status_guia_consulta"></h2>
-      <div id="log_incidencias"></div>
-      <p id="espacio_destinatario"></p>
-      <div id="log_comentarios"></div>
-      <div id="cont_paquete"></div>
-      <h2 id="titulo_testigos">Testigos:</h2>
-      <img src="" alt="" id="testigoreal1">
-      <img src="" alt="" id="testigoreal2">
-    </div>
-  </div>
-</div>
 </template>
 <script>
-  export default {};
+    export default {};
 </script>

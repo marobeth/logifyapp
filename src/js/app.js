@@ -1563,6 +1563,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 //En conectado
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_conectado').show();
+                fnGuias.mostrarListadoOcurre(app);
                 break;
             case '22':
                 //Recolectado
@@ -1853,71 +1854,15 @@ $$(document).on('page:init', '.page[data-name="escanear"]', function (e) {
     });
 });
 $$(document).on('page:init', '.page[data-name="consultar"]', function (e) {
+    $$('#mostrarBtnInfo').hide();
+    $$('#mostrarBtnScan').show();
     $$('#btn_escanear_consulta').on('click', function () {
-        var tel_dest='';
-        var info_comp_dest='';
-        var dir2_dest='';
         cordova.plugins.barcodeScanner.scan(
             function (result) {
                 if (!result.cancelled) {
-                    var num_guia = result.text;
-                    $$('#num_guia_consulta').html(num_guia);
-                    app.request.get(
-                        URL_WS + 'guideinfo/' + num_guia,
-                        function (data) {
-                            if( data[0].tel_dest != ''  && !!data[0].tel_dest){
-                                 tel_dest= 'Tel.: '+ data[0].tel_dest + '<br>';
-                            }
-                            if( data[0].info_comp_dest != '' && !!data[0].info_comp_dest){
-                                info_comp_dest= 'Referencias: '+ data[0].info_comp_dest + '<br>';
-                            }
-
-                            if( data[0].dir2_dest != ''  && !!data[0].dir2_dest){
-                                dir2_dest= 'Dirección alternativa: '+ data[0].dir2_dest + '<br>';
-                            }
-                            $$('#status_guia_consulta').html(fnGuias.traducirStatus(data[0].status));
-                            $$('#espacio_proyecto').html(detectarProyecto(num_guia));
-                            $$('#espacio_destinatario').html(
-                                data[0].nombre_dest + ' ' +
-                                data[0].paterno_dest + ' ' +
-                                data[0].materno_dest + '<br>' +
-                                data[0].dir1_dest + '<br>' +
-                                data[0].asent_dest + '<br>' +
-                                data[0].mun_dest + ', ' +
-                                data[0].edo_dest + ', ' +
-                                data[0].cp_dest + '<br>'+
-                                tel_dest + info_comp_dest +dir2_dest
-                            );
-                            fnGuias.LogComentarios(app,data[0].id);
-                            fnGuias.LogIncidencias(app,data[0].client_code,data[0].id);
-                            $$('#testigoreal1').attr('src', URL_WS + data[0].foto1);
-                            $$('#testigoreal2').attr('src', URL_WS + data[0].foto2);
-                            if (detectarProyecto(num_guia) == 'PPF') {
-                                var ouput_parsear_billetes = '';
-                                var parsear_billetes = data[0].cont_paquete.split("|");
-                                parsear_billetes.forEach(function (v, i) {
-                                    var parsear_billetes2 = v.split(': ');
-                                    if (parsear_billetes2[1] > 0) {
-                                        ouput_parsear_billetes += v + '<br>';
-                                    } else {
-                                        if (v.includes("Reportó")) {
-                                            ouput_parsear_billetes += v + '<br>';
-                                        }
-                                    }
-                                });
-                                $$('#cont_paquete').html(ouput_parsear_billetes);
-                            } else {
-                                $$('#cont_paquete').html(data[0].cont_paquete);
-                                $$('#cont_paquete').append('<br>');
-                                $$('#cont_paquete').append('Lote/id/etc: ' + data[0].ids_tokens);
-                            }
-
-                        },
-                        function (error) {
-                            console.log(error);
-                        },
-                        'json'
-                    );
+                    var numguia = result.text;
+                    $$('#num_guia_consulta').html(numguia);
+                    fnGuias.mostrarinfoGuia(app,numguia,detectarProyecto(numguia));
                 } else {
                     app.dialog.alert('El scan fue cancelado');
                 }
@@ -1932,6 +1877,34 @@ $$(document).on('page:init', '.page[data-name="consultar"]', function (e) {
             }
         );
     });
+
+    $$('#infoGuia').on('change', function (){
+        var expreg = /^[A-Za-z0-9]+$/;
+        var numguia = $$(this).val();
+        var longitud=numguia.length;
+        if(numguia !=''){
+            if( longitud > 17){
+                if (!expreg.test(numguia)) {
+                    app.dialog.alert('Hay caracteres inválidos, favor de verificar');
+                }else{
+                    $$('#mostrarBtnInfo').show();
+                    $$('#mostrarBtnScan').hide();
+                }
+            }else{
+                app.dialog.alert('El número de caracteres no corresponden, favor de verificar');
+            }
+        }else{
+            $$('#mostrarBtnInfo').hide();
+            $$('#mostrarBtnScan').show();
+        }
+    });
+
+    $$('#btn_info_guia').on('click',function () {
+        var numguia = $$('#infoGuia').val();
+        $$('#num_guia_consulta').html(numguia);
+        fnGuias.mostrarinfoGuia(app,numguia,detectarProyecto(numguia));
+    });
+
 });
 
 /**
