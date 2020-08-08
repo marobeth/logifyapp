@@ -1,0 +1,49 @@
+<template>
+    <div class="page" data-name="ocurrelistado">
+        <div class="navbar">
+            <div class="navbar-inner sliding">
+                <div class="left">
+                    <a href="#" class="link back">
+                        <i class="material-icons">chevron_left</i>
+                        <span class="if-not-md"></span>
+                    </a>
+                </div>
+                <div class="title">Listado</div>
+                <div class="right">
+                    <a href="#" data-panel="right" class="panel-open">
+                        <i class="material-icons">menu</i>
+                        <span class="if-not-md"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="page-content">
+            <div class="data-table data-table-init card">
+                <div class="card-header">
+                    <div class="data-table-title">Guías Status Ocurre</div>
+                    <div class="data-table-actions">
+                        <div id="totalOcurre"></div>
+                        <!--<a class="link icon-only"><i class="icon f7-icons">sort</i></a>
+                        <a class="link icon-only"><i class="icon f7-icons">more_vertical_round</i></a>-->
+                    </div>
+                </div>
+                <div class="card-content">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th class="label-cell">Núm Guía (Logify)</th>
+                            <th class="numeric-cell">Proveedor Ocurre</th>
+                            <th class="numeric-cell">Núm Guía (Proveedor)</th>
+                            <th class="numeric-cell">Días de vida</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tbocurre"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    export default {};
+</script>

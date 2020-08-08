@@ -74,26 +74,39 @@ var fnGuias = {
             }
         });
         app.request.get(
-            config.URL_WS + 'api/v2/permiso/operador/proyecto/' + clientcode + '/' + branchnumber,
-            function (data) {
-                if (data.length > 0) {
-                    proyectoStatus = '<option value="">Seleccionar</option>';
-                    data.forEach((val, index) => {
-                        proyectoStatus += '<option value="' + val.idstatus_guia + '">' + val.label + '</option>';
+            config.URL_WS + 'api/v2/status/default/' + idguia + '/' + clientcode + '/' + branchnumber,
+            function (datos) {
+                if (datos.length > 0) {
+                    status = '<option value="">Seleccionar</option>';
+                    datos.forEach((valstaus, index) => {
+                        status += '<option value="' + valstaus.id + '">' + valstaus.nombre + '</option>';
                     });
-                    $$('#' + CById).html(proyectoStatus);
+                    $$('#' + CById).html(status);
                 } else {
                     app.request.get(
-                        config.URL_WS + 'api/v2/status/default/' + idguia + '/' + clientcode + '/' + branchnumber,
-                        function (datos) {
-                            if (datos.length > 0) {
-                                status = '<option value="">Seleccionar</option>';
-                                datos.forEach((valstaus, index) => {
-                                    status += '<option value="' + valstaus.id + '">' + valstaus.nombre + '</option>';
+                        config.URL_WS + 'api/v2/permiso/operador/proyecto/' + clientcode + '/' + branchnumber,
+                        function (data) {
+                            if (data.length > 0) {
+                                proyectoStatus = '<option value="">Seleccionar</option>';
+                                data.forEach((val, index) => {
+                                    proyectoStatus += '<option value="' + val.idstatus_guia + '">' + val.label + '</option>';
                                 });
-                                $$('#' + CById).html(status);
+                                $$('#' + CById).html(proyectoStatus);
+                            } else {
+                                app.request.get(
+                                    config.URL_WS + 'api/v2/status/default',
+                                    function (datos) {
+                                        if (datos.length > 0) {
+                                            status = '<option value="">Seleccionar</option>';
+                                            datos.forEach((valstaus, index) => {
+                                                status += '<option value="' + valstaus.id + '">' + valstaus.nombre + '</option>';
+                                            });
+                                            $$('#' + CById).html(status);
+                                        }
+                                    },
+                                    'json'
+                                );
                             }
-
                         },
                         'json'
                     );
@@ -220,7 +233,7 @@ var fnGuias = {
                             '                                                </td>\n' +
                             '                                            </tr>\n' +
                             '                                        </table>\n' +
-                            '                                        <canvas id="myCanvas' + (index + 1) + '" data-foto1="0"></canvas>\n' +
+                            '                                        <canvas id="myCanvas' + (index + 1) + '" data-foto1="0"  data-requerido="'+ val.required +'"></canvas>\n' +
                             '                                    </div>\n' +
                             '                                </div>\n' +
                             '                            </div>\n' +
@@ -252,7 +265,7 @@ var fnGuias = {
                             '                                                </td>\n' +
                             '                                            </tr>\n' +
                             '                                        </table>\n' +
-                            '                                        <canvas id="myCanvas' + (index + 1) + '" data-foto1="0"></canvas>\n' +
+                            '                                        <canvas id="myCanvas' + (index + 1) + '" data-foto1="0"  data-requerido="1"></canvas>\n' +
                             '                                    </div>\n' +
                             '                                </div>\n' +
                             '                            </div>\n' +
@@ -453,7 +466,10 @@ var fnGuias = {
         );
     },
     mostrarOcurre: (app, numguia) => {
+        var ocurre = '';
         var proveedor_ocurre = '';
+        var num_guia_ocurre = '';
+        var dias = '';
         app.request.setup({
             headers: {
                 'apikey': localStorage.getItem('apikey')
@@ -467,80 +483,102 @@ var fnGuias = {
         });
         app.request.get(
             config.URL_WS + 'api/v2/ocurre/proveedor/' + numguia,
-            function (data) {
-                proveedor_ocurre += ' <option value="0">Seleccionar</option>';
-                data.forEach(function (value, index) {
-                    proveedor_ocurre += '<option value="' + value.nomenclatura + '">' + value.nombre + '</option>';
-                    $$('#ocurre').html(proveedor_ocurre);
-                });
+            function (datos) {
+                proveedor_ocurre = datos[0].ocurre_proveedor;
+                num_guia_ocurre = datos[0].num_guia_ocurre;
+                dias = datos[0].dias;
+                if (proveedor_ocurre != '') {
+                    ocurre += '<strong>Proveedor Ocurreo:</strong> ' + proveedor_ocurre + '<br>';
+                }
+                if (num_guia_ocurre != '') {
+                    ocurre += '<strong>No. Guía Ocurre:</strong> ' + num_guia_ocurre + '<br>';
+                }
+                if (dias != '') {
+                    ocurre += '<strong>Días en este STATUS: </strong>' + dias + '<br>';
+                }
+                $$('#ocurre').html(ocurre);
             },
             'json'
         );
     },
-    mostrarinfoGuia: (app, numguia,proyecto) => {
-        let url= config.URL_WS + 'guideinfo/' + numguia;
-        var tel_dest='';
-        var info_comp_dest='';
-        var dir2_dest='';
+    mostrarinfoGuia: (app, numguia, proyecto) => {
+        $$('#status_guia_consulta').html("");
+        $$('#espacio_proyecto').html("");
+        $$('#espacio_destinatario').html("");
+        $$('#cont_paquete').html("");
+        let url = config.URL_WS + 'guideinfo/' + numguia;
+        var tel_dest = '';
+        var info_comp_dest = '';
+        var dir2_dest = '';
         app.request.get(
             url,
             function (data) {
-                if( data[0].tel_dest != ''  && !!data[0].tel_dest){
-                    tel_dest= 'Tel.: '+ data[0].tel_dest + '<br>';
-                }
-                if( data[0].info_comp_dest != '' && !!data[0].info_comp_dest){
-                    info_comp_dest= 'Referencias: '+ data[0].info_comp_dest + '<br>';
-                }
+                var total = data.length;
+                if (data != '' && total > 0) {
+                    if (data[0].tel_dest != '' && !!data[0].tel_dest) {
+                        tel_dest = 'Tel.: ' + data[0].tel_dest + '<br>';
+                    }
+                    if (data[0].info_comp_dest != '' && !!data[0].info_comp_dest) {
+                        info_comp_dest = 'Referencias: ' + data[0].info_comp_dest + '<br>';
+                    }
 
-                if( data[0].dir2_dest != ''  && !!data[0].dir2_dest){
-                    dir2_dest= 'Dirección alternativa: '+ data[0].dir2_dest + '<br>';
-                }
-                $$('#status_guia_consulta').html(fnGuias.traducirStatus(data[0].status));
-                $$('#espacio_proyecto').html(proyecto);
-                $$('#espacio_destinatario').html(
-                    data[0].nombre_dest + ' ' +
-                    data[0].paterno_dest + ' ' +
-                    data[0].materno_dest + '<br>' +
-                    data[0].dir1_dest + '<br>' +
-                    data[0].asent_dest + '<br>' +
-                    data[0].mun_dest + ', ' +
-                    data[0].edo_dest + ', ' +
-                    data[0].cp_dest + '<br>'+
-                    tel_dest + info_comp_dest +dir2_dest
-                );
-                fnGuias.LogComentarios(app,data[0].id);
-                fnGuias.LogIncidencias(app,data[0].client_code,data[0].id);
-                $$('#testigoreal1').attr('src', config.URL_WS + data[0].foto1);
-                $$('#testigoreal2').attr('src', config.URL_WS + data[0].foto2);
-                if (proyecto == 'PPF') {
-                    var ouput_parsear_billetes = '';
-                    var parsear_billetes = data[0].cont_paquete.split("|");
-                    parsear_billetes.forEach(function (v, i) {
-                        var parsear_billetes2 = v.split(': ');
-                        if (parsear_billetes2[1] > 0) {
-                            ouput_parsear_billetes += v + '<br>';
-                        } else {
-                            if (v.includes("Reportó")) {
+                    if (data[0].dir2_dest != '' && !!data[0].dir2_dest) {
+                        dir2_dest = 'Dirección alternativa: ' + data[0].dir2_dest + '<br>';
+                    }
+                    $$('#status_guia_consulta').html(fnGuias.traducirStatus(data[0].status));
+                    $$('#espacio_proyecto').html(proyecto);
+                    $$('#espacio_destinatario').html(
+                        data[0].nombre_dest + ' ' +
+                        data[0].paterno_dest + ' ' +
+                        data[0].materno_dest + '<br>' +
+                        data[0].dir1_dest + '<br>' +
+                        data[0].asent_dest + '<br>' +
+                        data[0].mun_dest + ', ' +
+                        data[0].edo_dest + ', ' +
+                        data[0].cp_dest + '<br>' +
+                        tel_dest + info_comp_dest + dir2_dest
+                    );
+                    fnGuias.LogComentarios(app, data[0].id);
+                    fnGuias.LogIncidencias(app, data[0].client_code, data[0].id);
+                    if (data[0].foto1 !== null) {
+                        $$('#testigoreal1').attr('src', config.URL_WS + data[0].foto1);
+                    }
+
+                    if (data[0].foto2 !== null) {
+                        $$('#testigoreal2').attr('src', config.URL_WS + data[0].foto2);
+                    }
+
+                    if (proyecto == 'PPF') {
+                        var ouput_parsear_billetes = '';
+                        var parsear_billetes = data[0].cont_paquete.split("|");
+                        parsear_billetes.forEach(function (v, i) {
+                            var parsear_billetes2 = v.split(': ');
+                            if (parsear_billetes2[1] > 0) {
                                 ouput_parsear_billetes += v + '<br>';
+                            } else {
+                                if (v.includes("Reportó")) {
+                                    ouput_parsear_billetes += v + '<br>';
+                                }
                             }
-                        }
-                    });
-                    $$('#cont_paquete').html(ouput_parsear_billetes);
+                        });
+                        $$('#cont_paquete').html(ouput_parsear_billetes);
+                    } else {
+                        $$('#cont_paquete').html(data[0].cont_paquete);
+                        $$('#cont_paquete').append('<br>');
+                        $$('#cont_paquete').append('Lote/id/etc: ' + data[0].ids_tokens);
+                    }
+                    if (data[0].status == 7) {
+                        fnGuias.mostrarOcurre(app, data[0].id);
+                    }
                 } else {
-                    $$('#cont_paquete').html(data[0].cont_paquete);
-                    $$('#cont_paquete').append('<br>');
-                    $$('#cont_paquete').append('Lote/id/etc: ' + data[0].ids_tokens);
+                    app.dialog.alert('No existe la guía');
                 }
-                if( data[0].status == 7){
-                    fnGuias.mostrarOcurre(app,data[0].id);
-                }
-
-            },
-            function (error) {
-                console.log(error);
             },
             'json'
         );
+    },
+    validarStatusDevCambio: (app, idguia, clientcode, branchnumber) => {
+
     }
 };
 export default fnGuias;
