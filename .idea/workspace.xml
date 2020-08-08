@@ -3,16 +3,13 @@
   <component name="ChangeListManager">
     <list default="true" id="232bfe81-5379-4a5a-8314-3fb762c606de" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cordova/config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/config.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/www/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/www/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/res/xml/config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/res/xml/config.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cordova/www/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/www/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/config.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/js/guias/fn-guias.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/guias/fn-guias.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/routes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/cambiarstatus.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/cambiarstatus.f7.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/inicio.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/inicio.f7.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -181,7 +178,7 @@
       <workItem from="1595429859007" duration="8044000" />
       <workItem from="1595516029440" duration="36000" />
       <workItem from="1595517288595" duration="28258000" />
-      <workItem from="1596803577080" duration="23696000" />
+      <workItem from="1596803577080" duration="27057000" />
     </task>
     <servers />
   </component>
@@ -253,10 +250,10 @@
     <state x="562" y="-927" width="673" height="693" key="find.popup/0.23.1440.812/0.-1057.1920.1057@0.-1057.1920.1057" timestamp="1588985631007" />
     <state x="2063" y="-25" width="824" height="641" key="find.popup/0.23.1440.877/1440.-157.1920.977@1440.-157.1920.977" timestamp="1596140486961" />
     <state x="623" y="155" width="824" height="641" key="find.popup/0.23.1920.977@0.23.1920.977" timestamp="1596870027773" />
-    <state x="2065" y="58" width="670" height="676" key="search.everywhere.popup" timestamp="1595659685196">
+    <state x="2065" y="58" width="670" height="676" key="search.everywhere.popup" timestamp="1596923141679">
       <screen x="1440" y="-157" width="1920" height="977" />
     </state>
-    <state x="2065" y="58" width="670" height="676" key="search.everywhere.popup/0.23.1440.877/1440.-157.1920.977@1440.-157.1920.977" timestamp="1595659685196" />
+    <state x="2065" y="58" width="670" height="676" key="search.everywhere.popup/0.23.1440.877/1440.-157.1920.977@1440.-157.1920.977" timestamp="1596923141679" />
     <state x="608" y="-607" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1588651322608">
       <screen x="0" y="-1057" width="1920" height="1057" />
     </state>
@@ -267,13 +264,13 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/js/app.js</url>
-          <line>3454</line>
+          <line>3451</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/js/app.js</url>
-          <line>3487</line>
+          <line>3484</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="3" />
         </line-breakpoint>

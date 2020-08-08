@@ -1230,6 +1230,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
             'json'
         );
     } else {
+        fnGuias.mostrarSttusdefaut(app, 'status');
         var new_num_guias = '';
         num_guias.forEach(function (v, i) {
             $$('#lista_multiples_guias').append('<li>' + v + '</li>');
@@ -1927,10 +1928,6 @@ $$(document).on('page:init', '.page[data-name="consultar"]', function (e) {
                 prompt: "Ponga el código QR dentro del área de escaneo" // Android
             }
         );
-    });
-
-    $$('#infoGuia').on('change', function (){
-
     });
 
     $$('#btn_info_guia').on('click',function () {

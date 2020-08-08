@@ -115,6 +115,34 @@ var fnGuias = {
             'json'
         );
     },
+    mostrarSttusdefaut: (app,  CById) => {
+        //console.log("engtre mostrarSttus");
+        var status;
+        app.request.setup({
+            headers: {
+                'apikey': localStorage.getItem('apikey')
+            },
+            beforeSend: function () {
+                app.preloader.show();
+            },
+            complete: function () {
+                app.preloader.hide();
+            }
+        });
+        app.request.get(
+            config.URL_WS + 'api/v2/status/default',
+            function (datos) {
+                if (datos.length > 0) {
+                    status = '<option value="">Seleccionar</option>';
+                    datos.forEach((valstaus, index) => {
+                        status += '<option value="' + valstaus.id + '">' + valstaus.nombre + '</option>';
+                    });
+                    $$('#' + CById).html(status);
+                }
+            },
+            'json'
+        );
+    },
     mostrarCampos: (app, codCliente, braNumbre, status) => {
         var tipoFimg = codCliente + braNumbre + status;
         //console.log("status:" + status);
@@ -506,15 +534,16 @@ var fnGuias = {
         $$('#espacio_proyecto').html("");
         $$('#espacio_destinatario').html("");
         $$('#cont_paquete').html("");
-        let url = config.URL_WS + 'guideinfo/' + numguia;
+        $$('#testigoreal1').attr('src', '');
+        $$('#testigoreal2').attr('src', '');
         var tel_dest = '';
         var info_comp_dest = '';
         var dir2_dest = '';
         app.request.get(
-            url,
+            config.URL_WS + 'guideinfo/' + numguia,
             function (data) {
                 var total = data.length;
-                if (data != '' && total > 0) {
+                if ( total > 0) {
                     if (data[0].tel_dest != '' && !!data[0].tel_dest) {
                         tel_dest = 'Tel.: ' + data[0].tel_dest + '<br>';
                     }
@@ -577,8 +606,5 @@ var fnGuias = {
             'json'
         );
     },
-    validarStatusDevCambio: (app, idguia, clientcode, branchnumber) => {
-
-    }
 };
 export default fnGuias;
