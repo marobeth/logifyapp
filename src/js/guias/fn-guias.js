@@ -49,7 +49,7 @@ var fnGuias = {
                 break;
             case '16':
                 //En Almacén BJ
-                statusResult = '>Almacén BJ';
+                statusResult = '>Almacén BJX';
                 break;
             case '17':
                 //En Almacén MTY
@@ -74,29 +74,70 @@ var fnGuias = {
             }
         });
         app.request.get(
-            config.URL_WS + 'api/v2/permiso/operador/proyecto/' + clientcode + '/' + branchnumber,
-            function (data) {
-                if (data.length > 0) {
-                    proyectoStatus = '<option value="">Seleccionar</option>';
-                    data.forEach((val, index) => {
-                        proyectoStatus += '<option value="' + val.idstatus_guia + '">' + val.label + '</option>';
+            config.URL_WS + 'api/v2/status/default/' + idguia + '/' + clientcode + '/' + branchnumber,
+            function (datos) {
+                if (datos.length > 0) {
+                    status = '<option value="">Seleccionar</option>';
+                    datos.forEach((valstaus, index) => {
+                        status += '<option value="' + valstaus.id + '">' + valstaus.nombre + '</option>';
                     });
-                    $$('#' + CById).html(proyectoStatus);
+                    $$('#' + CById).html(status);
                 } else {
                     app.request.get(
-                        config.URL_WS + 'api/v2/status/default/' + idguia  + '/' + clientcode + '/' + branchnumber,
-                        function (datos) {
-                           if(datos.length > 0){
-                               status = '<option value="">Seleccionar</option>';
-                               datos.forEach( (valstaus, index) => {
-                                   status += '<option value="' + valstaus.id + '">' + valstaus.nombre + '</option>';
-                               });
-                               $$('#' + CById).html(status);
-                           }
-
+                        config.URL_WS + 'api/v2/permiso/operador/proyecto/' + clientcode + '/' + branchnumber,
+                        function (data) {
+                            if (data.length > 0) {
+                                proyectoStatus = '<option value="">Seleccionar</option>';
+                                data.forEach((val, index) => {
+                                    proyectoStatus += '<option value="' + val.idstatus_guia + '">' + val.label + '</option>';
+                                });
+                                $$('#' + CById).html(proyectoStatus);
+                            } else {
+                                app.request.get(
+                                    config.URL_WS + 'api/v2/status/default',
+                                    function (datos) {
+                                        if (datos.length > 0) {
+                                            status = '<option value="">Seleccionar</option>';
+                                            datos.forEach((valstaus, index) => {
+                                                status += '<option value="' + valstaus.id + '">' + valstaus.nombre + '</option>';
+                                            });
+                                            $$('#' + CById).html(status);
+                                        }
+                                    },
+                                    'json'
+                                );
+                            }
                         },
                         'json'
                     );
+                }
+            },
+            'json'
+        );
+    },
+    mostrarSttusdefaut: (app,  CById) => {
+        //console.log("engtre mostrarSttus");
+        var status;
+        app.request.setup({
+            headers: {
+                'apikey': localStorage.getItem('apikey')
+            },
+            beforeSend: function () {
+                app.preloader.show();
+            },
+            complete: function () {
+                app.preloader.hide();
+            }
+        });
+        app.request.get(
+            config.URL_WS + 'api/v2/status/default',
+            function (datos) {
+                if (datos.length > 0) {
+                    status = '<option value="">Seleccionar</option>';
+                    datos.forEach((valstaus, index) => {
+                        status += '<option value="' + valstaus.id + '">' + valstaus.nombre + '</option>';
+                    });
+                    $$('#' + CById).html(status);
                 }
             },
             'json'
@@ -214,13 +255,13 @@ var fnGuias = {
                             '                                                    <button class="button open-foto" data-id="' + (index + 1) + '">' + val.nombre + '</button>\n' +
                             '                                                </td>\n' +
                             '                                                <td>\n' +
-                            '                                                    <a href="/fotoacuse/' + tipoFimg +'-'+ val.tipo_aud + '">\n' +
+                            '                                                    <a href="/fotoacuse/' + tipoFimg + '-' + val.tipo_aud + '">\n' +
                             '                                                        <i class="material-icons">info</i>\n' +
                             '                                                    </a>\n' +
                             '                                                </td>\n' +
                             '                                            </tr>\n' +
                             '                                        </table>\n' +
-                            '                                        <canvas id="myCanvas' + (index + 1) + '" data-foto1="0"></canvas>\n' +
+                            '                                        <canvas id="myCanvas' + (index + 1) + '" data-foto1="0"  data-requerido="'+ val.required +'"></canvas>\n' +
                             '                                    </div>\n' +
                             '                                </div>\n' +
                             '                            </div>\n' +
@@ -232,7 +273,7 @@ var fnGuias = {
                     $$('#totalImg').val(data.length);
                 } else {
                     var detAcuse = [{nombre: "Foto Acuse"}, {nombre: "Foto Guía"}, {nombre: "Foto Guía Logify"}, {nombre: "Foto Firma"}, {nombre: "Foto Selfi"},];
-                   // console.log('default campos');
+                    // console.log('default campos');
                     var val = 5;
                     detAcuse.forEach((val, index) => {
                         fotos = '<li>\n' +
@@ -252,7 +293,7 @@ var fnGuias = {
                             '                                                </td>\n' +
                             '                                            </tr>\n' +
                             '                                        </table>\n' +
-                            '                                        <canvas id="myCanvas' + (index + 1) + '" data-foto1="0"></canvas>\n' +
+                            '                                        <canvas id="myCanvas' + (index + 1) + '" data-foto1="0"  data-requerido="1"></canvas>\n' +
                             '                                    </div>\n' +
                             '                                </div>\n' +
                             '                            </div>\n' +
@@ -314,7 +355,7 @@ var fnGuias = {
         }
         return incidenciaResult;
     },
-    LogComentarios:(app,idguia)=>{
+    LogComentarios: (app, idguia) => {
         if (idguia != '') {
             let url = config.URL_WS + 'api/v2/historial/comentarios/' + idguia;
             app.request.setup({
@@ -331,21 +372,21 @@ var fnGuias = {
             app.request.get(
                 url,
                 function (data) {
-                    var total= data.length;
-                    if( total > 0 ){
+                    var total = data.length;
+                    if (total > 0) {
                         var comentarios = '<div class="list accordion-list">\n' +
                             '<ul><li class="accordion-item"><a href="#" class="item-content item-link">\n' +
-                            '<div class="item-inner"><div class="item-title">Comentarios ('+ total +')</div></div></a>\n' +
+                            '<div class="item-inner"><div class="item-title">Comentarios (' + total + ')</div></div></a>\n' +
                             '<div class="accordion-item-content"><div class="block"><p>\n' +
                             '<div class="list accordion-list"><ul>\n';
                         data.forEach(function (val, index) {
-                            comentarios += '<li><i class="material-icons">comment</i> ' + val.comentarios +'</li>';
+                            comentarios += '<li><i class="material-icons">comment</i> ' + val.comentarios + '</li>';
                         });
-                        comentarios+='</p></div>\n' +
+                        comentarios += '</p></div>\n' +
                             '</div>\n' +
                             '</li>\n' +
                             '</ul>\n' +
-                            '</div>\n'+
+                            '</div>\n' +
                             '</ul></div>';
                         $$('#log_comentarios').html(comentarios);
                     }
@@ -355,7 +396,7 @@ var fnGuias = {
         }
 
     },
-    LogIncidencias:(app,client_code,idguia)=>{
+    LogIncidencias: (app, client_code, idguia) => {
         if (idguia != '' && client_code === 'CVD') {
             let url = config.URL_WS + 'api/v2/historial/incidencias/' + idguia;
             app.request.setup({
@@ -372,18 +413,18 @@ var fnGuias = {
             app.request.get(
                 url,
                 function (data) {
-                    var total= data.length;
-                    if( total > 0 ){
+                    var total = data.length;
+                    if (total > 0) {
                         var comentarios = '<div class="list accordion-list">\n' +
                             '<ul><li class="accordion-item"><a href="#" class="item-content">\n' +
-                            '<div class="item-inner"><div class="item-title" style="color: #ff1e0e;">Incidencias ('+ total +')</div></div></a>\n' +
+                            '<div class="item-inner"><div class="item-title" style="color: #ff1e0e;">Incidencias (' + total + ')</div></div></a>\n' +
                             '<div class="accordion-item-content"><div class="block"><p>\n' +
                             '<div class="list accordion-list"><ul>\n';
-                        comentarios+='</p></div>\n' +
+                        comentarios += '</p></div>\n' +
                             '</div>\n' +
                             '</li>\n' +
                             '</ul>\n' +
-                            '</div>\n'+
+                            '</div>\n' +
                             '</ul></div>';
                         $$('#log_incidencias').html(comentarios);
                     }
@@ -394,10 +435,10 @@ var fnGuias = {
         }
 
     },
-    leyendaGuia:(app,idguia,clientCode,braNumbre) => {
-        var tipoguia='';
-        var guia_referencia='';
-        let url = config.URL_WS + 'api/v2/leyenda/'+idguia+'/'+clientCode+'/'+ braNumbre;
+    leyendaGuia: (app, idguia, clientCode, braNumbre) => {
+        var tipoguia = '';
+        var guia_referencia = '';
+        let url = config.URL_WS + 'api/v2/leyenda/' + idguia + '/' + clientCode + '/' + braNumbre;
         app.request.setup({
             headers: {
                 'apikey': localStorage.getItem('apikey')
@@ -412,20 +453,158 @@ var fnGuias = {
         app.request.get(
             url,
             function (data) {
-                tipoguia=data.tipoguia;
-                guia_referencia=data.guia_referencia;
+                tipoguia = data.tipoguia;
+                guia_referencia = data.guia_referencia;
                 if (guia_referencia === undefined || guia_referencia === null || guia_referencia === '') {
-                    guia_referencia='';
-                }else{
-                    guia_referencia='<span><br>&nbsp;&nbsp;&nbsp;referencia: '+ data.guia_referencia +'</span>';
+                    guia_referencia = '';
+                } else {
+                    guia_referencia = '<span><br>&nbsp;&nbsp;&nbsp;referencia: ' + data.guia_referencia + '</span>';
                 }
-                if( tipoguia != '' ){
+                if (tipoguia != '') {
                     var leyenda = '<div class="alert alert-info">' + tipoguia + guia_referencia + '</div>';
                     $$('#leyenda').html(leyenda);
                 }
             },
             'json'
         );
-    }
+    },
+    mostrarListadoOcurre: (app, id_guia) => {
+        var proveedor_ocurre = '';
+        app.request.setup({
+            headers: {
+                'apikey': localStorage.getItem('apikey')
+            },
+            beforeSend: function () {
+                app.preloader.show();
+            },
+            complete: function () {
+                app.preloader.hide();
+            }
+        });
+        app.request.get(
+            config.URL_WS + 'api/v2/listado/proveedor',
+            function (data) {
+                proveedor_ocurre += ' <option value="0">Seleccionar</option>';
+                data.forEach(function (value, index) {
+                    proveedor_ocurre += '<option value="' + value.nomenclatura + '">' + value.nombre + '</option>';
+                    $$('#proveedor_ocurre').html(proveedor_ocurre);
+                });
+            },
+            'json'
+        );
+    },
+    mostrarOcurre: (app, numguia) => {
+        var ocurre = '';
+        var proveedor_ocurre = '';
+        var num_guia_ocurre = '';
+        var dias = '';
+        app.request.setup({
+            headers: {
+                'apikey': localStorage.getItem('apikey')
+            },
+            beforeSend: function () {
+                app.preloader.show();
+            },
+            complete: function () {
+                app.preloader.hide();
+            }
+        });
+        app.request.get(
+            config.URL_WS + 'api/v2/ocurre/proveedor/' + numguia,
+            function (datos) {
+                proveedor_ocurre = datos[0].ocurre_proveedor;
+                num_guia_ocurre = datos[0].num_guia_ocurre;
+                dias = datos[0].dias;
+                if (proveedor_ocurre != '') {
+                    ocurre += '<strong>Proveedor Ocurreo:</strong> ' + proveedor_ocurre + '<br>';
+                }
+                if (num_guia_ocurre != '') {
+                    ocurre += '<strong>No. Guía Ocurre:</strong> ' + num_guia_ocurre + '<br>';
+                }
+                if (dias != '') {
+                    ocurre += '<strong>Días en este STATUS: </strong>' + dias + '<br>';
+                }
+                $$('#ocurre').html(ocurre);
+            },
+            'json'
+        );
+    },
+    mostrarinfoGuia: (app, numguia, proyecto) => {
+        $$('#status_guia_consulta').html("");
+        $$('#espacio_proyecto').html("");
+        $$('#espacio_destinatario').html("");
+        $$('#cont_paquete').html("");
+        $$('#testigoreal1').attr('src', '');
+        $$('#testigoreal2').attr('src', '');
+        var tel_dest = '';
+        var info_comp_dest = '';
+        var dir2_dest = '';
+        app.request.get(
+            config.URL_WS + 'guideinfo/' + numguia,
+            function (data) {
+                var total = data.length;
+                if ( total > 0) {
+                    if (data[0].tel_dest != '' && !!data[0].tel_dest) {
+                        tel_dest = 'Tel.: ' + data[0].tel_dest + '<br>';
+                    }
+                    if (data[0].info_comp_dest != '' && !!data[0].info_comp_dest) {
+                        info_comp_dest = 'Referencias: ' + data[0].info_comp_dest + '<br>';
+                    }
+
+                    if (data[0].dir2_dest != '' && !!data[0].dir2_dest) {
+                        dir2_dest = 'Dirección alternativa: ' + data[0].dir2_dest + '<br>';
+                    }
+                    $$('#status_guia_consulta').html(fnGuias.traducirStatus(data[0].status));
+                    $$('#espacio_proyecto').html(proyecto);
+                    $$('#espacio_destinatario').html(
+                        data[0].nombre_dest + ' ' +
+                        data[0].paterno_dest + ' ' +
+                        data[0].materno_dest + '<br>' +
+                        data[0].dir1_dest + '<br>' +
+                        data[0].asent_dest + '<br>' +
+                        data[0].mun_dest + ', ' +
+                        data[0].edo_dest + ', ' +
+                        data[0].cp_dest + '<br>' +
+                        tel_dest + info_comp_dest + dir2_dest
+                    );
+                    fnGuias.LogComentarios(app, data[0].id);
+                    fnGuias.LogIncidencias(app, data[0].client_code, data[0].id);
+                    if (data[0].foto1 !== null) {
+                        $$('#testigoreal1').attr('src', config.URL_WS + data[0].foto1);
+                    }
+
+                    if (data[0].foto2 !== null) {
+                        $$('#testigoreal2').attr('src', config.URL_WS + data[0].foto2);
+                    }
+
+                    if (proyecto == 'PPF') {
+                        var ouput_parsear_billetes = '';
+                        var parsear_billetes = data[0].cont_paquete.split("|");
+                        parsear_billetes.forEach(function (v, i) {
+                            var parsear_billetes2 = v.split(': ');
+                            if (parsear_billetes2[1] > 0) {
+                                ouput_parsear_billetes += v + '<br>';
+                            } else {
+                                if (v.includes("Reportó")) {
+                                    ouput_parsear_billetes += v + '<br>';
+                                }
+                            }
+                        });
+                        $$('#cont_paquete').html(ouput_parsear_billetes);
+                    } else {
+                        $$('#cont_paquete').html(data[0].cont_paquete);
+                        $$('#cont_paquete').append('<br>');
+                        $$('#cont_paquete').append('Lote/id/etc: ' + data[0].ids_tokens);
+                    }
+                    if (data[0].status == 7) {
+                        fnGuias.mostrarOcurre(app, data[0].id);
+                    }
+                } else {
+                    app.dialog.alert('No existe la guía');
+                }
+            },
+            'json'
+        );
+    },
 };
 export default fnGuias;
