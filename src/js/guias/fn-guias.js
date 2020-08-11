@@ -536,6 +536,7 @@ var fnGuias = {
         $$('#cont_paquete').html("");
         $$('#testigoreal1').attr('src', '');
         $$('#testigoreal2').attr('src', '');
+        $$('#ocurre').html("");
         var tel_dest = '';
         var info_comp_dest = '';
         var dir2_dest = '';

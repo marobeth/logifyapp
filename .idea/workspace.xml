@@ -3,11 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="232bfe81-5379-4a5a-8314-3fb762c606de" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/config.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/res/xml/config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/res/xml/config.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cordova/www/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/www/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/js/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/config.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/js/guias/fn-guias.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/guias/fn-guias.js" afterDir="false" />
     </list>
@@ -265,13 +262,11 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/js/app.js</url>
           <line>3451</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/js/app.js</url>
           <line>3484</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
