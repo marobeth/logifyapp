@@ -24,6 +24,7 @@ import AsignarPadre from '../pages/asignarpadre.f7.html';
 import AsignarGuiasHijos from '../pages/asignarguiahijo.f7.html';
 import AsignarHijos from '../pages/asignarhijos.f7.html';
 import AsignarSucursalHijos from '../pages/asignarsuchijos.f7.html';
+import FirmarFoto from '../pages/firmarfoto.f7.html';
 import NotFoundPage from '../pages/404.f7.html';
 
 var routes = [
@@ -135,6 +136,12 @@ var routes = [
         path: '/asignarsucursalhijos/',
         component: AsignarSucursalHijos,
     },
+    /*
+    {
+        path: '/firmarfoto/',
+        component: FirmarFoto,
+    },
+    */
     {
         path: '(.*)',
         component: NotFoundPage,

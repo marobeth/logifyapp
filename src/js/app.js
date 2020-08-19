@@ -15,6 +15,7 @@ import config from './config';
 import fotoacuse from './fotoacuse';
 import funcionesCamara from "./funcionesCamara";
 import fnGuiasHijos from "./guias/fnguiashijos";
+import firma from "./firmar.js";
 
 /**
  *
@@ -280,6 +281,10 @@ function ValidateApikey(correo, pass) {
                 localStorage.setItem('nombre', data[0].nombre);
                 localStorage.setItem('paterno', data[0].paterno);
                 localStorage.setItem('correo', data[0].correo);
+               // localStorage.setItem('calidad', data[0].calidad);
+               // localStorage.setItem('ruta', data[0].ruta);
+               // config.QUALITY = data[0].calidad;
+               // config.URL_WS = data[0].ruta;
                 app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
             } else {
                 app.dialog.alert('Error: Permiso Denegado');
@@ -1715,33 +1720,40 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 }
             });
             if (TtlLista == 1) {
-                app.request.postJSON(
-                    URL_WS + 'changestatus/' + $$('#num_gias').val(),
-                    {
-                        status: status,
-                        latlong: latitud + ',' + longitud,
-                        foto1: foto1,
-                        foto2: foto2,
-                        foto3: foto3,
-                        foto4: foto4,
-                        foto5: foto5,
-                        persona_recibe: persona_recibe,
-                        comentarios: comentarios,
-                        incidencia:incidencia,
-                        proveedor_ocurre: proveedor_ocurre,
-                        guia_ocurre: guia_ocurre
-                    },
-                    function (data) {
-                        app.preloader.hide();
-                        app.dialog.alert("Datos guardados correctamente", function () {
-                            $$('#btn_buscar_sucursal').click();
-                        });
-                        app.views.main.router.back();
-                    }, function (error) {
-                        app.preloader.hide();
-                    },
-                    'json'
-                );
+                
+                    app.request.postJSON(
+                        URL_WS + 'changestatus/' + $$('#num_gias').val(),
+                        {
+                            status: status,
+                            latlong: latitud + ',' + longitud,
+                            foto1: foto1,
+                            foto2: foto2,
+                            foto3: foto3,
+                            foto4: foto4,
+                            foto5: foto5,
+                            persona_recibe: persona_recibe,
+                            comentarios: comentarios,
+                            incidencia:incidencia,
+                            proveedor_ocurre: proveedor_ocurre,
+                            guia_ocurre: guia_ocurre
+                        },
+                        function (data) {
+                            app.preloader.hide();
+                            app.dialog.alert("Datos guardados correctamente", function () {
+                                $$('#btn_buscar_sucursal').click();
+                            });
+                            app.views.main.router.back();
+                        }, function (error) {
+                            app.preloader.hide();
+                            
+                            app.dialog.alert("Error: "+error, function () {
+                                $$('#btn_buscar_sucursal').click();
+                            });
+
+                        },
+                        'json'
+                    );
+                
             } else {
                 guiaslista.forEach(function (v, i) {
                     var guiaMasivaInd = v;
@@ -3323,6 +3335,12 @@ $$(document).on('page:init', '.page[data-name="asignarsucursalhijos"]', function
     /*$$('#btn_regresar').on('click', function () {
         app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
     });*/
+});
+$$(document).on('page:init', '.page[data-name="firmarfoto"]', function (e) {
+    $$('#btn_firmar').on('click', function () {
+        modalFirmaSupervisor();
+    });
+
 });
 
 function monstrarImagenes(codCliente,braNumbre,status,tipoFimg){
