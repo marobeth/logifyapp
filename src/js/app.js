@@ -15,7 +15,11 @@ import config from './config';
 import fotoacuse from './fotoacuse';
 import funcionesCamara from "./funcionesCamara";
 import fnGuiasHijos from "./guias/fnguiashijos";
+<<<<<<< HEAD
 import firma from "./firmar.js";
+=======
+import fnOcurre from "./fnocurre";
+>>>>>>> 1192f925867b1ec1b33aec1943500224b96a8273
 
 /**
  *
@@ -71,6 +75,24 @@ function detectarProyecto(num_guia) {
     }
     if (num_guia.includes('DIA0001')) {
         return "Diageo General";
+    }
+    if (num_guia.includes('CVD0001')) {
+        return "CVDirecto General";
+    }
+    if (num_guia.includes('EUR0001')) {
+        return "Euronek General";
+    }
+    if (num_guia.includes('PUR0001')) {
+        return "PuroEgo General";
+    }
+    if (num_guia.includes('CEL0001')) {
+        return "Celio General";
+    }
+    if (num_guia.includes('EGO0001')) {
+        return "EGO General";
+    }
+    if (num_guia.includes('CEL0002')) {
+        return "Celio";
     }
 }
 /* GEOLOCATION */
@@ -399,7 +421,7 @@ function RsltsGastos(valor) {
             $$('#ConceptoGasto').html(gatosConceptos);
         },
         function (error) {
-            console.log(error);
+            //console.log(error);
         },
         'json'
     );
@@ -427,13 +449,13 @@ function NmPrvdr(CById, valor) {
         URL_NEW_WS + 'api/v2/proveedor-operador-nombre/' + valor,
         function (data) {
             data.forEach(function (val, index) {
-                console.log(val);
+                //console.log(val);
                 document.getElementById(CById).value = val.nombre;
                 $$('#' + CById).data('idPrvdr', val.id);
             });
         },
         function (error) {
-            console.log(error);
+            //console.log(error);
         },
         'json'
     );
@@ -504,6 +526,7 @@ function validateMonto(valor) {
         app.dialog.alert("El formato no corresponde Ej. 120.00 ó 23.65");
     }
 }
+
 /**
  *
  * @param valor
@@ -697,7 +720,7 @@ function RsltsVehiculo(CById, type, valor) {
             $$('#' + CById).html(vehiculos);
         },
         function (error) {
-            console.log(error);
+           // console.log(error);
         },
         'json'
     );
@@ -819,11 +842,11 @@ function validateOdometro(CById, idauto, valor) {
             }
         },
         function (error) {
-            console.log(error);
+            //console.log(error);
         },
         'json'
     );
-    console.log("result:"+result);
+    //console.log("result:"+result);
     return result;
 }
 
@@ -994,8 +1017,9 @@ var app = new Framework7({
         },
     },
 });
+
 /**
- *
+ *Iniciar Sesion
  */
 $$('#btn_iniciar_sesion').on('click', function () {
     //app.preloader.show();
@@ -1004,6 +1028,9 @@ $$('#btn_iniciar_sesion').on('click', function () {
 
     ValidateApikey(username, password);
 });
+/**
+ * Inicio
+ */
 $$(document).on('page:init', '.page[data-name="inicio"]', function (e) {
     $$('#nombre_usuario').html(localStorage.getItem('nombre') + ' ' + localStorage.getItem('paterno'));
     /*logisticus
@@ -1015,6 +1042,10 @@ $$(document).on('page:init', '.page[data-name="inicio"]', function (e) {
     }
     */
 });
+
+/**
+ * Home
+ */
 $$(document).on('page:init', '.page[data-name="home"]', function (e) {
     $$('#btn_iniciar_sesion').on('click', function () {
         //app.preloader.show();
@@ -1027,11 +1058,16 @@ $$(document).on('page:init', '.page[data-name="home"]', function (e) {
         cordova.InAppBrowser.open('https://admin.logify.com.mx/restablecer-contrasena', '_blank', 'location=yes');
     });
 });
+
 $$(document).on('page:afterin', '.page[data-name="home"]', function (e) {
     if (localStorage.getItem('auth') == 'true') {
         app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
     }
 });
+
+/**
+ * Logout
+ */
 $$(document).on('page:init', '.page[data-name="logout"]', function (e) {
     localStorage.clear();
     app.preloader.hide();
@@ -1125,6 +1161,10 @@ $$(document).on('page:init', '.page[data-name="checkin"]', function (e) {
         }
     });
 });
+
+/**
+ * cambiarstatus
+ */
 $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
     var num_guias = app.view.main.router.currentRoute.params.numGuia;
     //alert(num_guias);
@@ -1158,7 +1198,8 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         app.request.get(
             URL_WS + 'consulta/' + num_guias[0],
             function (data) {
-                fnGuias.mostrarSttus(app, data['guia'][0].branch_number, data['guia'][0].client_code, 'status');
+                fnGuias.leyendaGuia(app,data['guia'][0].id,data['guia'][0].client_code,data['guia'][0].branch_number);
+                fnGuias.mostrarSttus(app, data['guia'][0].id,data['guia'][0].branch_number, data['guia'][0].client_code, 'status');
                 //console.log(data['guia'][0].num_guia);
                 $$('#num_guia').html(data['guia'][0].num_guia);
                 if (data['guia'][0].branch_number == '0004') {
@@ -1197,6 +1238,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
             'json'
         );
     } else {
+        fnGuias.mostrarSttusdefaut(app, 'status');
         var new_num_guias = '';
         num_guias.forEach(function (v, i) {
             $$('#lista_multiples_guias').append('<li>' + v + '</li>');
@@ -1548,6 +1590,35 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 //En conectado
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_conectado').show();
+                fnGuias.mostrarListadoOcurre(app);
+                if(codCliente === 'CVD' || codCliente === 'CEL' || codCliente === 'PUR' || codCliente === 'SAF') {
+                    fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
+                }
+                break;
+            case '14':
+                //Retorno
+                if(codCliente === 'CVD') {
+                    fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
+                }
+                break;
+            case '22':
+                //Recolectado
+                //console.log("Recolectado");
+                $$('.ocultar_campos').hide();
+                $$('.mostrar_recolectado').show();
+                fnGuias.fnmostrarCampos(app,codCliente,braNumbre,status,tipoFimg);
+                break;
+            case '23':
+                //Incidencia
+                $$('.ocultar_campos').hide();
+                $$('.mostrar_incidencia').show();
+                fnGuias.fnmostrarCampos(app,codCliente,braNumbre,status,tipoFimg);
+                break;
+            case '24':
+                //Incidencia
+                $$('.ocultar_campos').hide();
+                $$('.mostrar_incidencia').show();
+                fnGuias.fnmostrarCampos(app,codCliente,braNumbre,status,tipoFimg);
                 break;
             default:
                 $$('.ocultar_campos').hide();
@@ -1561,6 +1632,9 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         var statusFoto, statusFoto2, statusFoto3, statusFoto4, statusFoto5;
         var persona_recibe, incidencia, comentarios,status;
         var proveedor_ocurre, guia_ocurre,latitud,longitud;
+
+        var numeroguia=num_guias[0];
+        var codCliente = numeroguia.substring(0,3);
 
         latitud = $$('#latitud').val();
         longitud = $$('#longitud').val();
@@ -1622,7 +1696,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
             case '12':
                 proveedor_ocurre = $$('#proveedor_ocurre').val();
                 guia_ocurre = $$('#guia_ocurre').val();
-                if (proveedor_ocurre != '' && guia_ocurre != '') {
+                if ((proveedor_ocurre != '' || proveedor_ocurre != 0) && guia_ocurre != '' ) {
                     validado = true;
                 } else {
                     app.dialog.alert('El proveedor ocurre y la guía ocurre son obligatorios');
@@ -1638,11 +1712,19 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         if(totalImg > 0) {
             for (var i = 1; i <= totalImg; i++) {
                 var sttsFoto = $$('#myCanvas' + i).data("foto1");
+                var requerido = $$('#myCanvas' + i).data("requerido");
                 var canvas_img = $$('#myCanvas' + i)[0];
                 var foto = canvas_img.toDataURL();
-                if (foto == '' || sttsFoto == 0) {
-                    app.dialog.alert('Foto '+ i + ' esta vacío');
-                    validado = false;
+                //console.log(requerido);
+                if(requerido == 1){
+                    if (foto == '' || sttsFoto == 0) {
+                        app.dialog.alert('Foto '+ i + ' esta vacío');
+                        validado = false;
+                    }
+                }
+
+                if(foto == '' || sttsFoto == 0 && (proveedor_ocurre != '' && guia_ocurre !='' && status==12)){
+                    validado = true;
                 }
             }
         }
@@ -1789,6 +1871,9 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         }
     });
 });
+/**
+ * Escanear Guí(s)
+ */
 $$(document).on('page:init', '.page[data-name="escanear"]', function (e) {
     $$('#btn_escanear').on('click', function () {
         cordova.plugins.barcodeScanner.scan(
@@ -1811,7 +1896,7 @@ $$(document).on('page:init', '.page[data-name="escanear"]', function (e) {
                             $$('#lista_guias_scan').append('<li>' + num_guia + ' - ' + detectarProyecto(num_guia) + '</li>');
                             $$('#hidden_guias_scan').val(num_guia + '|' + $$('#hidden_guias_scan').val());
                             var guias = $$('#hidden_guias_scan').val().substr(0, $$('#hidden_guias_scan').val().length - 1);
-                           // console.log(guias);
+                            //console.log(guias);
                             $$('#btn_ir_cambiar_status').attr('href', '/cambiarstatus/' + guias);
                         }
                         $$('#btn_ir_cambiar_status').show();
@@ -1831,72 +1916,20 @@ $$(document).on('page:init', '.page[data-name="escanear"]', function (e) {
         );
     });
 });
+
+/**
+ * Consultar Guía(s)
+ */
 $$(document).on('page:init', '.page[data-name="consultar"]', function (e) {
     $$('#btn_escanear_consulta').on('click', function () {
-        var tel_dest='';
-        var info_comp_dest='';
-        var dir2_dest='';
+        $$('#mostrarBtnInfo').hide();
+        $$('#mostrarInputGuia').hide();
         cordova.plugins.barcodeScanner.scan(
             function (result) {
                 if (!result.cancelled) {
-                    var num_guia = result.text;
-                    $$('#num_guia_consulta').html(num_guia);
-                    app.request.get(
-                        URL_WS + 'guideinfo/' + num_guia,
-                        function (data) {
-                            if( data[0].tel_dest != ''  && !!data[0].tel_dest){
-                                 tel_dest= 'Tel.: '+ data[0].tel_dest + '<br>';
-                            }
-                            if( data[0].info_comp_dest != '' && !!data[0].info_comp_dest){
-                                info_comp_dest= 'Referencias: '+ data[0].info_comp_dest + '<br>';
-                            }
-
-                            if( data[0].dir2_dest != ''  && !!data[0].dir2_dest){
-                                dir2_dest= 'Dirección alternativa: '+ data[0].dir2_dest + '<br>';
-                            }
-                            $$('#status_guia_consulta').html(fnGuias.traducirStatus(data[0].status));
-                            $$('#espacio_proyecto').html(detectarProyecto(num_guia));
-                            $$('#espacio_destinatario').html(
-                                data[0].nombre_dest + ' ' +
-                                data[0].paterno_dest + ' ' +
-                                data[0].materno_dest + '<br>' +
-                                data[0].dir1_dest + '<br>' +
-                                data[0].asent_dest + '<br>' +
-                                data[0].mun_dest + ', ' +
-                                data[0].edo_dest + ', ' +
-                                data[0].cp_dest + '<br>'+
-                                tel_dest + info_comp_dest +dir2_dest
-                            );
-                            fnGuias.LogComentarios(app,data[0].id);
-                            fnGuias.LogIncidencias(app,data[0].client_code,data[0].id);
-                            $$('#testigoreal1').attr('src', URL_WS + data[0].foto1);
-                            $$('#testigoreal2').attr('src', URL_WS + data[0].foto2);
-                            if (detectarProyecto(num_guia) == 'PPF') {
-                                var ouput_parsear_billetes = '';
-                                var parsear_billetes = data[0].cont_paquete.split("|");
-                                parsear_billetes.forEach(function (v, i) {
-                                    var parsear_billetes2 = v.split(': ');
-                                    if (parsear_billetes2[1] > 0) {
-                                        ouput_parsear_billetes += v + '<br>';
-                                    } else {
-                                        if (v.includes("Reportó")) {
-                                            ouput_parsear_billetes += v + '<br>';
-                                        }
-                                    }
-                                });
-                                $$('#cont_paquete').html(ouput_parsear_billetes);
-                            } else {
-                                $$('#cont_paquete').html(data[0].cont_paquete);
-                                $$('#cont_paquete').append('<br>');
-                                $$('#cont_paquete').append('Lote/id/etc: ' + data[0].ids_tokens);
-                            }
-
-                        },
-                        function (error) {
-                            console.log(error);
-                        },
-                        'json'
-                    );
+                    var numguia = result.text;
+                    $$('#num_guia_consulta').html(numguia);
+                    fnGuias.mostrarinfoGuia(app,numguia,detectarProyecto(numguia));
                 } else {
                     app.dialog.alert('El scan fue cancelado');
                 }
@@ -1911,6 +1944,26 @@ $$(document).on('page:init', '.page[data-name="consultar"]', function (e) {
             }
         );
     });
+
+    $$('#btn_info_guia').on('click',function () {
+        $$('#mostrarBtnScan').hide();
+        var expreg = /^[A-Za-z0-9]+$/;
+        var numguia = $$('#infoGuia').val();
+        $$('#num_guia_consulta').html(numguia);
+        var longitud=numguia.length;
+        if(numguia !=''){
+            if( longitud > 17){
+                if (!expreg.test(numguia)) {
+                    app.dialog.alert('Hay caracteres inválidos, favor de verificar');
+                }else{
+                    fnGuias.mostrarinfoGuia(app,numguia,detectarProyecto(numguia));
+                }
+            }else{
+                app.dialog.alert('El número de caracteres no corresponden, favor de verificar');
+            }
+        }
+    });
+
 });
 
 /**
@@ -3020,7 +3073,10 @@ $$(document).on('page:init', '.page[data-name="fotoacuse"]', function (e) {
     //console.log(numGuia);
     fotoacuse.index(app,numGuia);
 });
-/**GuiasHijos**/
+
+/**
+ * Guias Hijos Cambiar Status
+ */
 $$(document).on('page:init', '.page[data-name="cambiarstatushijos"]', function (e) {
     $$('#mostrarResutl').hide();
     var id_operador = localStorage.getItem('user_id');
@@ -3074,6 +3130,10 @@ $$(document).on('page:init', '.page[data-name="cambiarstatushijos"]', function (
     });
 
 });
+
+/**
+ * asignarguiahijo
+ */
 $$(document).on('page:init', '.page[data-name="asignarguiahijo"]', function (e) {
     //var sucursal = app.view.main.router.currentRoute.params.numGuia;
     $$('#mostrarQRSR').show();
@@ -3159,9 +3219,11 @@ $$(document).on('page:init', '.page[data-name="asignarguiahijo"]', function (e) 
     $$('#btnregresarguias').on('click', function () {
         app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
     });
-
-
 });
+
+/**
+ * Guia Hijo
+ */
 $$(document).on('page:init', '.page[data-name="asignarhijos"]', function (e) {
     var sucursal = app.view.main.router.currentRoute.params.numsucursal;
     var id_operador = localStorage.getItem('user_id');
@@ -3216,6 +3278,10 @@ $$(document).on('page:init', '.page[data-name="asignarhijos"]', function (e) {
         app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
     });
 });
+
+/**
+ * asignar Guia padre
+ */
 $$(document).on('page:init', '.page[data-name="asignarpadre"]', function (e) {
     var guiapadre = app.view.main.router.currentRoute.params.numGuia;
     $$('#NGuiaPadre').val(guiapadre);
@@ -3275,6 +3341,10 @@ $$(document).on('page:init', '.page[data-name="asignarpadre"]', function (e) {
 
 
 });
+
+/**
+ * Asignar Sucursal Guias Hijo
+ */
 $$(document).on('page:init', '.page[data-name="asignarsucursalhijos"]', function (e) {
     $$('#btnmostrarQR').hide();
     $$('#mostrarResutl').hide();
@@ -3343,6 +3413,24 @@ $$(document).on('page:init', '.page[data-name="firmarfoto"]', function (e) {
 
 });
 
+/**
+ * Guias Status Ocurre
+ */
+$$(document).on('page:init', '.page[data-name="ocurrelistado"]', function (e) {
+    var id_operador = localStorage.getItem('userid');
+    if(id_operador !=''){
+        fnOcurre.mostrarLista(app,id_operador);
+    }
+});
+
+/**
+ *
+ * @param codCliente
+ * @param braNumbre
+ * @param status
+ * @param tipoFimg
+ */
+
 function monstrarImagenes(codCliente,braNumbre,status,tipoFimg){
     $$('#mostarfotos').html('');
     var fotos ='';
@@ -3360,9 +3448,10 @@ function monstrarImagenes(codCliente,braNumbre,status,tipoFimg){
     app.request.get(
         config.URL_WS + 'api/v2/permiso/operador/proyecto/' + codCliente + '/' + braNumbre + '/' + status,
         function (data) {
-            //console.log("#totalImg:"+data.length);
+            console.log("#totalImg:");
+            console.log(data);
             if (data.length > 0) {
-                //console.log("default campos");
+                console.log("default campos");
                 data.forEach((val, index) => {
                     fotos = '<li>\n' +
                         '                            <div class="item-content item-input">\n' +
@@ -3381,7 +3470,7 @@ function monstrarImagenes(codCliente,braNumbre,status,tipoFimg){
                         '                                                </td>\n' +
                         '                                            </tr>\n' +
                         '                                        </table>\n' +
-                        '                                        <canvas id="myCanvas' + (index + 1) + '" data-foto1="0"></canvas>\n' +
+                        '                                        <canvas id="myCanvas' + (index + 1) + '" data-foto1="0" data-requerido="'+ val.required +'"></canvas>\n' +
                         '                                    </div>\n' +
                         '                                </div>\n' +
                         '                            </div>\n' +
@@ -3414,7 +3503,7 @@ function monstrarImagenes(codCliente,braNumbre,status,tipoFimg){
                         '                                                </td>\n' +
                         '                                            </tr>\n' +
                         '                                        </table>\n' +
-                        '                                        <canvas id="myCanvas' + (index + 1) + '" data-foto1="0"></canvas>\n' +
+                        '                                        <canvas id="myCanvas' + (index + 1) + '" data-foto1="0" data-requerido="true"></canvas>\n' +
                         '                                    </div>\n' +
                         '                                </div>\n' +
                         '                            </div>\n' +

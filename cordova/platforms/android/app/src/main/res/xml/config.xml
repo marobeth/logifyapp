@@ -1,5 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
+<<<<<<< HEAD
 <widget id="com.graphicsandcode.logify" version="2.3.7" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+=======
+<widget id="com.graphicsandcode.logify" version="2.3.12" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+>>>>>>> 1192f925867b1ec1b33aec1943500224b96a8273
     <feature name="Screenshot">
         <param name="android-package" value="com.darktalker.cordova.screenshot.Screenshot" />
     </feature>
