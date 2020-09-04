@@ -23,12 +23,12 @@ var fnOcurre = {
                 total = datos.total;
                 listado = datos.listado;
                 if (total > 0 && listado != '') {
-                    $$("#totalOcurre").html('<br>Total: '+ total);
+                    $$("#totalOcurre").html('<br>Total: ' + total);
                     listado.forEach(function (valor, index) {
                         DataTable += '<tr><td class="label-cell">' + valor.num_guia +
-                            '</td><td class="numeric-cell">' +valor.proveedor_ocurre +
-                            '</td><td class="numeric-cell">' +valor.ocurre_proveedor +
-                            '</td><td class="numeric-cell">' +valor.dias +
+                            '</td><td class="numeric-cell">' + valor.proveedor_ocurre +
+                            '</td><td class="numeric-cell">' + valor.ocurre_proveedor +
+                            '</td><td class="numeric-cell">' + valor.dias +
                             '</td></tr>';
                         $$("#tbocurre").html(DataTable);
                     });
@@ -39,6 +39,48 @@ var fnOcurre = {
             },
             'json'
         );
-    }
+    },
+    mostrarAlert: (app) => {
+        /*cordova.plugins.notification.local.hasPermission(function (granted) { });
+        cordova.plugins.notification.local.requestPermission(function (granted) { ... });
+        cordova.plugins.notification.local.schedule(toast, callback, scope, { skipPermission: true });*/
+        console.debug("entro en la funcion mostrarAlert");
+        var iduser = localStorage.getItem('userid');
+        if (iduser) {
+            //var fecha = new Date();
+            //var hora = fecha.getHours();
+            var total = '';
+            var listado = '';
+            app.request.setup({
+                headers: {
+                    'apikey': localStorage.getItem('apikey')
+                },
+                beforeSend: function () {
+                    app.preloader.show();
+                },
+                complete: function () {
+                    app.preloader.hide();
+                }
+            });
+            app.request.get(
+                config.URL_WS + '/api/v2/ocurre/proveedor/' + iduser + '/perfil',
+                function (datos) {
+                    total = datos.total;
+                    listado = datos.listado;
+                    if (total > 0 && listado != '') {
+                        var message = "¡Hay " + total + " Guías en estado Ocurre!";
+                        cordova.plugins.notification.local.schedule({
+                            title: 'Alerta',
+                            text: message,
+                            trigger: { every: 'minute', count: 5 },
+                            icon: 'https://logify.com.mx/images/favicon.ico',
+                            foreground: true
+                        });
+                    }
+                },
+                'json'
+            );
+        }
+    },
 };
 export default fnOcurre;

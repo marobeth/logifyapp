@@ -1,0 +1,60 @@
+{
+  "_from": "cordova-plugin-scheduler",
+  "_id": "cordova-plugin-scheduler@1.1.0",
+  "_inBundle": false,
+  "_integrity": "sha1-3wMTmhEsOcA+sKQ39HfyRwqwZ/s=",
+  "_location": "/cordova-plugin-scheduler",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "cordova-plugin-scheduler",
+    "name": "cordova-plugin-scheduler",
+    "escapedName": "cordova-plugin-scheduler",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-scheduler/-/cordova-plugin-scheduler-1.1.0.tgz",
+  "_shasum": "df03139a112c39c03eb0a437f477f2470ab067fb",
+  "_spec": "cordova-plugin-scheduler",
+  "_where": "/Applications/MAMP/htdocs/logifyapp/cordova",
+  "author": {
+    "name": "Raphael Merx"
+  },
+  "bugs": {
+    "url": "https://github.com/raphaelmerx/cordova-plugin-scheduler/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "A Cordova plugin that schedules Android background tasks using the Android JobScheduler.",
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=6.0.0"
+    }
+  ],
+  "homepage": "https://github.com/raphaelmerx/cordova-plugin-scheduler#readme",
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova",
+    "android",
+    "job",
+    "scheduler",
+    "network",
+    "background",
+    "fetch"
+  ],
+  "license": "ISC",
+  "name": "cordova-plugin-scheduler",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raphaelmerx/cordova-plugin-scheduler.git"
+  },
+  "scripts": {},
+  "version": "1.1.0"
+}
