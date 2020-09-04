@@ -44,7 +44,7 @@ var fnOcurre = {
         /*cordova.plugins.notification.local.hasPermission(function (granted) { });
         cordova.plugins.notification.local.requestPermission(function (granted) { ... });
         cordova.plugins.notification.local.schedule(toast, callback, scope, { skipPermission: true });*/
-        console.debug("entro en la funcion mostrarAlert");
+        //console.debug("entro en la funcion mostrarAlert");
         var iduser = localStorage.getItem('userid');
         if (iduser) {
             //var fecha = new Date();
@@ -72,7 +72,7 @@ var fnOcurre = {
                         cordova.plugins.notification.local.schedule({
                             title: 'Alerta',
                             text: message,
-                            trigger: { every: 'minute', count: 5 },
+                            trigger: { every: 'hour', count: 6 },
                             icon: 'https://logify.com.mx/images/favicon.ico',
                             foreground: true
                         });
