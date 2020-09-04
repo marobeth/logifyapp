@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="232bfe81-5379-4a5a-8314-3fb762c606de" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/config.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/res/xml/config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/res/xml/config.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/www/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/www/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/guias/fn-guias.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/guias/fn-guias.js" afterDir="false" />
-    </list>
+    <list default="true" id="232bfe81-5379-4a5a-8314-3fb762c606de" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -59,6 +50,7 @@
     </option>
   </component>
   <component name="ProjectId" id="1QKPvHWQnDV79nsOIIrSDItElcd" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -265,13 +257,11 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/js/app.js</url>
           <line>3451</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/js/app.js</url>
           <line>3484</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
