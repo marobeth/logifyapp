@@ -3,33 +3,14 @@
   <component name="ChangeListManager">
     <list default="true" id="232bfe81-5379-4a5a-8314-3fb762c606de" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cordova/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/plugins/cordova-plugin-device/www/device.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/plugins/cordova-plugin-device/www/device.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/plugins/cordova-plugin-scheduler/www/SchedulerPlugin.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/plugins/cordova-plugin-scheduler/www/SchedulerPlugin.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/plugins/de.appplant.cordova.plugin.local-notification/www/local-notification-core.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/plugins/de.appplant.cordova.plugin.local-notification/www/local-notification-core.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/plugins/de.appplant.cordova.plugin.local-notification/www/local-notification-util.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/plugins/de.appplant.cordova.plugin.local-notification/www/local-notification-util.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/plugins/de.appplant.cordova.plugin.local-notification/www/local-notification.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/plugins/de.appplant.cordova.plugin.local-notification/www/local-notification.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/www/fonts/Framework7Icons-Regular.eot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/www/fonts/Framework7Icons-Regular.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/www/fonts/Framework7Icons-Regular.woff" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/www/fonts/Framework7Icons-Regular.woff2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/www/fonts/MaterialIcons-Regular.eot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/www/fonts/MaterialIcons-Regular.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/www/fonts/MaterialIcons-Regular.woff" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/www/fonts/MaterialIcons-Regular.woff2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/www/images/bg.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/www/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/www/js/app.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/www/static/fotos/Foto1_Acuse.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/www/static/fotos/Foto2_Guia.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/www/static/fotos/Foto3_Guia_Logify.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/www/static/fotos/Foto4_Gerente.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/www/static/fotos/Foto5_Operador.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/www/static/images/bg.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/www/static/images/logo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cordova/www/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/www/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/config.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/js/fnocurre.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/fnocurre.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/guias/fn-guias.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/guias/fn-guias.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/consultar.f7.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/consultar.f7.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -203,6 +184,7 @@
       <workItem from="1598877736267" duration="598000" />
       <workItem from="1598900222805" duration="11000" />
       <workItem from="1599075556445" duration="24682000" />
+      <workItem from="1599486654555" duration="19798000" />
     </task>
     <servers />
   </component>

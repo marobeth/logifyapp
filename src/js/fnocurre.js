@@ -41,10 +41,6 @@ var fnOcurre = {
         );
     },
     mostrarAlert: (app) => {
-        /*cordova.plugins.notification.local.hasPermission(function (granted) { });
-        cordova.plugins.notification.local.requestPermission(function (granted) { ... });
-        cordova.plugins.notification.local.schedule(toast, callback, scope, { skipPermission: true });*/
-        //console.debug("entro en la funcion mostrarAlert");
         var iduser = localStorage.getItem('userid');
         if (iduser) {
             //var fecha = new Date();
@@ -81,6 +77,6 @@ var fnOcurre = {
                 'json'
             );
         }
-    },
+    }
 };
 export default fnOcurre;

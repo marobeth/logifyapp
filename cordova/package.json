@@ -34,7 +34,6 @@
     "cordova-plugin-network-information": "^2.0.2",
     "cordova-plugin-qr-barcode-scanner": "^8.0.3",
     "cordova-plugin-scheduler": "1.1.0",
-    "cordova-plugin-sim": "file:plugins/cordova-plugin-sim",
     "cordova-plugin-splashscreen": "^5.0.3",
     "cordova-plugin-statusbar": "^2.4.3",
     "cordova-plugin-wkwebview-engine": "^1.2.1",

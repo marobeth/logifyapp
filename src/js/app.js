@@ -1075,10 +1075,6 @@ $$('#btn_iniciar_sesion').on('click', function () {
  */
 $$(document).on('page:init', '.page[data-name="inicio"]', function (e) {
     $$('#nombre_usuario').html(localStorage.getItem('nombre') + ' ' + localStorage.getItem('paterno'));
-    var id_operador = localStorage.getItem('userid');
-    if (id_operador != '') {
-        fnOcurre.mostrarAlert(app, id_operador);
-    }
     /*logisticus
     ValidateApikeyNEW(localStorage.getItem('userid'), localStorage.getItem('apikey'));
     if (localStorage.getItem('verhj_gasto') == 1) {

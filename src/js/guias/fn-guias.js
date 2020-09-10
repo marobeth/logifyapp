@@ -4,59 +4,29 @@ import funcionesCamara from "../funcionesCamara";
 
 
 var fnGuias = {
-    traducirStatus: function (status) {
-        var statusResult = '';
-        switch (status) {
-            case '1':
-                //Solicitado
-                statusResult = 'Solicitado';
-                break;
-            case '2':
-                //Recolectado
-                statusResult = 'Recolectado';
-                break;
-            case '3':
-                //En ruta
-                statusResult = 'En Ruta';
-                break;
-            case '4':
-                //Entregado
-                statusResult = 'Entregado';
-                break;
-            case '5':
-                //Incidencia
-                statusResult = 'Incidencia';
-                break;
-            case '6':
-                //Devuelto
-                statusResult = 'Devuelto';
-                break;
-            case '7':
-                //Ocurre
-                statusResult = 'Ocurre';
-                break;
-            case '8':
-                //En almacén
-                statusResult = 'En almacen';
-                break;
-            case '12':
-                //En ruta
-                statusResult = 'Conectado';
-                break;
-            case '15':
-                //En Almacén GDL
-                statusResult = '>Almacén GDL';
-                break;
-            case '16':
-                //En Almacén BJ
-                statusResult = '>Almacén BJX';
-                break;
-            case '17':
-                //En Almacén MTY
-                statusResult = '>Almacén MTY';
-                break;
-        }
-        return statusResult;
+    traducirStatus: (app,idstatus,CById)=>{
+        var mostrarLabel='';
+        app.request.setup({
+            headers: {
+                'apikey': localStorage.getItem('apikey')
+            },
+            beforeSend: function () {
+                app.preloader.show();
+            },
+            complete: function () {
+                app.preloader.hide();
+            }
+        });
+        app.request.get(
+            config.URL_WS + 'api/v2/status/' + idstatus,
+            function (datos) {
+                if(datos.label !=''){
+                    mostrarLabel=datos.label;
+                    $$('#'+ CById).html(mostrarLabel);
+                }
+            },
+            'json'
+        );
     },
     mostrarSttus: (app, idguia, branchnumber, clientcode, CById) => {
         //console.log("engtre mostrarSttus");
@@ -438,6 +408,8 @@ var fnGuias = {
     leyendaGuia: (app, idguia, clientCode, braNumbre) => {
         var tipoguia = '';
         var guia_referencia = '';
+        var leyenda='';
+
         let url = config.URL_WS + 'api/v2/leyenda/' + idguia + '/' + clientCode + '/' + braNumbre;
         app.request.setup({
             headers: {
@@ -458,10 +430,14 @@ var fnGuias = {
                 if (guia_referencia === undefined || guia_referencia === null || guia_referencia === '') {
                     guia_referencia = '';
                 } else {
-                    guia_referencia = '<span><br>&nbsp;&nbsp;&nbsp;referencia: ' + data.guia_referencia + '</span>';
+                    guia_referencia = '<span><br>Referencia: ' + data.guia_referencia + '</span>';
                 }
                 if (tipoguia != '') {
-                    var leyenda = '<div class="alert alert-info">' + tipoguia + guia_referencia + '</div>';
+                    if(tipoguia =='Guía de Devolución'){
+                        leyenda += '<div class="alert alert-info"> ' + tipoguia + guia_referencia + '</div>';
+                    }else{
+                        leyenda += '<div class="alert alert-danger"> ' + tipoguia + guia_referencia + '</div>';
+                    }
                     $$('#leyenda').html(leyenda);
                 }
             },
@@ -555,8 +531,9 @@ var fnGuias = {
                     if (data[0].dir2_dest != '' && !!data[0].dir2_dest) {
                         dir2_dest = 'Dirección alternativa: ' + data[0].dir2_dest + '<br>';
                     }
-                    $$('#status_guia_consulta').html(fnGuias.traducirStatus(data[0].status));
+                    fnGuias.traducirStatus(app,data[0].status,'status_guia_consulta');
                     $$('#espacio_proyecto').html(proyecto);
+                    fnGuias.leyendaGuia(app, data[0].id, data[0].client_code, data[0].branch_number);
                     $$('#espacio_destinatario').html(
                         data[0].nombre_dest + ' ' +
                         data[0].paterno_dest + ' ' +
@@ -606,6 +583,6 @@ var fnGuias = {
             },
             'json'
         );
-    },
+    }
 };
 export default fnGuias;
