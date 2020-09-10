@@ -99,6 +99,9 @@ ext {
 
 // PLUGIN GRADLE EXTENSIONS START
 apply from: "../cordova-plugin-qr-barcode-scanner/logify-barcodescanner.gradle"
+apply from: "../cordova-plugin-badge/logify-badge.gradle"
+apply from: "../cordova-plugin-scheduler/logify-build.gradle"
+apply from: "../cordova-plugin-local-notification/logify-localnotification.gradle"
 // PLUGIN GRADLE EXTENSIONS END
 
 def hasBuildExtras1 = file('build-extras.gradle').exists()
@@ -295,6 +298,7 @@ dependencies {
     // SUB-PROJECT DEPENDENCIES START
     implementation(project(path: ":CordovaLib"))
     implementation "com.android.support:support-v4:27.+"
+    implementation "com.android.support:support-v4:26.+"
     // SUB-PROJECT DEPENDENCIES END
 }
 
