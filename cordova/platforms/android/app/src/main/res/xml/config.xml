@@ -47,6 +47,9 @@
         <param name="android-package" value="com.virtuoworks.cordova.plugin.canvascamera.CanvasCamera" />
         <param name="onload" value="true" />
     </feature>
+    <feature name="Badge">
+        <param name="android-package" value="de.appplant.cordova.plugin.badge.Badge" />
+    </feature>
     <name>Logify</name>
     <description>
       Aplicación para los operadores de Logify

@@ -376,6 +376,14 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
         "plugin.CanvasCamera",
         "CanvasCamera"
       ]
+    },
+    {
+      "id": "cordova-plugin-badge.Badge",
+      "file": "plugins/cordova-plugin-badge/www/badge.js",
+      "pluginId": "cordova-plugin-badge",
+      "clobbers": [
+        "cordova.plugins.notification.badge"
+      ]
     }
   ];
   module.exports.metadata = {
@@ -392,6 +400,7 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
     "cordova-plugin-whitelist": "1.3.3",
     "cordova-plugin-android-imei": "1.0.0",
     "cordova-plugin-google-mobile-vision-barcode-scanner": "1.2",
-    "com.virtuoworks.cordova-plugin-canvascamera": "1.2.0"
+    "com.virtuoworks.cordova-plugin-canvascamera": "1.2.0",
+    "cordova-plugin-badge": "0.8.8"
   };
 });
