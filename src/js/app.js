@@ -95,18 +95,22 @@ function detectarProyecto(num_guia) {
         return "Celio";
     }
 }
+
 /* GEOLOCATION */
 function getLocation() {
     var geolocation = navigator.geolocation;
     geolocation.getCurrentPosition(showLocation, errorHandler);
 }
+
 function showLocation(position) {
     $$('#latitud').val(position.coords.latitude);
     $$('#longitud').val(position.coords.longitude);
 }
+
 function errorHandler(error) {
     console.log(error);
 }
+
 /*
 function screenshot(){
      navigator.screenshot.URI(function(error,res){
@@ -153,8 +157,10 @@ function enviarUbicacion() {
         'json'
     );
 }
+
 /* GEOLOCATION */
 document.addEventListener("deviceready", onDeviceReady, false);
+
 function onDeviceReady() {
     //cordova.plugins.backgroundMode.enable();
     //cordova.plugins.backgroundMode.setEnabled(true);
@@ -162,6 +168,7 @@ function onDeviceReady() {
     //setInterval(enviarUbicacion, 10000);
     //setTimeout(function(){ cordova.plugins.backgroundMode.enable(); }, 3000);
 }
+
 var resize_image = function (img, canvas, max_width, max_height) {
     var ctx = canvas.getContext("2d");
     var canvasCopy = document.createElement("canvas");
@@ -184,9 +191,11 @@ function imageCapture() {
     var options = {limit: 1};
     navigator.device.capture.captureImage(onSuccess, onError, options);
 }
+
 function onError(error) {
     //app.dialog.alert('Error code: ' + error.code, null, 'Capture Error');
 }
+
 function onSuccess(mediaFiles) {
     $$('#myCanvas1').show();
     var canvas = $$('#myCanvas1')[0];
@@ -196,13 +205,16 @@ function onSuccess(mediaFiles) {
         resize_image(this, canvas, 800, 1200);
     };
 }
+
 function imageCapture2() {
     var options = {limit: 1};
     navigator.device.capture.captureImage(onSuccess2, onError2, options);
 }
+
 function onError2(error) {
     //navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
 }
+
 function onSuccess2(mediaFiles) {
     $$('#myCanvas2').show();
     var canvas = $$('#myCanvas2')[0];
@@ -212,6 +224,7 @@ function onSuccess2(mediaFiles) {
         resize_image(this, canvas, 800, 1200);
     };
 }
+
 /**
  * Cargar desde Camara
  * @param idCanvas
@@ -247,6 +260,7 @@ function openCamera(idCanvas) {
         sourceType: srcType
     });
 }
+
 /**
  * Cargar desde galeria
  * @param idCanvas
@@ -278,6 +292,7 @@ function openFilePicker(idCanvas) {
         sourceType: srcType
     });
 }
+
 /**
  * Apikey
  * @param correo
@@ -321,6 +336,7 @@ function ValidateApikey(correo, pass) {
         }
     );
 }
+
 /**
  *
  * @param correo
@@ -367,6 +383,7 @@ function ValidateApikeyNEW(correo, pass) {
         }
     );
 }
+
 /**
  * DateActual
  * @param iddate
@@ -388,6 +405,7 @@ function DateActual(iddate) {
     }
     return (ano + "-" + mes + "-" + dia);
 }
+
 /**
  * DateGasto
  * @param DateGasto
@@ -395,6 +413,7 @@ function DateActual(iddate) {
 function DateGasto(CById, DateGasto) {
     document.getElementById(CById).value = DateGasto;
 }
+
 /**
  *
  * @param valor
@@ -434,6 +453,7 @@ function RsltsGastos(valor) {
         'json'
     );
 }
+
 /**
  *
  * @param CById
@@ -468,6 +488,7 @@ function NmPrvdr(CById, valor) {
         'json'
     );
 }
+
 /**
  *
  * @param valor
@@ -523,6 +544,7 @@ function RsltsPrvdr(valor) {
         }
     });
 }
+
 /**
  *
  * @param valor
@@ -539,7 +561,7 @@ function validateMonto(valor) {
  *
  * @param valor
  */
-function validatePrecio(CById,valor) {
+function validatePrecio(CById, valor) {
     var RE = /^\d*(\.\d{1})?\d{0,1}$/;
     if (RE.test(valor)) {
     } else {
@@ -547,6 +569,7 @@ function validatePrecio(CById,valor) {
         app.dialog.alert("El formato no corresponde Ej. 120.00 ó 23.65");
     }
 }
+
 /**
  * @param CById
  * @param monto
@@ -555,6 +578,7 @@ function validatePrecio(CById,valor) {
 function RsltsMonto(CById, monto) {
     document.getElementById(CById).value = monto;
 }
+
 /**
  *
  * @param CById
@@ -564,6 +588,7 @@ function RsltsMonto(CById, monto) {
 function RsltsNum(CById, num) {
     document.getElementById(CById).value = num;
 }
+
 /**
  *
  * @param CById
@@ -573,6 +598,7 @@ function RsltsNum(CById, num) {
 function RsltsObservaciones(CById, observaciones) {
     document.getElementById(CById).value = observaciones;
 }
+
 /**
  *
  * @param CById
@@ -594,6 +620,7 @@ function RsltsConcepto(CById, concepto, coment, kminicial, kmfinal) {
         document.getElementById('kmfinal').value = kmfinal;
     }
 }
+
 /**
  *
  * @param CById
@@ -614,6 +641,7 @@ function RsltsTpComprobante(CById, valor) {
     });
     $$('#TpoCmprbnt').html(TpoCmprbnt);
 }
+
 /**
  *
  * @param CById
@@ -629,6 +657,7 @@ function RsltsFotoComprobante(CById, valor) {
         $$('#' + CById).html('<img src="' + valor + '"/>');
     }
 }
+
 /**
  *
  * @param CById
@@ -647,6 +676,7 @@ function RsltsPDFComprobante(CById, valor) {
         $$('#pdfColocar').html(splits);
     }
 }
+
 /**
  *
  * @param CById
@@ -665,6 +695,7 @@ function RsltsXMLComprobante(CById, valor) {
         $$('#xmlColocar').html(splits);
     }
 }
+
 /**
  *
  * @param CById
@@ -693,6 +724,7 @@ function convertToBase64(CById, CById2, type) {
         document.getElementById(CById).value = null;
     }
 }
+
 /**
  *
  * @param CById
@@ -728,11 +760,12 @@ function RsltsVehiculo(CById, type, valor) {
             $$('#' + CById).html(vehiculos);
         },
         function (error) {
-           // console.log(error);
+            // console.log(error);
         },
         'json'
     );
 }
+
 /**
  *
  * @param CById
@@ -744,6 +777,7 @@ function RsltsAuto(CById, Id, valor) {
     var vehiculos = '<option value="' + Id + '">' + valor + '</option>';
     $$('#' + CById).html(vehiculos);
 }
+
 /**
  *
  * @param valor
@@ -756,6 +790,7 @@ function validateNumero(CById) {
         app.dialog.alert("Solo se permiten numeros");
     }
 }
+
 /**
  *
  * @param CById
@@ -763,7 +798,7 @@ function validateNumero(CById) {
  * @constructor
  */
 function RsltsMtdPago(CById, valor) {
-    if(valor ==1){
+    if (valor == 1) {
         $$(".TMtdPago").show();
     } else {
         $$(".TMtdPago").hide();
@@ -772,16 +807,19 @@ function RsltsMtdPago(CById, valor) {
     var Eselected;
     var lista = ['Seleccionar', 'Efectivo', 'Ticket Car'];
     lista.forEach(function (element, index) {
-        if(valor == ''){ valor=0;}
-        if (index == valor ) {
+        if (valor == '') {
+            valor = 0;
+        }
+        if (index == valor) {
             Eselected = 'selected';
         } else {
             Eselected = '';
         }
         MtdPago += '<option value="' + index + '"' + Eselected + '>' + element + '</option>';
     });
-    $$('#'+CById).html(MtdPago);
+    $$('#' + CById).html(MtdPago);
 }
+
 /**
  *
  * @param CById
@@ -791,13 +829,14 @@ function RsltsMtdPago(CById, valor) {
 function RsltsValor(CById, valor) {
     document.getElementById(CById).value = valor;
 }
+
 /**
  *
  * @param CById
  * @param valor
  * @constructor
  */
-function EnviarEmail( valor,IdUser) {
+function EnviarEmail(valor, IdUser) {
     app.request.setup({
         headers: {
             'Authorization': "bearer " + localStorage.getItem('token')
@@ -809,7 +848,7 @@ function EnviarEmail( valor,IdUser) {
         }
     });
     app.request.get(
-        URL_NEW_WS + 'api/v2/enviar/msn/' + valor+'/'+IdUser,
+        URL_NEW_WS + 'api/v2/enviar/msn/' + valor + '/' + IdUser,
         function (data) {
             app.dialog.alert(data.message);
         },
@@ -820,6 +859,7 @@ function EnviarEmail( valor,IdUser) {
         'json'
     );
 }
+
 /**
  *
  * @param CById
@@ -863,8 +903,8 @@ function validateOdometro(CById, idauto, valor) {
  * @param CById
  * @param Numguia
  */
-function verBilletes(CById,Numguia) {
-        app.request.setup({
+function verBilletes(CById, Numguia) {
+    app.request.setup({
         headers: {
             'apikey': localStorage.getItem('apikey')
         },
@@ -887,11 +927,11 @@ function verBilletes(CById,Numguia) {
                 data.forEach(function (val, index) {
                     folio += '<li> PPF: ' + val.valor + ' SERIE: ' + val.folio + '</li>';
                 });
-                folio+='<p></div>\n' +
+                folio += '<p></div>\n' +
                     '</div>\n' +
                     '</li>\n' +
                     '</ul>\n' +
-                    '</div>\n'+
+                    '</div>\n' +
                     '</ul></div>';
                 $$('#' + CById).html(folio);
             }
@@ -921,7 +961,7 @@ function verTarjetas(CById, numguia) {
                 localStorage.clear();
                 app.preloader.hide();
             } else {
-               // app.dialog.alert('Hubo un error, no hay información detallada en tarjetas', 'Error');
+                // app.dialog.alert('Hubo un error, no hay información detallada en tarjetas', 'Error');
             }
         }
     });
@@ -934,12 +974,13 @@ function verTarjetas(CById, numguia) {
         'json'
     );
 }
+
 /**
  *
  * @param CById
  * @param Numguia
  */
-function verAM(CById,Numguia) {
+function verAM(CById, Numguia) {
     app.request.setup({
         headers: {
             'apikey': localStorage.getItem('apikey')
@@ -961,7 +1002,7 @@ function verAM(CById,Numguia) {
     app.request.get(
         URL_WS + 'api/v2/consultar-archivomuerto/' + Numguia,
         function (data) {
-            if(data.cajas !=''){
+            if (data.cajas != '') {
                 var tarjeta = '' + data.gerencia + ' Zona: ' + data.zona + ' Cajas: ' + data.cajas;
                 $$('#' + CById).html(tarjeta);
             }
@@ -994,7 +1035,7 @@ var app = new Framework7({
     methods: {
         helloWorld: function () {
             app.dialog.alert('Hello World!');
-        },
+        }
     },
     // App routes
     routes: routes,
@@ -1022,9 +1063,18 @@ var app = new Framework7({
                 // Init cordova APIs (see cordova-app.js)
                 cordovaApp.init(f7);
             }
-        },
+            fnOcurre.mostrarAlert(app);
+        }
     },
 });
+
+function alertas() {
+    fnOcurre.mostrarAlert(app);
+}
+
+document.addEventListener("pause", alertas, false);
+document.addEventListener("offline", alertas, false);
+
 
 /**
  *Iniciar Sesion
@@ -1033,7 +1083,7 @@ $$('#btn_iniciar_sesion').on('click', function () {
     //app.preloader.show();
     var username = $$('#input_username').val();
     var password = $$('#input_password').val();
-
+    //app.helloWorld();
     ValidateApikey(username, password);
 });
 /**
@@ -1071,6 +1121,10 @@ $$(document).on('page:afterin', '.page[data-name="home"]', function (e) {
     if (localStorage.getItem('auth') == 'true') {
         app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
     }
+    /* var id_operador = localStorage.getItem('userid');
+     if(id_operador !=''){
+         fnOcurre.mostrarAlert(app,id_operador);
+     }*/
 });
 
 /**
@@ -1153,12 +1207,12 @@ $$(document).on('page:init', '.page[data-name="checkin"]', function (e) {
                     app.preloader.hide();
 
                     /*if(data_am.length > 0 ) {*/
-                        var input_num_sucursal = $$('#input_num_sucursal_checkin').val();
-                        $$("#numguiaPadre").attr("href", "/asignarhijos/"+ input_num_sucursal);
-                        $$('#mostrarDivHijos').show();
-                   /* }else{
-                        $$('#mostrarDivHijos').hide();
-                    }*/
+                    var input_num_sucursal = $$('#input_num_sucursal_checkin').val();
+                    $$("#numguiaPadre").attr("href", "/asignarhijos/" + input_num_sucursal);
+                    $$('#mostrarDivHijos').show();
+                    /* }else{
+                         $$('#mostrarDivHijos').hide();
+                     }*/
                 },
                 function (error) {
                     app.dialog.alert('Hubo un error, inténtelo de nuevo');
@@ -1207,10 +1261,11 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         app.request.get(
             URL_WS + 'consulta/' + num_guias[0],
             function (data) {
-                app.preloader.hide();
 
-                fnGuias.leyendaGuia(app,data['guia'][0].id,data['guia'][0].client_code,data['guia'][0].branch_number);
-                fnGuias.mostrarSttus(app, data['guia'][0].id,data['guia'][0].branch_number, data['guia'][0].client_code, 'status');
+                app.preloader.hide();
+                fnGuias.leyendaGuia(app, data['guia'][0].id, data['guia'][0].client_code, data['guia'][0].branch_number);
+                fnGuias.mostrarSttus(app, data['guia'][0].id, data['guia'][0].branch_number, data['guia'][0].client_code, 'status');
+
                 //console.log(data['guia'][0].num_guia);
                 
                 $$('#num__guia').html("<b>"+data['guia'][0].num_guia+"</b>");
@@ -1239,12 +1294,12 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                     if (data['guia'][0].branch_number == '0006' && data['guia'][0].num_guia != '') {
                         verTarjetas('verTarjeta', data['guia'][0].num_guia);
                     }
-                   if (data['guia'][0].branch_number == '0003' && data['guia'][0].num_guia != '') {
-                       verAM('verTarjeta', data['guia'][0].num_guia);
-                           fnGuiasHijos.btnScanHjs(app,data['guia'][0].num_guia);
+                    if (data['guia'][0].branch_number == '0003' && data['guia'][0].num_guia != '') {
+                        verAM('verTarjeta', data['guia'][0].num_guia);
+                        fnGuiasHijos.btnScanHjs(app, data['guia'][0].num_guia);
                     }
                 }
-                fnGuiasHijos.MostrarNGH(app,'NGHijos', data['guia'][0].num_guia);
+                fnGuiasHijos.MostrarNGH(app, 'NGHijos', data['guia'][0].num_guia);
                 fnGuias.LogIncidencias(app, data['guia'][0].client_code, data['guia'][0].id);
                 
 
@@ -1405,9 +1460,11 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         $$('.id_camara_3').on('click', function (e) {
             var permissions = cordova.plugins.permissions;
             permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
+
             function error() {
                 app.dialog.alert('Necesitas permiso de: WRITE_EXTERNAL_STORAGE ');
             }
+
             function success(status) {
                 if (!status.hasPermission) {
                     error();
@@ -1459,9 +1516,11 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         $$('.id_camara_4').on('click', function (e) {
             var permissions = cordova.plugins.permissions;
             permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
+
             function error() {
                 app.dialog.alert('Necesitas permiso de: WRITE_EXTERNAL_STORAGE ');
             }
+
             function success(status) {
                 if (!status.hasPermission) {
                     error();
@@ -1553,11 +1612,11 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         $$('.ocultar_campos').hide();
         var status = $$('#status').val();
         //console.log(status+num_guias);
-        var numeroguia=num_guias[0];
-        var codCliente = numeroguia.substring(0,3);
-        var braNumbre = numeroguia.substring(3,7);
+        var numeroguia = num_guias[0];
+        var codCliente = numeroguia.substring(0, 3);
+        var braNumbre = numeroguia.substring(3, 7);
         //console.log("engtre mostrarCampos"+status);
-        var tipoFimg=codCliente+'-'+braNumbre+'-'+status;
+        var tipoFimg = codCliente + '-' + braNumbre + '-' + status;
         //console.log("status:"+status);
         switch (status) {
             case '2':
@@ -1565,7 +1624,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 //console.log("Recolectado");
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_recolectado').show();
-                fnGuias.fnmostrarCampos(app,codCliente,braNumbre,status,tipoFimg);
+                fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
                 break;
             case '3':
                 //En ruta
@@ -1576,21 +1635,21 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 //Entregado
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_entregado').show();
-                fnGuias.fnmostrarCampos(app,codCliente,braNumbre,status,tipoFimg);
+                fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
                 break;
             case '5':
                 //Incidencia
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_incidencia').show();
-                fnGuias.fnmostrarCampos(app,codCliente,braNumbre,status,tipoFimg);
+                fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
                 break;
             case '6':
                 //Devuelto
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_devuelto').show();
                 //console.log(codCliente+"entre");
-                if(codCliente === 'CVD'){
-                    fnGuias.fnmostrarCampos(app,codCliente,braNumbre,status,tipoFimg);
+                if (codCliente === 'CVD') {
+                    fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
                 }
                 break;
             case '7':
@@ -1608,13 +1667,13 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_conectado').show();
                 fnGuias.mostrarListadoOcurre(app);
-                if(codCliente === 'CVD' || codCliente === 'CEL' || codCliente === 'PUR' || codCliente === 'SAF') {
+                if (codCliente === 'CVD' || codCliente === 'CEL' || codCliente === 'PUR' || codCliente === 'SAF') {
                     fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
                 }
                 break;
             case '14':
                 //Retorno
-                if(codCliente === 'CVD') {
+                if (codCliente === 'CVD') {
                     fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
                 }
                 break;
@@ -1623,19 +1682,19 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 //console.log("Recolectado");
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_recolectado').show();
-                fnGuias.fnmostrarCampos(app,codCliente,braNumbre,status,tipoFimg);
+                fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
                 break;
             case '23':
                 //Incidencia
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_incidencia').show();
-                fnGuias.fnmostrarCampos(app,codCliente,braNumbre,status,tipoFimg);
+                fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
                 break;
             case '24':
                 //Incidencia
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_incidencia').show();
-                fnGuias.fnmostrarCampos(app,codCliente,braNumbre,status,tipoFimg);
+                fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
                 break;
             default:
                 $$('.ocultar_campos').hide();
@@ -1647,11 +1706,11 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         var foto1, foto2, foto3, foto4, foto5;
         var canvas1, canvas2, canvas3, canvas4, canvas5;
         var statusFoto, statusFoto2, statusFoto3, statusFoto4, statusFoto5;
-        var persona_recibe, incidencia, comentarios,status;
-        var proveedor_ocurre, guia_ocurre,latitud,longitud;
+        var persona_recibe, incidencia, comentarios, status;
+        var proveedor_ocurre, guia_ocurre, latitud, longitud;
 
-        var numeroguia=num_guias[0];
-        var codCliente = numeroguia.substring(0,3);
+        var numeroguia = num_guias[0];
+        var codCliente = numeroguia.substring(0, 3);
 
         latitud = $$('#latitud').val();
         longitud = $$('#longitud').val();
@@ -1659,7 +1718,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
 
         var validado = false;
 
-        if(status == ''){
+        if (status == '') {
             validado = false;
             app.dialog.alert('Seleccione un status');
         }
@@ -1713,34 +1772,34 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
             case '12':
                 proveedor_ocurre = $$('#proveedor_ocurre').val();
                 guia_ocurre = $$('#guia_ocurre').val();
-                if ((proveedor_ocurre != '' || proveedor_ocurre != 0) && guia_ocurre != '' ) {
+                if ((proveedor_ocurre != '' || proveedor_ocurre != 0) && guia_ocurre != '') {
                     validado = true;
                 } else {
                     app.dialog.alert('El proveedor ocurre y la guía ocurre son obligatorios');
                 }
                 break;
             default:
-                if(status > 12){
+                if (status > 12) {
                     validado = true;
                 }
                 break;
         }
         var totalImg = $$('#totalImg').val();
-        if(totalImg > 0) {
+        if (totalImg > 0) {
             for (var i = 1; i <= totalImg; i++) {
                 var sttsFoto = $$('#myCanvas' + i).data("foto1");
                 var requerido = $$('#myCanvas' + i).data("requerido");
                 var canvas_img = $$('#myCanvas' + i)[0];
                 var foto = canvas_img.toDataURL();
                 //console.log(requerido);
-                if(requerido == 1){
+                if (requerido == 1) {
                     if (foto == '' || sttsFoto == 0) {
-                        app.dialog.alert('Foto '+ i + ' esta vacío');
+                        app.dialog.alert('Foto ' + i + ' esta vacío');
                         validado = false;
                     }
                 }
 
-                if(foto == '' || sttsFoto == 0 && (proveedor_ocurre != '' && guia_ocurre !='' && status==12)){
+                if (foto == '' || sttsFoto == 0 && (proveedor_ocurre != '' && guia_ocurre != '' && status == 12)) {
                     validado = true;
                 }
             }
@@ -1785,7 +1844,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
 
             persona_recibe = $$('#persona_recibe').val();
             incidencia = $$('#incidencia').val();
-            if (incidencia == 0 && status!= 5) {
+            if (incidencia == 0 && status != 5) {
                 incidencia = null;
             }
             comentarios = $$('#comentarios').val();
@@ -1795,9 +1854,9 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
             }
             guia_ocurre = $$('#guia_ocurre').val();
 
-            var guiaslista=$$('#num_gias').val();
+            var guiaslista = $$('#num_gias').val();
             guiaslista = guiaslista.split("|");
-            var TtlLista=guiaslista.length;
+            var TtlLista = guiaslista.length;
 
             app.request.setup({
                 headers: {
@@ -1840,8 +1899,9 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                             app.preloader.hide();
                             app.dialog.alert("Datos guardados correctamente", function () {
                                 $$('#btn_buscar_sucursal').click();
+                                app.views.main.router.back();
                             });
-                            app.views.main.router.back();
+                            
                         }, function (error) {
                             app.preloader.hide();
                             
@@ -1852,7 +1912,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                         },
                         'json'
                     );
-                
+
             } else {
                 guiaslista.forEach(function (v, i) {
                     var guiaMasivaInd = v;
@@ -1868,7 +1928,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                             foto5: foto5,
                             persona_recibe: persona_recibe,
                             comentarios: comentarios,
-                            incidencia:incidencia,
+                            incidencia: incidencia,
                             proveedor_ocurre: proveedor_ocurre,
                             guia_ocurre: guia_ocurre
                         },
@@ -1899,7 +1959,7 @@ $$(document).on('page:init', '.page[data-name="escanear"]', function (e) {
                     var num_guia = result.text;
                     if (num_guia.length <= 17) {
                         app.dialog.alert("Guía no válida: Las guías logify tienen más caracteres");
-                    }else {
+                    } else {
                         //Váido
                         //Revisar si ya está agregada esa guía:
                         var guias_actuales = $$('#hidden_guias_scan').val();
@@ -1957,7 +2017,7 @@ $$(document).on('page:init', '.page[data-name="consultar"]', function (e) {
                 if (!result.cancelled) {
                     var numguia = result.text;
                     $$('#num_guia_consulta').html(numguia);
-                    fnGuias.mostrarinfoGuia(app,numguia,detectarProyecto(numguia));
+                    fnGuias.mostrarinfoGuia(app, numguia, detectarProyecto(numguia));
                 } else {
                     app.dialog.alert('El scan fue cancelado');
                 }
@@ -1973,20 +2033,20 @@ $$(document).on('page:init', '.page[data-name="consultar"]', function (e) {
         );
     });
 
-    $$('#btn_info_guia').on('click',function () {
+    $$('#btn_info_guia').on('click', function () {
         $$('#mostrarBtnScan').hide();
         var expreg = /^[A-Za-z0-9]+$/;
         var numguia = $$('#infoGuia').val();
         $$('#num_guia_consulta').html(numguia);
-        var longitud=numguia.length;
-        if(numguia !=''){
-            if( longitud > 17){
+        var longitud = numguia.length;
+        if (numguia != '') {
+            if (longitud > 17) {
                 if (!expreg.test(numguia)) {
                     app.dialog.alert('Hay caracteres inválidos, favor de verificar');
-                }else{
-                    fnGuias.mostrarinfoGuia(app,numguia,detectarProyecto(numguia));
+                } else {
+                    fnGuias.mostrarinfoGuia(app, numguia, detectarProyecto(numguia));
                 }
-            }else{
+            } else {
                 app.dialog.alert('El número de caracteres no corresponden, favor de verificar');
             }
         }
@@ -2657,10 +2717,10 @@ $$(document).on('page:init', '.page[data-name="solicitudes"]', function (e) {
                         if (msn_enviar == 0) {
                             SlctdConsulta += '          <p>Enviar correo de enterado: <i class="material-icons color-gray clickemail" data-folio="' + cslt_slctds_opr.id + '">email</i></p>';
                         }
-                        if(cslt_slctds_opr.metodo_pago <=1 &&  cslt_slctds_opr.vigencia_solicitud >=periodo && (cslt_slctds_opr.pdf_comprobante ==null || cslt_slctds_opr.pdf_comprobante == undefined) && (cslt_slctds_opr.xml_comprobante ==null || cslt_slctds_opr.xml_comprobante == undefined)) {
-                            SlctdConsulta += '          <p class="alert alert-warning">Subir Ticket, PDF y XML antes del '+cslt_slctds_opr.vigencia_solicitud+'</p>';
+                        if (cslt_slctds_opr.metodo_pago <= 1 && cslt_slctds_opr.vigencia_solicitud >= periodo && (cslt_slctds_opr.pdf_comprobante == null || cslt_slctds_opr.pdf_comprobante == undefined) && (cslt_slctds_opr.xml_comprobante == null || cslt_slctds_opr.xml_comprobante == undefined)) {
+                            SlctdConsulta += '          <p class="alert alert-warning">Subir Ticket, PDF y XML antes del ' + cslt_slctds_opr.vigencia_solicitud + '</p>';
                             SlctdConsulta += '          <p><a href="/solicitudgasto/' + cslt_slctds_opr.id + '"><i class="icon f7-icons">arrow_up_doc_fill</i>Subir datos de TICKET</a></p>';
-                        }else{
+                        } else {
                             SlctdConsulta += '          <p><a href="/solicitudgasto/' + cslt_slctds_opr.id + '"><i class="icon f7-icons">arrow_up_doc_fill</i>Subir datos de TICKET</a></p>';
 
                         }
@@ -2764,12 +2824,11 @@ $$(document).on('page:init', '.page[data-name="addsolicitud"]', function (e) {
         var odometro = $$('#odometro').val();
         var monto = $$('#monto').val();
         var FotoStatus = $$('#myCanvasOdometro').data("foto1");
-        var foto_odometro,cnvsOdometro;
+        var foto_odometro, cnvsOdometro;
 
         validatePrecio('monto', monto);
         validateNumero('odometro');
-        validateOdometro('odometro',id_auto);
-
+        validateOdometro('odometro', id_auto);
 
 
         if (FotoStatus == 0) {
@@ -2812,11 +2871,11 @@ $$(document).on('page:init', '.page[data-name="addsolicitud"]', function (e) {
                 URL_NEW_WS + 'api/v2/latestodometro/' + id_auto,
                 function (data) {
                     var odometro = $$("#odometro").val();
-                    console.log(odometro,data.odometro);
+                    console.log(odometro, data.odometro);
                     if (odometro <= data.odometro) {
                         document.getElementById("odometro").value = "";
-                        app.dialog.alert("Error: Revisar el odómetro "+odometro+", su valor debe ser mayor al ingresado");
-                    }else{
+                        app.dialog.alert("Error: Revisar el odómetro " + odometro + ", su valor debe ser mayor al ingresado");
+                    } else {
                         app.request.postJSON(
                             URL_NEW_WS + 'api/v2/agregar-combustible',
                             {
@@ -3041,7 +3100,7 @@ $$(document).on('page:init', '.page[data-name="solicitudgasto"]', function (e) {
             app.dialog.alert("El campo de No.Ticket está vacío");
         } else if (FotoStatus == 0 && FotoStatusBD == 0) {
             app.dialog.alert("El campo Foto del Comprobante está vacío");
-        } else if (observaciones == "" && PDFStatus == 0 && metodo_pago == 1 ) {
+        } else if (observaciones == "" && PDFStatus == 0 && metodo_pago == 1) {
             app.dialog.alert("Explicar brevemente porque el archivo PDF o XML no se enviara");
         } else if (observaciones == "" && XMLStatus == 0 && metodo_pago == 1) {
             app.dialog.alert("Explicar brevemente porque el archivo PDF o XML no se enviara");
@@ -3099,7 +3158,7 @@ $$(document).on('page:init', '.page[data-name="solicitudgasto"]', function (e) {
 $$(document).on('page:init', '.page[data-name="fotoacuse"]', function (e) {
     var numGuia = app.view.main.router.currentRoute.params.numGuia;
     //console.log(numGuia);
-    fotoacuse.index(app,numGuia);
+    fotoacuse.index(app, numGuia);
 });
 
 /**
@@ -3113,7 +3172,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatushijos"]', function (
             function (result) {
                 if (!result.cancelled) {
                     var num_guia_hijo = result.text;
-                    if(num_guia_hijo.length > 17){
+                    if (num_guia_hijo.length > 17) {
                         var guias_actuales = $$('#hidden_guias_scan').val();
                         if (guias_actuales.includes(num_guia_hijo)) {
                             app.dialog.alert("Ya habías agregado esta guía");
@@ -3127,7 +3186,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatushijos"]', function (
                             var guiasHjs = $$('#hidden_guias_scan').val().substr(0, $$('#hidden_guias_scan').val().length - 1);
                             $$("#guiasscan").val(guiasHjs);
                         }
-                    }else{
+                    } else {
                         app.dialog.alert("Guía no válida: no tiene los caracteres permitidos");
                     }
                 } else {
@@ -3146,12 +3205,12 @@ $$(document).on('page:init', '.page[data-name="cambiarstatushijos"]', function (
     });
     $$('#btn_cambiar_status_guias').on('click', function () {
         var idoperador = localStorage.getItem('userid');
-        var selectStatus= $$('#selectStatus').val();
-        var guiasHjs= $$("#guiasscan").val();
-        var latitud= $$("#latitud").val();
-        var longitud= $$("#longitud").val();
-        var lanlog=(latitud +','+ longitud);
-        fnGuiasHijos.ValidarNGHJIDV(app,idoperador,guiasHjs,lanlog,selectStatus);
+        var selectStatus = $$('#selectStatus').val();
+        var guiasHjs = $$("#guiasscan").val();
+        var latitud = $$("#latitud").val();
+        var longitud = $$("#longitud").val();
+        var lanlog = (latitud + ',' + longitud);
+        fnGuiasHijos.ValidarNGHJIDV(app, idoperador, guiasHjs, lanlog, selectStatus);
     });
     $$('#btn_regresar').on('click', function () {
         app.views.main.router.navigate('/opcionesguiashjs/', {reloadCurrent: false});
@@ -3167,18 +3226,18 @@ $$(document).on('page:init', '.page[data-name="asignarguiahijo"]', function (e) 
     $$('#mostrarQRSR').show();
     $$('#mostrarQRJR').hide();
     $$('#mostrarResutl').hide();
-    $$('#btnValidarNGP').on('click',function () {
+    $$('#btnValidarNGP').on('click', function () {
         var valor = $$('#NGuiaPadre').val();
-        fnGuiasHijos.validarNG(app,valor);
+        fnGuiasHijos.validarNG(app, valor);
     });
     $$('#btn_escanear_papa').on('click', function () {
         cordova.plugins.barcodeScanner.scan(
             function (result) {
                 if (!result.cancelled) {
                     var num_guia_padre = result.text;
-                    if(num_guia_padre.length > 17){
-                        fnGuiasHijos.validarNG(app,num_guia_padre);
-                    }else{
+                    if (num_guia_padre.length > 17) {
+                        fnGuiasHijos.validarNG(app, num_guia_padre);
+                    } else {
                         app.dialog.alert("Guía no válida: no tiene los caracteres permitidos");
                     }
                 } else {
@@ -3200,7 +3259,7 @@ $$(document).on('page:init', '.page[data-name="asignarguiahijo"]', function (e) 
             function (result) {
                 if (!result.cancelled) {
                     var num_guia_hijo = result.text;
-                    if(num_guia_hijo.length > 17){
+                    if (num_guia_hijo.length > 17) {
                         var guias_actuales = $$('#hidden_guias_scan').val();
                         if (guias_actuales.includes(num_guia_hijo)) {
                             app.dialog.alert("Ya habías agregado esta guía");
@@ -3214,7 +3273,7 @@ $$(document).on('page:init', '.page[data-name="asignarguiahijo"]', function (e) 
                             var guiasHjs = $$('#hidden_guias_scan').val().substr(0, $$('#hidden_guias_scan').val().length - 1);
                             $$("#guiasscan").val(guiasHjs);
                         }
-                    }else{
+                    } else {
                         app.dialog.alert("Guía no válida: no tiene los caracteres permitidos");
                     }
                 } else {
@@ -3233,16 +3292,16 @@ $$(document).on('page:init', '.page[data-name="asignarguiahijo"]', function (e) 
     });
     $$('#btn_asignar_guias').on('click', function () {
         var idoperador = localStorage.getItem('userid');
-        var guiasHjs= $$("#guiasscan").val();
-        var guiapadre= $$("#infoguiapadre").val();
-        var latitud= $$("#latitud").val();
-        var longitud= $$("#longitud").val();
-        var lanlog=(latitud +','+ longitud);
-        fnGuiasHijos.ValidarNGHJ(app,idoperador,guiapadre,guiasHjs,lanlog);
+        var guiasHjs = $$("#guiasscan").val();
+        var guiapadre = $$("#infoguiapadre").val();
+        var latitud = $$("#latitud").val();
+        var longitud = $$("#longitud").val();
+        var lanlog = (latitud + ',' + longitud);
+        fnGuiasHijos.ValidarNGHJ(app, idoperador, guiapadre, guiasHjs, lanlog);
     });
     $$('#btn_regresar_guias').on('click', function () {
-        var guiapadre= $$("#infoguiapadre").val();
-        app.views.main.router.navigate('/cambiarstatus/'+guiapadre, {reloadCurrent: false});
+        var guiapadre = $$("#infoguiapadre").val();
+        app.views.main.router.navigate('/cambiarstatus/' + guiapadre, {reloadCurrent: false});
     });
     $$('#btnregresarguias').on('click', function () {
         app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
@@ -3262,7 +3321,7 @@ $$(document).on('page:init', '.page[data-name="asignarhijos"]', function (e) {
             function (result) {
                 if (!result.cancelled) {
                     var num_guia_hijo = result.text;
-                    if(num_guia_hijo.length > 17){
+                    if (num_guia_hijo.length > 17) {
                         var guias_actuales = $$('#hidden_guias_scan').val();
                         if (guias_actuales.includes(num_guia_hijo)) {
                             app.dialog.alert("Ya habías agregado esta guía");
@@ -3276,7 +3335,7 @@ $$(document).on('page:init', '.page[data-name="asignarhijos"]', function (e) {
                             var guiasHjs = $$('#hidden_guias_scan').val().substr(0, $$('#hidden_guias_scan').val().length - 1);
                             $$("#guiasscan").val(guiasHjs);
                         }
-                    }else{
+                    } else {
                         app.dialog.alert("Guía no válida: no tiene los caracteres permitidos");
                     }
                 } else {
@@ -3295,12 +3354,12 @@ $$(document).on('page:init', '.page[data-name="asignarhijos"]', function (e) {
     });
     $$('#btn_cambiar_status_guias').on('click', function () {
         var idoperador = localStorage.getItem('userid');
-        var selectStatus= $$('#selectStatus').val();
-        var guiasHjs= $$("#guiasscan").val();
-        var latitud= $$("#latitud").val();
-        var longitud= $$("#longitud").val();
-        var lanlog=(latitud +','+ longitud);
-        fnGuiasHijos.ValidarNGHJIDV(app,idoperador,guiasHjs,lanlog,selectStatus,sucursal);
+        var selectStatus = $$('#selectStatus').val();
+        var guiasHjs = $$("#guiasscan").val();
+        var latitud = $$("#latitud").val();
+        var longitud = $$("#longitud").val();
+        var lanlog = (latitud + ',' + longitud);
+        fnGuiasHijos.ValidarNGHJIDV(app, idoperador, guiasHjs, lanlog, selectStatus, sucursal);
     });
     $$('#btn_regresar').on('click', function () {
         app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
@@ -3320,7 +3379,7 @@ $$(document).on('page:init', '.page[data-name="asignarpadre"]', function (e) {
             function (result) {
                 if (!result.cancelled) {
                     var num_guia_hijo = result.text;
-                    if(num_guia_hijo.length > 17){
+                    if (num_guia_hijo.length > 17) {
                         var guias_actuales = $$('#hidden_guias_scan').val();
                         if (guias_actuales.includes(num_guia_hijo)) {
                             app.dialog.alert("Ya habías agregado esta guía");
@@ -3334,7 +3393,7 @@ $$(document).on('page:init', '.page[data-name="asignarpadre"]', function (e) {
                             var guiasHjs = $$('#hidden_guias_scan').val().substr(0, $$('#hidden_guias_scan').val().length - 1);
                             $$("#guiasscan").val(guiasHjs);
                         }
-                    }else{
+                    } else {
                         app.dialog.alert("Guía no válida: no tiene los caracteres permitidos");
                     }
                 } else {
@@ -3353,15 +3412,15 @@ $$(document).on('page:init', '.page[data-name="asignarpadre"]', function (e) {
     });
     $$('#btn_asignar_guias').on('click', function () {
         var idoperador = localStorage.getItem('userid');
-        var guiasHjs= $$("#guiasscan").val();
+        var guiasHjs = $$("#guiasscan").val();
         //var guiapadre= $$("#infoguiapadre").val();
-        var latitud= $$("#latitud").val();
-        var longitud= $$("#longitud").val();
-        var lanlog=(latitud +','+ longitud);
-        fnGuiasHijos.ValidarNGHJ(app,idoperador,guiapadre,guiasHjs,lanlog);
+        var latitud = $$("#latitud").val();
+        var longitud = $$("#longitud").val();
+        var lanlog = (latitud + ',' + longitud);
+        fnGuiasHijos.ValidarNGHJ(app, idoperador, guiapadre, guiasHjs, lanlog);
     });
     $$('#btn_regresar_guias').on('click', function () {
-        app.views.main.router.navigate('/cambiarstatus/'+guiapadre, {reloadCurrent: false});
+        app.views.main.router.navigate('/cambiarstatus/' + guiapadre, {reloadCurrent: false});
     });
     $$('#btnregresarguias').on('click', function () {
         app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
@@ -3378,9 +3437,9 @@ $$(document).on('page:init', '.page[data-name="asignarsucursalhijos"]', function
     $$('#mostrarResutl').hide();
     var id_operador = localStorage.getItem('user_id');
 
-    $$('#btn_validar_sucursal').on('click', function (){
+    $$('#btn_validar_sucursal').on('click', function () {
         var numSucursal = $$('#numSucursal').val();
-        fnGuiasHijos.validarSucursalNGHJ(app,numSucursal);
+        fnGuiasHijos.validarSucursalNGHJ(app, numSucursal);
     });
 
     $$('#btn_escanear_hjs').on('click', function () {
@@ -3388,7 +3447,7 @@ $$(document).on('page:init', '.page[data-name="asignarsucursalhijos"]', function
             function (result) {
                 if (!result.cancelled) {
                     var num_guia_hijo = result.text;
-                    if(num_guia_hijo.length > 17){
+                    if (num_guia_hijo.length > 17) {
                         var guias_actuales = $$('#hidden_guias_scan').val();
                         if (guias_actuales.includes(num_guia_hijo)) {
                             app.dialog.alert("Ya habías agregado esta guía");
@@ -3402,7 +3461,7 @@ $$(document).on('page:init', '.page[data-name="asignarsucursalhijos"]', function
                             var guiasHjs = $$('#hidden_guias_scan').val().substr(0, $$('#hidden_guias_scan').val().length - 1);
                             $$("#guiasscan").val(guiasHjs);
                         }
-                    }else{
+                    } else {
                         app.dialog.alert("Guía no válida: no tiene los caracteres permitidos");
                     }
                 } else {
@@ -3422,13 +3481,13 @@ $$(document).on('page:init', '.page[data-name="asignarsucursalhijos"]', function
 
     $$('#btn_cambiar_status_guias').on('click', function () {
         var idoperador = localStorage.getItem('userid');
-        var sucursal= $$("#numSucursal").val();
-        var selectStatus= $$('#selectStatus').val();
-        var guiasHjs= $$("#guiasscan").val();
-        var latitud= $$("#latitud").val();
-        var longitud= $$("#longitud").val();
-        var lanlog=(latitud +','+ longitud);
-        fnGuiasHijos.ValidarNGHJIDV(app,idoperador,guiasHjs,lanlog,selectStatus,sucursal);
+        var sucursal = $$("#numSucursal").val();
+        var selectStatus = $$('#selectStatus').val();
+        var guiasHjs = $$("#guiasscan").val();
+        var latitud = $$("#latitud").val();
+        var longitud = $$("#longitud").val();
+        var lanlog = (latitud + ',' + longitud);
+        fnGuiasHijos.ValidarNGHJIDV(app, idoperador, guiasHjs, lanlog, selectStatus, sucursal);
     });
     /*$$('#btn_regresar').on('click', function () {
         app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
@@ -3644,8 +3703,8 @@ $$(document).on('page:init', '.page[data-name="firmarfoto"]', function (e) {
  */
 $$(document).on('page:init', '.page[data-name="ocurrelistado"]', function (e) {
     var id_operador = localStorage.getItem('userid');
-    if(id_operador !=''){
-        fnOcurre.mostrarLista(app,id_operador);
+    if (id_operador != '') {
+        fnOcurre.mostrarLista(app, id_operador);
     }
 });
 
@@ -3657,9 +3716,9 @@ $$(document).on('page:init', '.page[data-name="ocurrelistado"]', function (e) {
  * @param tipoFimg
  */
 
-function monstrarImagenes(codCliente,braNumbre,status,tipoFimg){
+function monstrarImagenes(codCliente, braNumbre, status, tipoFimg) {
     $$('#mostarfotos').html('');
-    var fotos ='';
+    var fotos = '';
     app.request.setup({
         headers: {
             'apikey': localStorage.getItem('apikey')
@@ -3696,7 +3755,7 @@ function monstrarImagenes(codCliente,braNumbre,status,tipoFimg){
                         '                                                </td>\n' +
                         '                                            </tr>\n' +
                         '                                        </table>\n' +
-                        '                                        <canvas id="myCanvas' + (index + 1) + '" data-foto1="0" data-requerido="'+ val.required +'"></canvas>\n' +
+                        '                                        <canvas id="myCanvas' + (index + 1) + '" data-foto1="0" data-requerido="' + val.required + '"></canvas>\n' +
                         '                                    </div>\n' +
                         '                                </div>\n' +
                         '                            </div>\n' +
@@ -3706,11 +3765,11 @@ function monstrarImagenes(codCliente,braNumbre,status,tipoFimg){
                     $$('#mostarfotos').append(fotos);
                 });
                 var nav = navigator;
-                funcionesCamara.fnInput(app,'.open-foto');
+                funcionesCamara.fnInput(app, '.open-foto');
                 $$('#totalImg').val(data.length);
-            }else{
+            } else {
                 //console.log('default campos');
-                var val=5;
+                var val = 5;
                 data.forEach((val, index) => {
                     fotos += '<li>\n' +
                         '                            <div class="item-content item-input">\n' +
@@ -3738,8 +3797,8 @@ function monstrarImagenes(codCliente,braNumbre,status,tipoFimg){
                     $$('#mostarfotos').append(fotos);
                 });
                 $$('#totalImg').val(data.length);
-                funcionesCamara.fnInput(app,'.open-foto');
-               // console.log('#totalImg:'+data.length);
+                funcionesCamara.fnInput(app, '.open-foto');
+                // console.log('#totalImg:'+data.length);
             }
         },
         'json'

@@ -50,9 +50,6 @@
     },
     "com.virtuoworks.cordova-plugin-canvascamera": {
       "PACKAGE_NAME": "com.graphicsandcode.logify"
-    },
-    "cordova-plugin-badge": {
-      "PACKAGE_NAME": "com.graphicsandcode.logify"
     }
   },
   "dependent_plugins": {}
