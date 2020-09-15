@@ -1877,7 +1877,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                     }
                 }
             });
-            if (TtlLista == 1) {
+            //if (TtlLista == 1) {
                 
                     app.request.postJSON(
                         URL_WS + 'changestatus/' + $$('#num_gias').val(),
@@ -1899,7 +1899,8 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                             app.preloader.hide();
                             app.dialog.alert("Datos guardados correctamente", function () {
                                 $$('#btn_buscar_sucursal').click();
-                                app.views.main.router.back();
+                                //app.views.main.router.back();
+                                app.views.main.router.navigate('/escanear/', {reloadCurrent: false});
                             });
                             
                         }, function (error) {
@@ -1912,7 +1913,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                         },
                         'json'
                     );
-
+/*
             } else {
                 guiaslista.forEach(function (v, i) {
                     var guiaMasivaInd = v;
@@ -1944,7 +1945,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                     );
                     app.views.main.router.navigate('/escanear/', {reloadCurrent: false});
                 });
-            }
+            }*/
         }
     });
 });

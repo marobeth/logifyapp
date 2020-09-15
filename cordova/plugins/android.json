@@ -50,7 +50,26 @@
     },
     "com.virtuoworks.cordova-plugin-canvascamera": {
       "PACKAGE_NAME": "com.graphicsandcode.logify"
+    },
+     "cordova-plugin-dialogs": {
+      "PACKAGE_NAME": "com.graphicsandcode.logify"
+    },
+    "cordova-plugin-scheduler": {
+      "PACKAGE_NAME": "com.graphicsandcode.logify"
+    },
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "com.graphicsandcode.logify"
+    },
+    "cordova-plugin-local-notification": {
+      "PACKAGE_NAME": "com.graphicsandcode.logify"
+    },
+    "cordova-plugin-network-information": {
+      "PACKAGE_NAME": "com.graphicsandcode.logify"
     }
   },
-  "dependent_plugins": {}
+  "dependent_plugins": {
+    "cordova-plugin-badge": {
+      "PACKAGE_NAME": "com.graphicsandcode.logify"
+    }
+  }
 }

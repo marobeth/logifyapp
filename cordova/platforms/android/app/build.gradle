@@ -300,8 +300,8 @@ dependencies {
     implementation(project(path: ":CordovaLib"))
     implementation "com.android.support:support-v4:27.+"
     implementation "com.android.support:support-v4:27.1.0"
-    implementation "com.google.android.gms:play-services-vision:11.0.1"
     implementation "com.android.support:design:27.1.0"
+    implementation "com.google.android.gms:play-services-vision:11.0.1"
     implementation "com.android.support:support-v4:26.+"
     // SUB-PROJECT DEPENDENCIES END
 }
