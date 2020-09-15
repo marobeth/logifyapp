@@ -166,5 +166,29 @@
     },
     "is_top_level": true,
     "variables": {}
+  },
+  "cordova-plugin-android-imei": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-android-imei"
+    },
+    "is_top_level": true,
+    "variables": {}
+  },
+  "cordova-plugin-google-mobile-vision-barcode-scanner": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-google-mobile-vision-barcode-scanner"
+    },
+    "is_top_level": true,
+    "variables": {}
+  },
+  "com.virtuoworks.cordova-plugin-canvascamera": {
+    "source": {
+      "type": "registry",
+      "id": "https://github.com/VirtuoWorks/CanvasCameraPlugin.git"
+    },
+    "is_top_level": true,
+    "variables": {}
   }
 }

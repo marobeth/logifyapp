@@ -1,9 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<<<<<<< HEAD
-<widget id="com.graphicsandcode.logify" version="2.3.7" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-=======
 <widget id="com.graphicsandcode.logify" version="2.3.12" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
->>>>>>> 1192f925867b1ec1b33aec1943500224b96a8273
     <feature name="Screenshot">
         <param name="android-package" value="com.darktalker.cordova.screenshot.Screenshot" />
     </feature>
@@ -40,6 +36,17 @@
         <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin" />
         <param name="onload" value="true" />
     </feature>
+    <feature name="ImeiPlugin">
+        <param name="android-package" value="dk.kapetanovic.imei.ImeiPlugin" />
+        <param name="onload" value="true" />
+    </feature>
+    <feature name="cordova-plugin-google-mobile-vision-barcode-scanner">
+        <param name="android-package" value="tl.cordova.google.mobile.vision.scanner.AndroidScanner" />
+    </feature>
+    <feature name="CanvasCamera">
+        <param name="android-package" value="com.virtuoworks.cordova.plugin.canvascamera.CanvasCamera" />
+        <param name="onload" value="true" />
+    </feature>
     <name>Logify</name>
     <description>
       Aplicación para los operadores de Logify
@@ -74,6 +81,7 @@
     <icon density="xxhdpi" src="res/icon/android/mipmap-xxhdpi/ic_launcher.png" />
     <icon density="xxxhdpi" src="res/icon/android/mipmap-xxxhdpi/ic_launcher.png" />
     <preference name="loglevel" value="DEBUG" />
+    <preference name="android-minSdkVersion" value="21" />
     <preference name="UIWebViewBounce" value="false" />
     <preference name="DisallowOverscroll" value="true" />
     <preference name="BackupWebStorage" value="local" />
@@ -87,6 +95,5 @@
     <preference name="AndroidPersistentFileLocation" value="Compatibility" />
     <preference name="loadUrlTimeoutValue" value="700000" />
     <preference name="StatusBarOverlaysWebView" value="false" />
-    <preference name="android-minSdkVersion" value="21" />
     <preference name="SplashMaintainAspectRatio" value="true" />
 </widget>

@@ -15,11 +15,11 @@ import config from './config';
 import fotoacuse from './fotoacuse';
 import funcionesCamara from "./funcionesCamara";
 import fnGuiasHijos from "./guias/fnguiashijos";
-<<<<<<< HEAD
-import firma from "./firmar.js";
-=======
+
+import firmarAcuse from "./firmar";
+
 import fnOcurre from "./fnocurre";
->>>>>>> 1192f925867b1ec1b33aec1943500224b96a8273
+
 
 /**
  *
@@ -285,6 +285,10 @@ function openFilePicker(idCanvas) {
  */
 function ValidateApikey(correo, pass) {
     //console.log('entre');
+    var imei;
+   /* cordova.plugins.IMEI(function (err, imei) {
+      alert(err+' '+imei);
+    });*/
     app.request.setup({
         headers: {
             'email': correo,
@@ -378,7 +382,11 @@ function DateActual(iddate) {
     if (mes < 10) {
         mes = '0' + mes;
     }
-    document.getElementById(iddate).value = ano + "-" + mes + "-" + dia;
+    if(iddate != '')
+    {
+        document.getElementById(iddate).value = ano + "-" + mes + "-" + dia;
+    }
+    return (ano + "-" + mes + "-" + dia);
 }
 /**
  * DateGasto
@@ -1167,8 +1175,9 @@ $$(document).on('page:init', '.page[data-name="checkin"]', function (e) {
  */
 $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
     var num_guias = app.view.main.router.currentRoute.params.numGuia;
-    //alert(num_guias);
+    
     num_guias = num_guias.split("|");
+    var guia = num_guias[0];
     if (num_guias.length == 1) {
         $$('#num_gias').val(num_guias);
         //app.preloader.show();
@@ -1198,10 +1207,15 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         app.request.get(
             URL_WS + 'consulta/' + num_guias[0],
             function (data) {
+                app.preloader.hide();
+
                 fnGuias.leyendaGuia(app,data['guia'][0].id,data['guia'][0].client_code,data['guia'][0].branch_number);
                 fnGuias.mostrarSttus(app, data['guia'][0].id,data['guia'][0].branch_number, data['guia'][0].client_code, 'status');
                 //console.log(data['guia'][0].num_guia);
-                $$('#num_guia').html(data['guia'][0].num_guia);
+                
+                $$('#num__guia').html("<b>"+data['guia'][0].num_guia+"</b>");
+                
+
                 if (data['guia'][0].branch_number == '0004') {
                     var ouput_parsear_billetes = '';
                     var parsear_billetes = data['guia'][0].cont_paquete.split("|");
@@ -1232,7 +1246,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 }
                 fnGuiasHijos.MostrarNGH(app,'NGHijos', data['guia'][0].num_guia);
                 fnGuias.LogIncidencias(app, data['guia'][0].client_code, data['guia'][0].id);
-                app.preloader.hide();
+                
 
             },
             'json'
@@ -1246,7 +1260,10 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         });
         var new_num_guias = new_num_guias.substr(0, new_num_guias.length - 1);
         $$('#num_gias').val(new_num_guias);
+
     }
+
+
 
     // Vertical Buttons
     $$('.open-foto-1').on('click', function () {
@@ -1896,10 +1913,21 @@ $$(document).on('page:init', '.page[data-name="escanear"]', function (e) {
                             $$('#lista_guias_scan').append('<li>' + num_guia + ' - ' + detectarProyecto(num_guia) + '</li>');
                             $$('#hidden_guias_scan').val(num_guia + '|' + $$('#hidden_guias_scan').val());
                             var guias = $$('#hidden_guias_scan').val().substr(0, $$('#hidden_guias_scan').val().length - 1);
-                            //console.log(guias);
-                            $$('#btn_ir_cambiar_status').attr('href', '/cambiarstatus/' + guias);
+                            var client_code = num_guia.substring(0,3);
+                            if(client_code == 'CEL')
+                            {
+                                 $$('#btn_ir_acuse').attr('href', '/firmarfoto/' + guias);
+                                 $$('#btn_ir_acuse').show();
+                            }
+                            else
+                            {
+                                 $$('#btn_ir_cambiar_status').attr('href', '/cambiarstatus/' + guias);
+                                 $$('#btn_ir_cambiar_status').show();
+                            }
+
+                           
                         }
-                        $$('#btn_ir_cambiar_status').show();
+                        
                     }
                 } else {
                     app.dialog.alert('El scan fue cancelado');
@@ -3406,10 +3434,208 @@ $$(document).on('page:init', '.page[data-name="asignarsucursalhijos"]', function
         app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
     });*/
 });
+
+/* firmar acuse */
 $$(document).on('page:init', '.page[data-name="firmarfoto"]', function (e) {
-    $$('#btn_firmar').on('click', function () {
-        modalFirmaSupervisor();
+   // app.dialog.alert('iniciar');
+   var num_guias = app.view.main.router.currentRoute.params.numGuia;
+    var anum_guias = num_guias.split("|");
+    var guia = anum_guias[0];
+
+   $$("#num_guia").val(guia);
+   $$("#num_guias").val(num_guias);
+
+
+   var ancho = window.innerWidth;
+   var alto = window.innerHeight;
+   var aspecto = alto/ancho;
+
+    var objCanvas = document.getElementById('myCanvasRealtime');
+    window.plugin.CanvasCamera.initialize(objCanvas);
+
+   //app.dialog.alert(aspecto);
+  // $$('#myCanvas').css('width',$$('#myCanvas').width()*aspecto);
+  // $$("#myCanvas").css('height',$$('#myCanvas').height()*aspecto); //2.031
+ //  $$("#myCanvas").css('height',50); //2.031
+    firmarAcuse.firmaModal(app);
+
+    $$('#AceptarFirma').on('click', function () {
+        //app.dialog.alert('Aceptar');
+        firmarAcuse.AceptarFirma(app);
     });
+    
+    $$('#LimpiarFirma').on('click', function () {
+        //app.dialog.alert('Aceptar');
+        firmarAcuse.LimpiarFirma(app);
+    });
+    $$('#persona_check').on('change', function(e){
+       
+       // app.dialog.alert(e);
+       var si = $$('#persona_check').prop('checked');
+      //app.dialog.alert(si);
+       if(si)
+       {
+            $$("#persona_recibe").val($$("#nombre").val());
+        }
+        else
+        {
+            $$("#persona_recibe").val('');
+        }
+       
+    });
+     $$('#sin_clave').on('change', function(e){
+       
+       // app.dialog.alert(e);
+       var si = $$('#sin_clave').prop('checked');
+      //app.dialog.alert(si);
+       if(si)
+       {
+            $$("#clave").show();
+            $$("#clave_ine").hide();
+            $$("#clave_ine").val('');
+            
+        }
+        else
+        {
+            $$("#clave_ine").show();
+            $$("#clave").hide();
+            $$("#clave").val('');
+        }
+       
+    });
+    $$('#btn_escanear_consulta').on('click', function () {
+        cordova.plugins.barcodeScanner.scan(
+            function (result) {
+                if (!result.cancelled) {
+                    var numguia = result.text;
+                    $$('#num_guia').val(numguia);
+                    fnGuias.ColocarDatosFirma(app,numguia,detectarProyecto(numguia));
+                    DateActual("created_at");
+                    //app.dialog.alert(fecha);
+
+                } else {
+                    app.dialog.alert('El scan fue cancelado');
+                }
+            }, function (error) {
+                app.dialog.alert("El scan falló: " + error);
+            },
+            {
+                showTorchButton: true, // iOS and Android
+                torchOn: false, // Android, launch with the torch switched on (if available)
+                saveHistory: true, // Android, save scan history (default false)
+                prompt: "Ponga el código QR dentro del área de escaneo" // Android
+            }
+        );
+         
+    });
+
+    $$('#btn_guardar').on('click', function () {
+        
+       // getLocation();
+       
+        
+        //app.dialog.alert("Se enviaran datos"); 
+        var Lat = $$("#latitud").val();
+        // app.dialog.alert('enviar: '+Lat);
+        var Lon = $$("#longitud").val();
+        var LatLon = Lat + ',' + Lon;
+         
+        var num_guias = $$("#num_guias").val();
+        
+        var id_usuario = localStorage.getItem('userid');
+         
+        var persona_recibe = $$("#persona_recibe").val();
+
+        
+        //var canvasObject = $$('#myCanvas'); 
+        //var canvas_foto = canvasObject[0];
+
+        //var canvas_Foto = $$('#myCanvasRealtime')[0];
+        //var foto_front = canvas_Foto.toDataURL();
+        var foto_front = firmarAcuse.canvasfront;
+        //app.dialog.alert(foto_front);
+        var foto =  $$('#imagen-firma').prop('src');
+        var nombre = $$("#nombre").val();
+        var clave_ine = $$("#clave_ine").val();
+        var clave_cic = $$("#clave_cic").val();
+        var telefono = $$("#telefono").val();
+        var direccion = $$("#direccion").val();
+        var estado = $$("#estado").val();
+        var municipio = $$("#municipio").val();
+        var colonia = $$("#colonia").val();
+        var cp = $$("#cp").val();
+        var pedido = $$("#no_pedido").val();
+        var clave = $$("#clave").val();
+
+       
+        var variables = {
+                
+                
+                num_guias: num_guias,
+                latlon: LatLon,
+                id_usuario : id_usuario,
+                
+                persona_recibe : persona_recibe,
+                nombre : nombre,
+                clave_ine : clave_ine,
+                clave : clave,
+                clave_cic : clave_cic,
+                telefono : telefono,
+                direccion : direccion,
+                estado : estado,
+                municipio : municipio,
+                colonia : colonia,
+                cp : cp,
+                pedido : pedido,
+                firma: foto,
+                foto_front : foto_front
+                
+            };
+        var comando = JSON.parse(JSON.stringify(variables));
+       // app.dialog.alert(JSON.stringify(variables));
+         app.request.setup({
+                headers: {
+                    'Content-Type':'application/json',
+                    'apikey': localStorage.getItem('apikey')
+                },
+                beforeSend: function () {
+                    app.preloader.show();
+                },
+                complete: function () {
+                    app.preloader.hide();
+                },
+                error: function (error) {
+                    app.preloader.hide();
+                }
+            });
+
+        app.request.postJSON(
+            URL_WS + 'api/v2/firma-acuse',
+            comando,
+            function (data) {
+                app.preloader.hide();
+                
+                var ruta = '/cambiarstatus/'+num_guias;
+                app.dialog.alert("Acuse guardado exitosamente", function(){
+                    app.views.main.router.navigate(ruta, {reloadCurrent: false});
+                });
+                
+
+               
+            }, function (xhr, status) {
+                app.preloader.hide();
+                app.dialog.alert("Status: "+status);
+                app.dialog.alert("xhr: "+xhr, function () {
+                    //$$('#btn_buscar_sucursal').click();
+                });
+
+            },
+            'json'
+        );
+    });
+
+    fnGuias.ColocarDatosFirma(app,guia,detectarProyecto(guia));
+    DateActual("created_at");
 
 });
 

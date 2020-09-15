@@ -606,5 +606,54 @@ var fnGuias = {
             'json'
         );
     },
+    ColocarDatosFirma : (app, numguia, proyecto) =>
+    {
+        $$("#no_pedido").val('');
+        $$("#nombre").val("");
+        $$("#direccion").val("");
+        $$("#estado").val("");
+        $$("#municipio").val("");
+        $$("#colonia").val("");
+        $$("#cp").val("");
+        app.request.setup({
+            headers: {
+                'apikey': localStorage.getItem('apikey')
+            },
+            beforeSend: function () {
+                app.preloader.show();
+            },
+            complete: function () {
+                app.preloader.hide();
+            }
+        });
+         app.request.get(
+            config.URL_WS + 'guideinfo/' + numguia,
+            function (data) {
+                var total = data.length;
+                
+                if ( total > 0) {
+                    //app.dialog.alert("Guia Encontrada");
+                    if (data[0].tel_dest != '' && !!data[0].tel_dest) {
+                        $$("#telefono").html(data[0].tel_dest);
+                    }
+                    $$("#no_pedido").val(data[0].num_order_guia);
+                    $$("#nombre").val(data[0].nombre_dest+' '+data[0].paterno_dest);
+                    $$("#direccion").val(data[0].dir1_dest+' '+data[0].dir2_dest);
+                    $$("#estado").val(data[0].edo_dest);
+                    $$("#municipio").val(data[0].mun_dest);
+                    $$("#colonia").val(data[0].asent_dest);
+                    $$("#cp").val(data[0].cp_dest);
+                    
+
+                    //$$("#created_at").val(fecha);
+                }
+                else
+                {
+                    app.dialog.alert("No existe la guía");
+                }
+            },
+            'json'
+        );
+    }
 };
 export default fnGuias;

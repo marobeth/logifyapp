@@ -41,6 +41,15 @@
     },
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "com.graphicsandcode.logify"
+    },
+    "cordova-plugin-android-imei": {
+      "PACKAGE_NAME": "com.graphicsandcode.logify"
+    },
+    "cordova-plugin-google-mobile-vision-barcode-scanner": {
+      "PACKAGE_NAME": "com.graphicsandcode.logify"
+    },
+    "com.virtuoworks.cordova-plugin-canvascamera": {
+      "PACKAGE_NAME": "com.graphicsandcode.logify"
     }
   },
   "dependent_plugins": {}

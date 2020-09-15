@@ -351,6 +351,31 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       "clobbers": [
         "CameraPopoverHandle"
       ]
+    },
+    {
+      "id": "cordova-plugin-android-imei.IMEI",
+      "file": "plugins/cordova-plugin-android-imei/www/index.js",
+      "pluginId": "cordova-plugin-android-imei",
+      "clobbers": [
+        "cordova.plugins.IMEI"
+      ]
+    },
+    {
+      "id": "cordova-plugin-google-mobile-vision-barcode-scanner.cordova-plugin-google-mobile-vision-barcode-scanner",
+      "file": "plugins/cordova-plugin-google-mobile-vision-barcode-scanner/www/main.js",
+      "pluginId": "cordova-plugin-google-mobile-vision-barcode-scanner",
+      "clobbers": [
+        "cordova.plugins.scanner"
+      ]
+    },
+    {
+      "id": "com.virtuoworks.cordova-plugin-canvascamera.CanvasCamera",
+      "file": "plugins/com.virtuoworks.cordova-plugin-canvascamera/www/CanvasCamera.js",
+      "pluginId": "com.virtuoworks.cordova-plugin-canvascamera",
+      "clobbers": [
+        "plugin.CanvasCamera",
+        "CanvasCamera"
+      ]
     }
   ];
   module.exports.metadata = {
@@ -364,6 +389,9 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
     "cordova-plugin-inappbrowser": "3.1.0",
     "cordova-plugin-file-transfer": "1.7.1",
     "cordova-plugin-camera": "4.1.0",
-    "cordova-plugin-whitelist": "1.3.3"
+    "cordova-plugin-whitelist": "1.3.3",
+    "cordova-plugin-android-imei": "1.0.0",
+    "cordova-plugin-google-mobile-vision-barcode-scanner": "1.2",
+    "com.virtuoworks.cordova-plugin-canvascamera": "1.2.0"
   };
 });

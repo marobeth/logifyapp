@@ -1,0 +1,64 @@
+{
+  "_from": "cordova-plugin-google-mobile-vision-barcode-scanner",
+  "_id": "cordova-plugin-google-mobile-vision-barcode-scanner@1.0.0",
+  "_inBundle": false,
+  "_integrity": "sha512-5O8KyT/3hgWrI00FvUjaUM2OT5nxJv27gM1eyuTtf0eXbW7iTS6kzP/gEJ3hasJ8UybEyJv0cZ2v6mcVBIC4Ow==",
+  "_location": "/cordova-plugin-google-mobile-vision-barcode-scanner",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "cordova-plugin-google-mobile-vision-barcode-scanner",
+    "name": "cordova-plugin-google-mobile-vision-barcode-scanner",
+    "escapedName": "cordova-plugin-google-mobile-vision-barcode-scanner",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-google-mobile-vision-barcode-scanner/-/cordova-plugin-google-mobile-vision-barcode-scanner-1.0.0.tgz",
+  "_shasum": "8a5669b7864b37998871f7ab1ead3e39b1e31843",
+  "_spec": "cordova-plugin-google-mobile-vision-barcode-scanner",
+  "_where": "C:\\LOGIFY\\FRAMEWORK7\\logifyapp\\cordova",
+  "author": {
+    "name": "Tristan Lebel"
+  },
+  "bugs": {
+    "url": "https://github.com/Ratsoc/cordova-plugin-google-mobile-vision-barcode-scanner.git/issues"
+  },
+  "bundleDependencies": false,
+  "cordova": {
+    "id": "cordova-plugin-google-mobile-vision-barcode-scanner",
+    "platforms": [
+      "ios"
+    ]
+  },
+  "deprecated": false,
+  "description": "Google Mobile Vision Barcode Scanner Plugin",
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0.0"
+    }
+  ],
+  "homepage": "https://github.com/Ratsoc/cordova-plugin-google-mobile-vision-barcode-scanner.git#readme",
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-ios",
+    "cordova-android"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "cordova-plugin-google-mobile-vision-barcode-scanner",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ratsoc/cordova-plugin-google-mobile-vision-barcode-scanner.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.0.0"
+}
