@@ -1099,6 +1099,12 @@ $$(document).on('page:init', '.page[data-name="inicio"]', function (e) {
         $$(".HGastosViews").hide();
     }
     */
+    var url = URL_WS;
+    if(url.includes('desarrollo'))
+    {
+
+        $$('#dialogAlert').html('<b>Estás en modo desarrollo</b>');
+    }
 });
 
 /**
@@ -1975,17 +1981,15 @@ $$(document).on('page:init', '.page[data-name="escanear"]', function (e) {
                             $$('#hidden_guias_scan').val(num_guia + '|' + $$('#hidden_guias_scan').val());
                             var guias = $$('#hidden_guias_scan').val().substr(0, $$('#hidden_guias_scan').val().length - 1);
                             var client_code = num_guia.substring(0,3);
+                            
+                            $$('#btn_ir_cambiar_status').attr('href', '/cambiarstatus/' + guias);
+                            $$('#btn_ir_cambiar_status').show();
+
                             if(client_code == 'CEL')
                             {
                                  $$('#btn_ir_acuse').attr('href', '/firmarfoto/' + guias);
                                  $$('#btn_ir_acuse').show();
                             }
-                            else
-                            {
-                                 $$('#btn_ir_cambiar_status').attr('href', '/cambiarstatus/' + guias);
-                                 $$('#btn_ir_cambiar_status').show();
-                            }
-
                            
                         }
                         
