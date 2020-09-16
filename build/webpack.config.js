@@ -205,13 +205,16 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'css/app.css',
     }),
-    new CopyWebpackPlugin([
-      {
-        from: resolvePath('src/static'),
-        to: resolvePath(isCordova ? 'cordova/www/static' : 'www/static'),
-      },
+   
+    new CopyWebpackPlugin({
+      patterns: [
+          { from: resolvePath('src/static'),
+            to: resolvePath(isCordova ? 'cordova/www/static' : 'www/static')
+          }
+        ]
+    })
 
-    ]),
+   
 
 
   ],
