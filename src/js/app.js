@@ -1235,7 +1235,14 @@ $$(document).on('page:init', '.page[data-name="checkin"]', function (e) {
  */
 $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
     var num_guias = app.view.main.router.currentRoute.params.numGuia;
-    
+    var referencia = app.view.main.router.previousRoute.url;
+    var soloStatus = '';
+    fnGuias.soloStatus = '';
+    if(referencia.includes('firmarfoto'))
+    {
+        soloStatus = 4;
+        fnGuias.soloStatus = soloStatus;
+    }
     num_guias = num_guias.split("|");
     var guia = num_guias[0];
     if (num_guias.length == 1) {
@@ -1641,7 +1648,13 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 //Entregado
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_entregado').show();
+                $$('#persona_recibe').show();
+                if(soloStatus != '')
+                {
+                    $$('#persona_recibe').hide();
+                }
                 fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
+                
                 break;
             case '5':
                 //Incidencia
@@ -1983,12 +1996,13 @@ $$(document).on('page:init', '.page[data-name="escanear"]', function (e) {
                             var client_code = num_guia.substring(0,3);
                             
                             $$('#btn_ir_cambiar_status').attr('href', '/cambiarstatus/' + guias);
-                            $$('#btn_ir_cambiar_status').show();
+                            $$('#div_cambio').show();
 
                             if(client_code == 'CEL')
                             {
                                  $$('#btn_ir_acuse').attr('href', '/firmarfoto/' + guias);
-                                 $$('#btn_ir_acuse').show();
+                                 $$('#div_acuse').show();
+                                 $$('#div_cambio_mensaje').show();
                             }
                            
                         }

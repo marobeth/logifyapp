@@ -4,6 +4,7 @@ import funcionesCamara from "../funcionesCamara";
 
 
 var fnGuias = {
+    soloStatus: '',
     traducirStatus: (app,idstatus,CById)=>{
         var mostrarLabel='';
         app.request.setup({
@@ -30,88 +31,110 @@ var fnGuias = {
     },
     mostrarSttus: (app, idguia, branchnumber, clientcode, CById) => {
         //console.log("engtre mostrarSttus");
-        var proyectoStatus;
-        var status;
-        app.request.setup({
-            headers: {
-                'apikey': localStorage.getItem('apikey')
-            },
-            beforeSend: function () {
-                app.preloader.show();
-            },
-            complete: function () {
-                app.preloader.hide();
-            }
-        });
-        app.request.get(
-            config.URL_WS + 'api/v2/status/default/' + idguia + '/' + clientcode + '/' + branchnumber,
-            function (datos) {
-                if (datos.length > 0) {
-                    status = '<option value="">Seleccionar</option>';
-                    datos.forEach((valstaus, index) => {
-                        status += '<option value="' + valstaus.id + '">' + valstaus.nombre + '</option>';
-                    });
-                    $$('#' + CById).html(status);
-                } else {
-                    app.request.get(
-                        config.URL_WS + 'api/v2/permiso/operador/proyecto/' + clientcode + '/' + branchnumber,
-                        function (data) {
-                            if (data.length > 0) {
-                                proyectoStatus = '<option value="">Seleccionar</option>';
-                                data.forEach((val, index) => {
-                                    proyectoStatus += '<option value="' + val.idstatus_guia + '">' + val.label + '</option>';
-                                });
-                                $$('#' + CById).html(proyectoStatus);
-                            } else {
-                                app.request.get(
-                                    config.URL_WS + 'api/v2/status/default',
-                                    function (datos) {
-                                        if (datos.length > 0) {
-                                            status = '<option value="">Seleccionar</option>';
-                                            datos.forEach((valstaus, index) => {
-                                                status += '<option value="' + valstaus.id + '">' + valstaus.nombre + '</option>';
-                                            });
-                                            $$('#' + CById).html(status);
-                                        }
-                                    },
-                                    'json'
-                                );
-                            }
-                        },
-                        'json'
-                    );
+        if(fnGuias.soloStatus != '')
+        {
+            fnGuias.mostrarSoloStatus(app,CById);
+        }
+        else
+        {
+            var proyectoStatus;
+            var status;
+            app.request.setup({
+                headers: {
+                    'apikey': localStorage.getItem('apikey')
+                },
+                beforeSend: function () {
+                    app.preloader.show();
+                },
+                complete: function () {
+                    app.preloader.hide();
                 }
-            },
-            'json'
-        );
+            });
+            app.request.get(
+                config.URL_WS + 'api/v2/status/default/' + idguia + '/' + clientcode + '/' + branchnumber,
+                function (datos) {
+                    if (datos.length > 0) {
+                        status = '<option value="">Seleccionar</option>';
+                        datos.forEach((valstaus, index) => {
+                            status += '<option value="' + valstaus.id + '">' + valstaus.nombre + '</option>';
+                        });
+                        $$('#' + CById).html(status);
+                    } else {
+                        app.request.get(
+                            config.URL_WS + 'api/v2/permiso/operador/proyecto/' + clientcode + '/' + branchnumber,
+                            function (data) {
+                                if (data.length > 0) {
+                                    proyectoStatus = '<option value="">Seleccionar</option>';
+                                    data.forEach((val, index) => {
+                                        proyectoStatus += '<option value="' + val.idstatus_guia + '">' + val.label + '</option>';
+                                    });
+                                    $$('#' + CById).html(proyectoStatus);
+                                } else {
+                                    app.request.get(
+                                        config.URL_WS + 'api/v2/status/default',
+                                        function (datos) {
+                                            if (datos.length > 0) {
+                                                status = '<option value="">Seleccionar</option>';
+                                                datos.forEach((valstaus, index) => {
+                                                    status += '<option value="' + valstaus.id + '">' + valstaus.nombre + '</option>';
+                                                });
+                                                $$('#' + CById).html(status);
+                                            }
+                                        },
+                                        'json'
+                                    );
+                                }
+                            },
+                            'json'
+                        );
+                    }
+                },
+                'json'
+            );
+        }
+    },
+    mostrarSoloStatus: (app, CById) => {
+        if(fnGuias.soloStatus != '')
+        {
+            status = '<option value="">Seleccionar</option>';
+            status += '<option value="4">Entregado</option>';
+            $$('#' + CById).html(status);
+        }
     },
     mostrarSttusdefaut: (app,  CById) => {
         //console.log("engtre mostrarSttus");
-        var status;
-        app.request.setup({
-            headers: {
-                'apikey': localStorage.getItem('apikey')
-            },
-            beforeSend: function () {
-                app.preloader.show();
-            },
-            complete: function () {
-                app.preloader.hide();
-            }
-        });
-        app.request.get(
-            config.URL_WS + 'api/v2/status/default',
-            function (datos) {
-                if (datos.length > 0) {
-                    status = '<option value="">Seleccionar</option>';
-                    datos.forEach((valstaus, index) => {
-                        status += '<option value="' + valstaus.id + '">' + valstaus.nombre + '</option>';
-                    });
-                    $$('#' + CById).html(status);
+        if(fnGuias.soloStatus != '')
+        {
+            fnGuias.mostrarSoloStatus(app,CById);
+        }
+        else
+        {
+            var status;
+            app.request.setup({
+                headers: {
+                    'apikey': localStorage.getItem('apikey')
+                },
+                beforeSend: function () {
+                    app.preloader.show();
+                },
+                complete: function () {
+                    app.preloader.hide();
                 }
-            },
-            'json'
-        );
+            });
+            app.request.get(
+                config.URL_WS + 'api/v2/status/default',
+                function (datos) {
+                    if (datos.length > 0) {
+                        status = '<option value="">Seleccionar</option>';
+                        datos.forEach((valstaus, index) => {
+                            status += '<option value="' + valstaus.id + '">' + valstaus.nombre + '</option>';
+                        });
+                        $$('#' + CById).html(status);
+                    }
+                },
+                'json'
+            );
+        }
     },
     mostrarCampos: (app, codCliente, braNumbre, status) => {
         var tipoFimg = codCliente + braNumbre + status;
@@ -133,6 +156,10 @@ var fnGuias = {
                 //Entregado
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_entregado').show();
+                 if(fnGuias.soloStatus != '')
+                {
+                    $$('#persona_recibe').hide();
+                }
                 fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
                 break;
             case '5':

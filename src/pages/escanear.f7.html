@@ -59,12 +59,15 @@
       <ul>
         <li>
           <div class="block">
-            <div class="row">
-              <a id="btn_ir_cambiar_status" class="col button button-fill" style="background: #4cd964 !important; border: 1px solid #4cd964 !important; display: none; width: 100%;">Cambiar status</a>
-              <br><br>
-              <a id="btn_ir_acuse" class="col button button-fill" style="background: #4cd964 !important; border: 1px solid #4cd964 !important; display: none; width: 100%;">
+            <div class="row" id="div_cambio" style="display: none;">
+              <p id="div_cambio_mensaje" style="display:none;">Ésta opción debe ser usada cuando el estatus a seleccionar es diferente a Entregado</p>
+              <a id="btn_ir_cambiar_status" class="col button button-fill" style="background: #4cd964 !important; border: 1px solid #4cd964 !important;  width: 100%;">Cambiar status</a>
+            </div>
+              <br><br><br>
+            <div class="row" id="div_acuse" style="display: none;">
+              <p>Ésta opción se debe de usar sólo cuando el estatus a modificar es Entregado</p>
+              <a id="btn_ir_acuse" class="col button button-fill" style="background: #4cd964 !important; border: 1px solid #4cd964 !important; width: 100%;">
               Capturar Acuse</a>
-              <p>&nbsp;</p>
             </div>
           </div>
         </li>
