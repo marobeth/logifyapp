@@ -1,12 +1,12 @@
 
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.graphicsandcode.logify" version="2.3.13" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+<widget id="mx.com.logify.logifyapp" version="2.3.13" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
     <name>Logify</name>
     <description>
       Aplicación para los operadores de Logify
     </description>
-    <author email="pepe@killerpixel.rocks" href="https://killerpixel.rocks">
-        Pepe Becerra
+    <author email="consultoria@logify.com.mx" href="https://www.logify.com.mx">
+        Consultoria Logify
     </author>
     <content src="index.html" />
     <access origin="*" />
@@ -28,6 +28,7 @@
         <preference name="loadUrlTimeoutValue" value="700000" />
         <preference name="StatusBarOverlaysWebView" value="false" />
         <preference name="android-minSdkVersion" value="21" />
+        <preference name="android-targetSdkVersion" value="29" />
         <preference name="SplashMaintainAspectRatio" value="true" />
         <splash density="land-hdpi" src="res/screen/android/drawable-hdpi/screen.png" />
         <splash density="land-mdpi" src="res/screen/android/drawable-mdpi/screen.png" />

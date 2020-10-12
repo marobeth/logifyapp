@@ -17,7 +17,7 @@
        under the License.
  */
 
-package com.graphicsandcode.logify;
+package mx.com.logify.logifyapp;
 
 import android.os.Bundle;
 import org.apache.cordova.*;

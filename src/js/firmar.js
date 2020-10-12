@@ -19,6 +19,7 @@ var firmarAcuse = {
     AceptarFirma:(app)=>{
         firmarAcuse.canvasURL(app, firmarAcuse.canvass, firmarAcuse.canvasContext);
         $$("#btn_guardar").show();
+
     },
     LimpiarFirma:(app)=>{
         firmarAcuse.limpiarFirma(app, firmarAcuse.canvass, firmarAcuse.canvasContext);
@@ -177,7 +178,11 @@ var firmarAcuse = {
                 var canvas_Foto = $$('#myCanvasRealtime')[0];
 
 
-                firmarAcuse.canvasfront = canvas_Foto.toDataURL();
+               //firmarAcuse.canvasfront = firmarAcuse.ResizeImage(app,canvas_Foto.toDataURL());
+
+               firmarAcuse.ResizeImage(app,canvas_Foto.toDataURL());
+
+               // app.dialog.alert('stop');
                 
                 return false;
             });
@@ -215,6 +220,39 @@ var firmarAcuse = {
       // $$('#string-firma').prop('innerHTML', '');
        $$('#imagen-firma').prop('src', '');
 
+    },
+    ResizeImage:(app,base64Str) =>
+    {
+
+      
+        var img = new Image();//create a image
+        img.src = base64Str;//result is base64-encoded Data URI
+        //img.name = event.target.name;//set name (optional)
+        //img.size = event.target.size;//set size (optional)
+        var resize_width = 600;
+        img.onload = function(el) {
+              var elem = document.createElement('canvas');//create a canvas
+
+              //scale the image to 600 (width) and keep aspect ratio
+              var scaleFactor = resize_width / el.target.width;
+              elem.width = resize_width;
+              elem.height = el.target.height * scaleFactor;
+
+              //draw in canvas
+              var ctx = elem.getContext('2d');
+              ctx.drawImage(el.target, 0, 0, elem.width, elem.height);
+
+              //get the base64-encoded Data URI from the resize image
+              var srcEncoded = ctx.canvas.toDataURL(el.target, 'image/jpeg', 0);
+
+              firmarAcuse.canvasfront = srcEncoded;
+            //  app.dialog.alert(srcEncoded);
+              //Valor = srcEncoded;
+
+              //$("#imagen").prop('src', Valor);
+             // alert('Imagen');
+         
+        }
     }
 
 };

@@ -3539,7 +3539,8 @@ $$(document).on('page:init', '.page[data-name="firmarfoto"]', function (e) {
 
     $$('#AceptarFirma').on('click', function () {
         //app.dialog.alert('Aceptar');
-        firmarAcuse.AceptarFirma(app);
+         firmarAcuse.AceptarFirma(app);
+         window.plugin.CanvasCamera.stop();
     });
     
     $$('#LimpiarFirma').on('click', function () {
@@ -3610,7 +3611,7 @@ $$(document).on('page:init', '.page[data-name="firmarfoto"]', function (e) {
     $$('#btn_guardar').on('click', function () {
         
        // getLocation();
-       
+      
         
         //app.dialog.alert("Se enviaran datos"); 
         var Lat = $$("#latitud").val();
@@ -3674,7 +3675,8 @@ $$(document).on('page:init', '.page[data-name="firmarfoto"]', function (e) {
          app.request.setup({
                 headers: {
                     'Content-Type':'application/json',
-                    'apikey': localStorage.getItem('apikey')
+                    'apikey': localStorage.getItem('apikey'),
+                    'Connection': 'keep-alive'
                 },
                 beforeSend: function () {
                     app.preloader.show();
@@ -3690,6 +3692,7 @@ $$(document).on('page:init', '.page[data-name="firmarfoto"]', function (e) {
         app.request.postJSON(
             URL_WS + 'api/v2/firma-acuse',
             comando,
+
             function (data) {
                 app.preloader.hide();
                 

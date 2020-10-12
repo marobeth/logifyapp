@@ -73,6 +73,7 @@
     "eslint": "^4.19.1",
     "framework7": "^4.5.2",
     "framework7-icons": "^2.3.1",
+    "gradle": "^1.2.3",
     "jquery": "^3.5.1",
     "lodash": "^4.17.20",
     "node-forge": "^0.10.0",
