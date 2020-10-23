@@ -47,6 +47,13 @@ module.exports = {
     watchOptions: {
       poll: 1000,
     },
+   
+  },
+ 
+  performance: {
+        hints: false,
+        maxEntrypointSize: 512000,
+        maxAssetSize: 512000
   },
   module: {
     rules: [

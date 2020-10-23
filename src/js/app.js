@@ -1102,9 +1102,11 @@ $$(document).on('page:init', '.page[data-name="inicio"]', function (e) {
     var url = URL_WS;
     if(url.includes('desarrollo'))
     {
-
         $$('#dialogAlert').html('<b>Estás en modo desarrollo</b>');
     }
+
+
+
 });
 
 /**
@@ -1648,10 +1650,10 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 //Entregado
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_entregado').show();
-                $$('#persona_recibe').show();
+                
                 if(soloStatus != '')
                 {
-                    $$('#persona_recibe').hide();
+                    $$('.ocultar_persona').hide();
                 }
                 fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
                 
@@ -1972,6 +1974,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
  * Escanear Guí(s)
  */
 $$(document).on('page:init', '.page[data-name="escanear"]', function (e) {
+    var valores = '';
     $$('#btn_escanear').on('click', function () {
         cordova.plugins.barcodeScanner.scan(
             function (result) {
@@ -1998,13 +2001,13 @@ $$(document).on('page:init', '.page[data-name="escanear"]', function (e) {
                             $$('#btn_ir_cambiar_status').attr('href', '/cambiarstatus/' + guias);
                             $$('#div_cambio').show();
 
-                            if(client_code == 'CEL')
+                            if(valores.includes(client_code))
                             {
                                  $$('#btn_ir_acuse').attr('href', '/firmarfoto/' + guias);
                                  $$('#div_acuse').show();
                                  $$('#div_cambio_mensaje').show();
                             }
-                           
+                            
                         }
                         
                     }
@@ -2022,6 +2025,46 @@ $$(document).on('page:init', '.page[data-name="escanear"]', function (e) {
             }
         );
     });
+
+    app.request.setup({
+        headers: {
+            'apikey': localStorage.getItem('apikey')
+        },
+        beforeSend: function () {
+            app.preloader.show();
+        },
+        complete: function () {
+            app.preloader.hide();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            if (jqXHR.status === 401) {
+                localStorage.clear(); //quita todas las variables de local storage
+                app.preloader.hide(); // esconde el spinner
+                //app.dialog.alert('Tu sesión expiró, inicia sesión de nuevo');
+                window.location.reload(); // recarga la página (y te va a mandar a la página de login)
+            }
+        }
+    });
+    app.request.get(
+        URL_WS + 'consulta_clientes_firma',
+        function (data) {
+                app.preloader.hide();
+                
+                
+                localStorage.setItem('firma_electronica', data['claves']);
+
+                valores = localStorage.getItem('firma_electronica');
+                
+               // app.dialog.alert(valores);
+                
+             },
+        function (error) {
+            app.dialog.alert('Hubo un error, inténtelo de nuevo');
+            app.preloader.hide();
+        },
+        'json'
+    );
+
 });
 
 /**
