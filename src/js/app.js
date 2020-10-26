@@ -19,6 +19,7 @@ import fnGuiasHijos from "./guias/fnguiashijos";
 import firmarAcuse from "./firmar";
 
 import fnOcurre from "./fnocurre";
+import fnGral from "./fngral";
 
 
 /**
@@ -322,6 +323,7 @@ function ValidateApikey(correo, pass) {
                 localStorage.setItem('nombre', data[0].nombre);
                 localStorage.setItem('paterno', data[0].paterno);
                 localStorage.setItem('correo', data[0].correo);
+                localStorage.setItem('center', data[0].centro_operativo);
                // localStorage.setItem('calidad', data[0].calidad);
                // localStorage.setItem('ruta', data[0].ruta);
                // config.QUALITY = data[0].calidad;
@@ -1063,7 +1065,8 @@ var app = new Framework7({
                 // Init cordova APIs (see cordova-app.js)
                 cordovaApp.init(f7);
             }
-            fnOcurre.mostrarAlert(app);
+            //fnOcurre.mostrarAlert(app);
+            alertas();
         }
     },
 });
@@ -1091,6 +1094,9 @@ $$('#btn_iniciar_sesion').on('click', function () {
  */
 $$(document).on('page:init', '.page[data-name="inicio"]', function (e) {
     $$('#nombre_usuario').html(localStorage.getItem('nombre') + ' ' + localStorage.getItem('paterno'));
+    var userid = localStorage.getItem('userid');
+    var center=localStorage.getItem('center');
+    fnGral.mostrarMenu(userid,center);
     /*logisticus
     ValidateApikeyNEW(localStorage.getItem('userid'), localStorage.getItem('apikey'));
     if (localStorage.getItem('verhj_gasto') == 1) {
