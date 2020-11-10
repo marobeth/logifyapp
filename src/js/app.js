@@ -302,9 +302,9 @@ function openFilePicker(idCanvas) {
 function ValidateApikey(correo, pass) {
     //console.log('entre');
     var imei;
-   /* cordova.plugins.IMEI(function (err, imei) {
-      alert(err+' '+imei);
-    });*/
+    /* cordova.plugins.IMEI(function (err, imei) {
+       alert(err+' '+imei);
+     });*/
     app.request.setup({
         headers: {
             'email': correo,
@@ -323,11 +323,13 @@ function ValidateApikey(correo, pass) {
                 localStorage.setItem('nombre', data[0].nombre);
                 localStorage.setItem('paterno', data[0].paterno);
                 localStorage.setItem('correo', data[0].correo);
-                localStorage.setItem('center', data[0].centro_operativo);
-               // localStorage.setItem('calidad', data[0].calidad);
-               // localStorage.setItem('ruta', data[0].ruta);
-               // config.QUALITY = data[0].calidad;
-               // config.URL_WS = data[0].ruta;
+                localStorage.setItem('centro_operativo', data[0].centro_operativo);
+                localStorage.setItem('corporativo', data[0].corporativo);
+                localStorage.setItem('restrict', data[0].restrict_operating_center);
+                // localStorage.setItem('calidad', data[0].calidad);
+                // localStorage.setItem('ruta', data[0].ruta);
+                // config.QUALITY = data[0].calidad;
+                // config.URL_WS = data[0].ruta;
                 app.views.main.router.navigate('/inicio/', {reloadCurrent: false});
             } else {
                 app.dialog.alert('Error: Permiso Denegado');
@@ -401,8 +403,7 @@ function DateActual(iddate) {
     if (mes < 10) {
         mes = '0' + mes;
     }
-    if(iddate != '')
-    {
+    if (iddate != '') {
         document.getElementById(iddate).value = ano + "-" + mes + "-" + dia;
     }
     return (ano + "-" + mes + "-" + dia);
@@ -1064,15 +1065,14 @@ var app = new Framework7({
             if (f7.device.cordova) {
                 // Init cordova APIs (see cordova-app.js)
                 cordovaApp.init(f7);
+                alertas();
             }
-            //fnOcurre.mostrarAlert(app);
-            alertas();
         }
     },
 });
 
 function alertas() {
-    fnOcurre.mostrarAlert(app);
+    //fnOcurre.mostrarAlert(app);
 }
 
 document.addEventListener("pause", alertas, false);
@@ -1095,8 +1095,8 @@ $$('#btn_iniciar_sesion').on('click', function () {
 $$(document).on('page:init', '.page[data-name="inicio"]', function (e) {
     $$('#nombre_usuario').html(localStorage.getItem('nombre') + ' ' + localStorage.getItem('paterno'));
     var userid = localStorage.getItem('userid');
-    var center=localStorage.getItem('center');
-    fnGral.mostrarMenu(userid,center);
+    var restrict = localStorage.getItem('restrict');
+    fnGral.mostrarMenu(userid, restrict);
     /*logisticus
     ValidateApikeyNEW(localStorage.getItem('userid'), localStorage.getItem('apikey'));
     if (localStorage.getItem('verhj_gasto') == 1) {
@@ -1106,13 +1106,9 @@ $$(document).on('page:init', '.page[data-name="inicio"]', function (e) {
     }
     */
     var url = URL_WS;
-    if(url.includes('desarrollo'))
-    {
+    if (url.includes('desarrollo')) {
         $$('#dialogAlert').html('<b>Estás en modo desarrollo</b>');
     }
-
-
-
 });
 
 /**
@@ -1244,10 +1240,10 @@ $$(document).on('page:init', '.page[data-name="checkin"]', function (e) {
 $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
     var num_guias = app.view.main.router.currentRoute.params.numGuia;
     var referencia = app.view.main.router.previousRoute.url;
+    var corporativo = localStorage.getItem('corporativo');
     var soloStatus = '';
     fnGuias.soloStatus = '';
-    if(referencia.includes('firmarfoto'))
-    {
+    if (referencia.includes('firmarfoto')) {
         soloStatus = 4;
         fnGuias.soloStatus = soloStatus;
     }
@@ -1282,15 +1278,14 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         app.request.get(
             URL_WS + 'consulta/' + num_guias[0],
             function (data) {
-
                 app.preloader.hide();
                 fnGuias.leyendaGuia(app, data['guia'][0].id, data['guia'][0].client_code, data['guia'][0].branch_number);
-                fnGuias.mostrarSttus(app, data['guia'][0].id, data['guia'][0].branch_number, data['guia'][0].client_code, 'status');
+                fnGuias.mostrarSttus(app, data['guia'][0].id, data['guia'][0].branch_number, data['guia'][0].client_code, 'status',corporativo);
 
                 //console.log(data['guia'][0].num_guia);
-                
-                $$('#num__guia').html("<b>"+data['guia'][0].num_guia+"</b>");
-                
+
+                $$('#num__guia').html("<b>" + data['guia'][0].num_guia + "</b>");
+
 
                 if (data['guia'][0].branch_number == '0004') {
                     var ouput_parsear_billetes = '';
@@ -1322,13 +1317,12 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 }
                 fnGuiasHijos.MostrarNGH(app, 'NGHijos', data['guia'][0].num_guia);
                 fnGuias.LogIncidencias(app, data['guia'][0].client_code, data['guia'][0].id);
-                
-
             },
             'json'
         );
     } else {
-        fnGuias.mostrarSttusdefaut(app, 'status');
+        fnGuias.separarProyectos(app,num_guias,corporativo);
+        fnGuias.mostrarSttusdefaut(app, 'status',corporativo);
         var new_num_guias = '';
         num_guias.forEach(function (v, i) {
             $$('#lista_multiples_guias').append('<li>' + v + '</li>');
@@ -1336,9 +1330,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         });
         var new_num_guias = new_num_guias.substr(0, new_num_guias.length - 1);
         $$('#num_gias').val(new_num_guias);
-
     }
-
 
 
     // Vertical Buttons
@@ -1632,123 +1624,42 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         $$('#totalImg').val('');
         $$('.ocultar_campos').hide();
         var status = $$('#status').val();
-        //console.log(status+num_guias);
         var numeroguia = num_guias[0];
         var codCliente = numeroguia.substring(0, 3);
         var braNumbre = numeroguia.substring(3, 7);
-        //console.log("engtre mostrarCampos"+status);
         var tipoFimg = codCliente + '-' + braNumbre + '-' + status;
-        //console.log("status:"+status);
-        switch (status) {
-            case '2':
-                //Recolectado
-                //console.log("Recolectado");
-                $$('.ocultar_campos').hide();
-                $$('.mostrar_recolectado').show();
-                fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
-                break;
-            case '3':
-                //En ruta
-                $$('.ocultar_campos').hide();
-                $$('.mostrar_enruta').show();
-                break;
-            case '4':
-                //Entregado
-                $$('.ocultar_campos').hide();
-                $$('.mostrar_entregado').show();
-                
-                if(soloStatus != '')
-                {
-                    $$('.ocultar_persona').hide();
-                }
-                fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
-                
-                break;
-            case '5':
-                //Incidencia
-                $$('.ocultar_campos').hide();
-                $$('.mostrar_incidencia').show();
-                fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
-                break;
-            case '6':
-                //Devuelto
-                $$('.ocultar_campos').hide();
-                $$('.mostrar_devuelto').show();
-                //console.log(codCliente+"entre");
-                if (codCliente === 'CVD') {
-                    fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
-                }
-                break;
-            case '7':
-                //Ocurre
-                $$('.ocultar_campos').hide();
-                $$('.mostrar_ocurre').show();
-                break;
-            case '8':
-                //En almacén
-                $$('.ocultar_campos').hide();
-                $$('.mostrar_enalmacen').show();
-                break;
-            case '12':
-                //En conectado
-                $$('.ocultar_campos').hide();
-                $$('.mostrar_conectado').show();
-                fnGuias.mostrarListadoOcurre(app);
-                if (codCliente === 'CVD' || codCliente === 'CEL' || codCliente === 'PUR' || codCliente === 'SAF') {
-                    fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
-                }
-                break;
-            case '14':
-                //Retorno
-                if (codCliente === 'CVD') {
-                    fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
-                }
-                break;
-            case '22':
-                //Recolectado
-                //console.log("Recolectado");
-                $$('.ocultar_campos').hide();
-                $$('.mostrar_recolectado').show();
-                fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
-                break;
-            case '23':
-                //Incidencia
-                $$('.ocultar_campos').hide();
-                $$('.mostrar_incidencia').show();
-                fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
-                break;
-            case '24':
-                //Incidencia
-                $$('.ocultar_campos').hide();
-                $$('.mostrar_incidencia').show();
-                fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
-                break;
-            default:
-                $$('.ocultar_campos').hide();
-                break;
-        }
+        var guiareferencia= $$('#guiareferencia').val('');
+        fnGuias.mostrarCampos(app,codCliente,braNumbre,status,tipoFimg);
+        fnGuias.avisoconfirmacion(app,codCliente,braNumbre,status,guiareferencia);
     });
 
     $$('#btn_cambiar_status').on('click', function (e) {
+
         var foto1, foto2, foto3, foto4, foto5;
         var canvas1, canvas2, canvas3, canvas4, canvas5;
         var statusFoto, statusFoto2, statusFoto3, statusFoto4, statusFoto5;
         var persona_recibe, incidencia, comentarios, status;
         var proveedor_ocurre, guia_ocurre, latitud, longitud;
-
+        var guiareferencia;
         var numeroguia = num_guias[0];
         var codCliente = numeroguia.substring(0, 3);
 
         latitud = $$('#latitud').val();
         longitud = $$('#longitud').val();
         status = $$('#status').val();
-
+        guiareferencia = $$('#ngreferencia').val();
         var validado = false;
 
         if (status == '') {
             validado = false;
             app.dialog.alert('Seleccione un status');
         }
+
+        var  checkedaviso= $$('#aviso_check1').prop('checked');
+        if(!checkedaviso){
+            checkedaviso='';
+        }
+
         switch (status) {
             case 'Seleccionar':
                 app.dialog.alert('Seleccione un status');
@@ -1771,6 +1682,8 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 persona_recibe = $$('#persona_recibe').val();
                 if (persona_recibe == "") {
                     app.dialog.alert('la persona que recibe / entrega son obligatorios');
+                }else if(guiareferencia !='' && checkedaviso == ""){
+                    app.dialog.alert('No se ha realizado la recolección del producto');
                 } else {
                     validado = true;
                 }
@@ -1905,75 +1818,89 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 }
             });
             //if (TtlLista == 1) {
-                
-                    app.request.postJSON(
-                        URL_WS + 'changestatus/' + $$('#num_gias').val(),
-                        {
-                            status: status,
-                            latlong: latitud + ',' + longitud,
-                            foto1: foto1,
-                            foto2: foto2,
-                            foto3: foto3,
-                            foto4: foto4,
-                            foto5: foto5,
-                            persona_recibe: persona_recibe,
-                            comentarios: comentarios,
-                            incidencia:incidencia,
-                            proveedor_ocurre: proveedor_ocurre,
-                            guia_ocurre: guia_ocurre
-                        },
-                        function (data) {
-                            app.preloader.hide();
-                            app.dialog.alert("Datos guardados correctamente", function () {
-                                $$('#btn_buscar_sucursal').click();
-                                //app.views.main.router.back();
+
+            app.request.postJSON(
+                URL_WS + 'changestatus/' + $$('#num_gias').val(),
+                {
+                    status: status,
+                    latlong: latitud + ',' + longitud,
+                    foto1: foto1,
+                    foto2: foto2,
+                    foto3: foto3,
+                    foto4: foto4,
+                    foto5: foto5,
+                    persona_recibe: persona_recibe,
+                    comentarios: comentarios,
+                    incidencia: incidencia,
+                    proveedor_ocurre: proveedor_ocurre,
+                    guia_ocurre: guia_ocurre
+                },
+                function (data) {
+                    app.preloader.hide();
+                    if(TtlLista > 1){
+                        var guiaMasivaInd ='';
+                        $$('#mostrarlistado').show();
+                        guiaslista.forEach(function (v, i) {
+                            guiaMasivaInd += v+'<br>';
+                        });
+                        $$('#visualizar').html(guiaMasivaInd);
+
+                    }else{
+                        app.dialog.alert("Guías guardados correctamente", function () {
+                            $$('#btn_buscar_sucursal').click();
+                            //app.views.main.router.back();
+                            app.views.main.router.navigate('/escanear/', {reloadCurrent: false});
+                        });
+                    }
+                }, function (error) {
+                    app.preloader.hide();
+
+                    app.dialog.alert("Error: " + error, function () {
+                        $$('#btn_buscar_sucursal').click();
+                    });
+
+                },
+                'json'
+            );
+            /*
+                        } else {
+                            guiaslista.forEach(function (v, i) {
+                                var guiaMasivaInd = v;
+                                app.request.postJSON(
+                                    URL_WS + 'changestatus/' + guiaMasivaInd,
+                                    {
+                                        status: status,
+                                        latlong: latitud + ',' + longitud,
+                                        foto1: foto1,
+                                        foto2: foto2,
+                                        foto3: foto3,
+                                        foto4: foto4,
+                                        foto5: foto5,
+                                        persona_recibe: persona_recibe,
+                                        comentarios: comentarios,
+                                        incidencia: incidencia,
+                                        proveedor_ocurre: proveedor_ocurre,
+                                        guia_ocurre: guia_ocurre
+                                    },
+                                    function (data) {
+                                        app.preloader.hide();
+                                        app.dialog.alert("Datos guardados correctamente " + guiaMasivaInd, function () {
+                                        });
+                                        //app.views.main.router.back();
+                                    }, function (error) {
+                                        app.preloader.hide();
+                                    },
+                                    'json'
+                                );
                                 app.views.main.router.navigate('/escanear/', {reloadCurrent: false});
                             });
-                            
-                        }, function (error) {
-                            app.preloader.hide();
-                            
-                            app.dialog.alert("Error: "+error, function () {
-                                $$('#btn_buscar_sucursal').click();
-                            });
-
-                        },
-                        'json'
-                    );
-/*
-            } else {
-                guiaslista.forEach(function (v, i) {
-                    var guiaMasivaInd = v;
-                    app.request.postJSON(
-                        URL_WS + 'changestatus/' + guiaMasivaInd,
-                        {
-                            status: status,
-                            latlong: latitud + ',' + longitud,
-                            foto1: foto1,
-                            foto2: foto2,
-                            foto3: foto3,
-                            foto4: foto4,
-                            foto5: foto5,
-                            persona_recibe: persona_recibe,
-                            comentarios: comentarios,
-                            incidencia: incidencia,
-                            proveedor_ocurre: proveedor_ocurre,
-                            guia_ocurre: guia_ocurre
-                        },
-                        function (data) {
-                            app.preloader.hide();
-                            app.dialog.alert("Datos guardados correctamente " + guiaMasivaInd, function () {
-                            });
-                            //app.views.main.router.back();
-                        }, function (error) {
-                            app.preloader.hide();
-                        },
-                        'json'
-                    );
-                    app.views.main.router.navigate('/escanear/', {reloadCurrent: false});
-                });
-            }*/
+                        }*/
         }
+    });
+
+    $$('#btn_local_destino').on('click', function () {
+        var destino = $$('#location').val();
+        cordova.InAppBrowser.open('https://www.google.com/maps/dir/?api=1&destination=' + destino, '_blank', 'location=yes');
     });
 });
 /**
@@ -1981,6 +1908,11 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
  */
 $$(document).on('page:init', '.page[data-name="escanear"]', function (e) {
     var valores = '';
+    //var proyectoclient='';
+    var corporativo = localStorage.getItem('corporativo');
+    var center = localStorage.getItem('centro_operativo');
+    var restrict = localStorage.getItem('restrict');
+
     $$('#btn_escanear').on('click', function () {
         cordova.plugins.barcodeScanner.scan(
             function (result) {
@@ -1989,33 +1921,77 @@ $$(document).on('page:init', '.page[data-name="escanear"]', function (e) {
                     if (num_guia.length <= 17) {
                         app.dialog.alert("Guía no válida: Las guías logify tienen más caracteres");
                     } else {
-                        //Váido
-                        //Revisar si ya está agregada esa guía:
-                        var guias_actuales = $$('#hidden_guias_scan').val();
-                        if (guias_actuales.includes(num_guia)) {
-                            app.dialog.alert("Ya habías agregado esta guía");
-                        } else {
-                            var cantidad_guias = parseInt($$('#total_guias_escaneadas').html());
-                            cantidad_guias++;
-                            $$('#total_guias_escaneadas').html(cantidad_guias);
-                            $$('#total_guias_escaneadas').html();
-                            $$('#lista_guias_scan').append('<li>' + num_guia + ' - ' + detectarProyecto(num_guia) + '</li>');
-                            $$('#hidden_guias_scan').val(num_guia + '|' + $$('#hidden_guias_scan').val());
-                            var guias = $$('#hidden_guias_scan').val().substr(0, $$('#hidden_guias_scan').val().length - 1);
-                            var client_code = num_guia.substring(0,3);
-                            
-                            $$('#btn_ir_cambiar_status').attr('href', '/cambiarstatus/' + guias);
-                            $$('#div_cambio').show();
-
-                            if(valores.includes(client_code))
-                            {
-                                 $$('#btn_ir_acuse').attr('href', '/firmarfoto/' + guias);
-                                 $$('#div_acuse').show();
-                                 $$('#div_cambio_mensaje').show();
+                        if(restrict == 1){
+                            app.request.setup({
+                                headers: {
+                                    'apikey': localStorage.getItem('apikey')
+                                },
+                                beforeSend: function () {
+                                    app.preloader.show();
+                                },
+                                complete: function () {
+                                    app.preloader.hide();
+                                }
+                            });
+                            app.request.get(
+                                config.URL_WS + '/api/v2/guia/' + num_guia + '/'+ corporativo +'/' + restrict + '/' + center,
+                                function (datos) {
+                                    if (datos.guia !== '') {
+                                        num_guia = datos.guia;
+                                        var cliente = datos.cliente;
+                                        var proyecto = datos.proyecto;
+                                        console.log("Entre ***"+num_guia+cliente+proyecto);
+                                        var guias_actuales = $$('#hidden_guias_scan').val();
+                                        if (guias_actuales.includes(num_guia)) {
+                                            app.dialog.alert("Ya habías agregado esta guía");
+                                        } else {
+                                            var cantidad_guias = parseInt($$('#total_guias_escaneadas').html());
+                                            cantidad_guias++;
+                                            $$('#total_guias_escaneadas').html(cantidad_guias);
+                                            $$('#total_guias_escaneadas').html();
+                                            $$('#lista_guias_scan').append('<li>' + num_guia + ' - ' + cliente + ' '+ proyecto  + '</li>');
+                                            $$('#hidden_guias_scan').val(num_guia + '|' + $$('#hidden_guias_scan').val());
+                                            var guias = $$('#hidden_guias_scan').val().substr(0, $$('#hidden_guias_scan').val().length - 1);
+                                            var client_code = num_guia.substring(0,3);
+                                            $$('#btn_ir_cambiar_status').attr('href', '/cambiarstatus/' + guias);
+                                            $$('#div_cambio').show();
+                                            if(valores.includes(client_code))
+                                            {
+                                                $$('#btn_ir_acuse').attr('href', '/firmarfoto/' + guias);
+                                                $$('#div_acuse').show();
+                                                $$('#div_cambio_mensaje').show();
+                                            }
+                                        }
+                                    } else {
+                                        app.dialog.alert("Lo sentimos, no se encontró información");
+                                    }
+                                },
+                                'json'
+                            );
+                        }else{
+                            alert("Entre"+num_guia);
+                            var guias_actuales = $$('#hidden_guias_scan').val();
+                            if (guias_actuales.includes(num_guia)) {
+                                app.dialog.alert("Ya habías agregado esta guía");
+                            } else {
+                                var cantidad_guias = parseInt($$('#total_guias_escaneadas').html());
+                                cantidad_guias++;
+                                $$('#total_guias_escaneadas').html(cantidad_guias);
+                                $$('#total_guias_escaneadas').html();
+                                $$('#lista_guias_scan').append('<li>' + num_guia + ' - ' + detectarProyecto(num_guia) + '</li>');
+                                $$('#hidden_guias_scan').val(num_guia + '|' + $$('#hidden_guias_scan').val());
+                                var guias = $$('#hidden_guias_scan').val().substr(0, $$('#hidden_guias_scan').val().length - 1);
+                                var client_code = num_guia.substring(0,3);
+                                $$('#btn_ir_cambiar_status').attr('href', '/cambiarstatus/' + guias);
+                                $$('#div_cambio').show();
+                                if(valores.includes(client_code))
+                                {
+                                    $$('#btn_ir_acuse').attr('href', '/firmarfoto/' + guias);
+                                    $$('#div_acuse').show();
+                                    $$('#div_cambio_mensaje').show();
+                                }
                             }
-                            
                         }
-                        
                     }
                 } else {
                     app.dialog.alert('El scan fue cancelado');
@@ -2054,16 +2030,11 @@ $$(document).on('page:init', '.page[data-name="escanear"]', function (e) {
     app.request.get(
         URL_WS + 'consulta_clientes_firma',
         function (data) {
-                app.preloader.hide();
-                
-                
-                localStorage.setItem('firma_electronica', data['claves']);
-
-                valores = localStorage.getItem('firma_electronica');
-                
-               // app.dialog.alert(valores);
-                
-             },
+            app.preloader.hide();
+            localStorage.setItem('firma_electronica', data['claves']);
+            valores = localStorage.getItem('firma_electronica');
+            // app.dialog.alert(valores);
+        },
         function (error) {
             app.dialog.alert('Hubo un error, inténtelo de nuevo');
             app.preloader.hide();
@@ -2071,12 +2042,20 @@ $$(document).on('page:init', '.page[data-name="escanear"]', function (e) {
         'json'
     );
 
+
+    /*$$('#status').on('change', function () {
+        var hgscan = $$('#hidden_guias_scan').val();
+        console.log("entre **" + hgscan);
+    });*/
 });
 
 /**
  * Consultar Guía(s)
  */
 $$(document).on('page:init', '.page[data-name="consultar"]', function (e) {
+    var center = localStorage.getItem('centro_operativo');
+    var corporativo = localStorage.getItem('corporativo');
+    var restrict = localStorage.getItem('restrict');
     $$('#btn_escanear_consulta').on('click', function () {
         $$('#mostrarBtnInfo').hide();
         $$('#mostrarInputGuia').hide();
@@ -2085,7 +2064,7 @@ $$(document).on('page:init', '.page[data-name="consultar"]', function (e) {
                 if (!result.cancelled) {
                     var numguia = result.text;
                     $$('#num_guia_consulta').html(numguia);
-                    fnGuias.mostrarinfoGuia(app, numguia, detectarProyecto(numguia));
+                    fnGuias.mostrarinfoGuia(app, numguia, detectarProyecto(numguia), center, corporativo,restrict);
                 } else {
                     app.dialog.alert('El scan fue cancelado');
                 }
@@ -2100,7 +2079,6 @@ $$(document).on('page:init', '.page[data-name="consultar"]', function (e) {
             }
         );
     });
-
     $$('#btn_info_guia').on('click', function () {
         $$('#mostrarBtnScan').hide();
         var expreg = /^[A-Za-z0-9]+$/;
@@ -2112,14 +2090,13 @@ $$(document).on('page:init', '.page[data-name="consultar"]', function (e) {
                 if (!expreg.test(numguia)) {
                     app.dialog.alert('Hay caracteres inválidos, favor de verificar');
                 } else {
-                    fnGuias.mostrarinfoGuia(app, numguia, detectarProyecto(numguia));
+                    fnGuias.mostrarinfoGuia(app, numguia, detectarProyecto(numguia), center, corporativo,restrict);
                 }
             } else {
                 app.dialog.alert('El número de caracteres no corresponden, favor de verificar');
             }
         }
     });
-
 });
 
 /**
@@ -3564,72 +3541,66 @@ $$(document).on('page:init', '.page[data-name="asignarsucursalhijos"]', function
 
 /* firmar acuse */
 $$(document).on('page:init', '.page[data-name="firmarfoto"]', function (e) {
-   // app.dialog.alert('iniciar');
-   var num_guias = app.view.main.router.currentRoute.params.numGuia;
+    // app.dialog.alert('iniciar');
+    var num_guias = app.view.main.router.currentRoute.params.numGuia;
     var anum_guias = num_guias.split("|");
     var guia = anum_guias[0];
 
-   $$("#num_guia").val(guia);
-   $$("#num_guias").val(num_guias);
+    $$("#num_guia").val(guia);
+    $$("#num_guias").val(num_guias);
 
 
-   var ancho = window.innerWidth;
-   var alto = window.innerHeight;
-   var aspecto = alto/ancho;
+    var ancho = window.innerWidth;
+    var alto = window.innerHeight;
+    var aspecto = alto / ancho;
 
     var objCanvas = document.getElementById('myCanvasRealtime');
     window.plugin.CanvasCamera.initialize(objCanvas);
 
-   //app.dialog.alert(aspecto);
-  // $$('#myCanvas').css('width',$$('#myCanvas').width()*aspecto);
-  // $$("#myCanvas").css('height',$$('#myCanvas').height()*aspecto); //2.031
- //  $$("#myCanvas").css('height',50); //2.031
+    //app.dialog.alert(aspecto);
+    // $$('#myCanvas').css('width',$$('#myCanvas').width()*aspecto);
+    // $$("#myCanvas").css('height',$$('#myCanvas').height()*aspecto); //2.031
+    //  $$("#myCanvas").css('height',50); //2.031
     firmarAcuse.firmaModal(app);
 
     $$('#AceptarFirma').on('click', function () {
         //app.dialog.alert('Aceptar');
-         firmarAcuse.AceptarFirma(app);
-         window.plugin.CanvasCamera.stop();
+        firmarAcuse.AceptarFirma(app);
+        window.plugin.CanvasCamera.stop();
     });
-    
+
     $$('#LimpiarFirma').on('click', function () {
         //app.dialog.alert('Aceptar');
         firmarAcuse.LimpiarFirma(app);
     });
-    $$('#persona_check').on('change', function(e){
-       
-       // app.dialog.alert(e);
-       var si = $$('#persona_check').prop('checked');
-      //app.dialog.alert(si);
-       if(si)
-       {
+    $$('#persona_check').on('change', function (e) {
+
+        // app.dialog.alert(e);
+        var si = $$('#persona_check').prop('checked');
+        //app.dialog.alert(si);
+        if (si) {
             $$("#persona_recibe").val($$("#nombre").val());
-        }
-        else
-        {
+        } else {
             $$("#persona_recibe").val('');
         }
-       
+
     });
-     $$('#sin_clave').on('change', function(e){
-       
-       // app.dialog.alert(e);
-       var si = $$('#sin_clave').prop('checked');
-      //app.dialog.alert(si);
-       if(si)
-       {
+    $$('#sin_clave').on('change', function (e) {
+
+        // app.dialog.alert(e);
+        var si = $$('#sin_clave').prop('checked');
+        //app.dialog.alert(si);
+        if (si) {
             $$("#clave").show();
             $$("#clave_ine").hide();
             $$("#clave_ine").val('');
-            
-        }
-        else
-        {
+
+        } else {
             $$("#clave_ine").show();
             $$("#clave").hide();
             $$("#clave").val('');
         }
-       
+
     });
     $$('#btn_escanear_consulta').on('click', function () {
         cordova.plugins.barcodeScanner.scan(
@@ -3637,7 +3608,7 @@ $$(document).on('page:init', '.page[data-name="firmarfoto"]', function (e) {
                 if (!result.cancelled) {
                     var numguia = result.text;
                     $$('#num_guia').val(numguia);
-                    fnGuias.ColocarDatosFirma(app,numguia,detectarProyecto(numguia));
+                    fnGuias.ColocarDatosFirma(app, numguia, detectarProyecto(numguia));
                     DateActual("created_at");
                     //app.dialog.alert(fecha);
 
@@ -3654,27 +3625,27 @@ $$(document).on('page:init', '.page[data-name="firmarfoto"]', function (e) {
                 prompt: "Ponga el código QR dentro del área de escaneo" // Android
             }
         );
-         
+
     });
 
     $$('#btn_guardar').on('click', function () {
-        
-       // getLocation();
-      
-        
+
+        // getLocation();
+
+
         //app.dialog.alert("Se enviaran datos"); 
         var Lat = $$("#latitud").val();
         // app.dialog.alert('enviar: '+Lat);
         var Lon = $$("#longitud").val();
         var LatLon = Lat + ',' + Lon;
-         
+
         var num_guias = $$("#num_guias").val();
-        
+
         var id_usuario = localStorage.getItem('userid');
-         
+
         var persona_recibe = $$("#persona_recibe").val();
 
-        
+
         //var canvasObject = $$('#myCanvas'); 
         //var canvas_foto = canvasObject[0];
 
@@ -3682,7 +3653,7 @@ $$(document).on('page:init', '.page[data-name="firmarfoto"]', function (e) {
         //var foto_front = canvas_Foto.toDataURL();
         var foto_front = firmarAcuse.canvasfront;
         //app.dialog.alert(foto_front);
-        var foto =  $$('#imagen-firma').prop('src');
+        var foto = $$('#imagen-firma').prop('src');
         var nombre = $$("#nombre").val();
         var clave_ine = $$("#clave_ine").val();
         var clave_cic = $$("#clave_cic").val();
@@ -3695,48 +3666,48 @@ $$(document).on('page:init', '.page[data-name="firmarfoto"]', function (e) {
         var pedido = $$("#no_pedido").val();
         var clave = $$("#clave").val();
 
-       
+
         var variables = {
-                
-                
-                num_guias: num_guias,
-                latlon: LatLon,
-                id_usuario : id_usuario,
-                
-                persona_recibe : persona_recibe,
-                nombre : nombre,
-                clave_ine : clave_ine,
-                clave : clave,
-                clave_cic : clave_cic,
-                telefono : telefono,
-                direccion : direccion,
-                estado : estado,
-                municipio : municipio,
-                colonia : colonia,
-                cp : cp,
-                pedido : pedido,
-                firma: foto,
-                foto_front : foto_front
-                
-            };
+
+
+            num_guias: num_guias,
+            latlon: LatLon,
+            id_usuario: id_usuario,
+
+            persona_recibe: persona_recibe,
+            nombre: nombre,
+            clave_ine: clave_ine,
+            clave: clave,
+            clave_cic: clave_cic,
+            telefono: telefono,
+            direccion: direccion,
+            estado: estado,
+            municipio: municipio,
+            colonia: colonia,
+            cp: cp,
+            pedido: pedido,
+            firma: foto,
+            foto_front: foto_front
+
+        };
         var comando = JSON.parse(JSON.stringify(variables));
-       // app.dialog.alert(JSON.stringify(variables));
-         app.request.setup({
-                headers: {
-                    'Content-Type':'application/json',
-                    'apikey': localStorage.getItem('apikey'),
-                    'Connection': 'keep-alive'
-                },
-                beforeSend: function () {
-                    app.preloader.show();
-                },
-                complete: function () {
-                    app.preloader.hide();
-                },
-                error: function (error) {
-                    app.preloader.hide();
-                }
-            });
+        // app.dialog.alert(JSON.stringify(variables));
+        app.request.setup({
+            headers: {
+                'Content-Type': 'application/json',
+                'apikey': localStorage.getItem('apikey'),
+                'Connection': 'keep-alive'
+            },
+            beforeSend: function () {
+                app.preloader.show();
+            },
+            complete: function () {
+                app.preloader.hide();
+            },
+            error: function (error) {
+                app.preloader.hide();
+            }
+        });
 
         app.request.postJSON(
             URL_WS + 'api/v2/firma-acuse',
@@ -3744,18 +3715,17 @@ $$(document).on('page:init', '.page[data-name="firmarfoto"]', function (e) {
 
             function (data) {
                 app.preloader.hide();
-                
-                var ruta = '/cambiarstatus/'+num_guias;
-                app.dialog.alert("Acuse guardado exitosamente", function(){
+
+                var ruta = '/cambiarstatus/' + num_guias;
+                app.dialog.alert("Acuse guardado exitosamente", function () {
                     app.views.main.router.navigate(ruta, {reloadCurrent: false});
                 });
-                
 
-               
+
             }, function (xhr, status) {
                 app.preloader.hide();
-                app.dialog.alert("Status: "+status);
-                app.dialog.alert("xhr: "+xhr, function () {
+                app.dialog.alert("Status: " + status);
+                app.dialog.alert("xhr: " + xhr, function () {
                     //$$('#btn_buscar_sucursal').click();
                 });
 
@@ -3764,7 +3734,7 @@ $$(document).on('page:init', '.page[data-name="firmarfoto"]', function (e) {
         );
     });
 
-    fnGuias.ColocarDatosFirma(app,guia,detectarProyecto(guia));
+    fnGuias.ColocarDatosFirma(app, guia, detectarProyecto(guia));
     DateActual("created_at");
 
 });
@@ -3786,7 +3756,6 @@ $$(document).on('page:init', '.page[data-name="ocurrelistado"]', function (e) {
  * @param status
  * @param tipoFimg
  */
-
 function monstrarImagenes(codCliente, braNumbre, status, tipoFimg) {
     $$('#mostarfotos').html('');
     var fotos = '';

@@ -36,6 +36,9 @@
             </div>
             <input type="hidden" id="num_gias">
             <input type="hidden" id="totalImg">
+            <input type="hidden" id="arrayprefijos">
+            <input type="hidden" id="ngreferencia">
+            <div id="prefijo"></div>
             <div class="list no-hairlines-md">
                 <ul>
                     <li>
@@ -63,7 +66,6 @@
                     </li>
                     <div id="mostarfotos"></div>
                     <!-- Status recolectado e incidencia-->
-
                     <!-- otros campos-->
                     <li class="mostrar_recolectado mostrar_entregado ocultar_campos ocultar_persona">
                         <div class="item-content item-input">
@@ -107,6 +109,7 @@
                             </div>
                         </div>
                     </li>
+                    <li id="avisoconfirmacion" class="mostrar_aviso"></li>
                     <!-- Status conectado-->
                     <li class="mostrar_conectado ocultar_campos">
                         <div class="item-content item-input">
@@ -138,7 +141,7 @@
                             </div>
                         </div>
                     </li>
-                    <li>
+                    <li class="btn_ocultar_campos">
                         <div class="block">
                             <div class="row">
                                 <a id="btn_cambiar_status" class="col button button-fill">Cambiar Status</a>
@@ -146,6 +149,13 @@
                             </div>
                         </div>
                     </li>
+                    <div id="mostrarlistado" style="display: none">
+                        <div class="card">
+                            <div class="card-header">Datos guardados correctamente</div>
+                            <div class="card-content card-content-padding" id="visualizar"></div>
+                            <div class="card-footer"><a href="#" class="link"></a><a href="/escanear/" class="link"> Regresar </a></div>
+                        </div>
+                    </div>
                 </ul>
             </div>
         </div>

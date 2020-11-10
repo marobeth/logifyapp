@@ -2,10 +2,17 @@ import $$ from "dom7";
 import config from "./config";
 
 var fnGral = {
-    mostrarMenu: (iduser,center) => {
-        console.log("entre"+iduser+'**'+center);
-        if(iduser !='' && center=='ALPES'){
+    mostrarMenu: (iduser,restrict) => {
+        if(iduser !='' && restrict==1){
             $$('.quitar').hide();
+        }
+    },
+    btnLlamada:(location)=> {
+        if(location !=''){
+            $$('#divtoolbar').show();
+            $$('#location').val(location);
+        }else{
+            $$('#divtoolbar').hide();
         }
     }
 

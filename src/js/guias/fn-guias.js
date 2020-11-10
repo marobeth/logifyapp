@@ -1,12 +1,14 @@
 import $$ from "dom7";
 import config from '../config';
 import funcionesCamara from "../funcionesCamara";
+import {array} from "framework7/modules/component/snabbdom/is";
+import fnGral from "../fngral";
 
 
 var fnGuias = {
     soloStatus: '',
-    traducirStatus: (app,idstatus,CById)=>{
-        var mostrarLabel='';
+    traducirStatus: (app, idstatus, CById) => {
+        var mostrarLabel = '';
         app.request.setup({
             headers: {
                 'apikey': localStorage.getItem('apikey')
@@ -21,24 +23,20 @@ var fnGuias = {
         app.request.get(
             config.URL_WS + 'api/v2/status/' + idstatus,
             function (datos) {
-                if(datos.label !=''){
-                    mostrarLabel=datos.label;
-                    $$('#'+ CById).html(mostrarLabel);
+                if (datos.label != '') {
+                    mostrarLabel = datos.label;
+                    $$('#' + CById).html(mostrarLabel);
                 }
             },
             'json'
         );
     },
-    mostrarSttus: (app, idguia, branchnumber, clientcode, CById) => {
+    mostrarSttus: (app, idguia, branchnumber, clientcode, CById, corporativo) => {
         //console.log("engtre mostrarSttus");
-        if(fnGuias.soloStatus != '')
-        {
-            fnGuias.mostrarSoloStatus(app,CById);
-        }
-        else
-        {
+        if (fnGuias.soloStatus != '') {
+            fnGuias.mostrarSoloStatus(app, CById);
+        } else {
             var proyectoStatus;
-            var status;
             app.request.setup({
                 headers: {
                     'apikey': localStorage.getItem('apikey')
@@ -70,19 +68,7 @@ var fnGuias = {
                                     });
                                     $$('#' + CById).html(proyectoStatus);
                                 } else {
-                                    app.request.get(
-                                        config.URL_WS + 'api/v2/status/default',
-                                        function (datos) {
-                                            if (datos.length > 0) {
-                                                status = '<option value="">Seleccionar</option>';
-                                                datos.forEach((valstaus, index) => {
-                                                    status += '<option value="' + valstaus.id + '">' + valstaus.nombre + '</option>';
-                                                });
-                                                $$('#' + CById).html(status);
-                                            }
-                                        },
-                                        'json'
-                                    );
+                                    fnGuias.mostrarStatusCorporativo(app,CById,corporativo);
                                 }
                             },
                             'json'
@@ -94,58 +80,95 @@ var fnGuias = {
         }
     },
     mostrarSoloStatus: (app, CById) => {
-        if(fnGuias.soloStatus != '')
-        {
+        if (fnGuias.soloStatus != '') {
             status = '<option value="">Seleccionar</option>';
             status += '<option value="4">Entregado</option>';
             $$('#' + CById).html(status);
         }
     },
-    mostrarSttusdefaut: (app,  CById) => {
-        //console.log("engtre mostrarSttus");
-        if(fnGuias.soloStatus != '')
-        {
-            fnGuias.mostrarSoloStatus(app,CById);
-        }
-        else
-        {
+    mostrarSttusdefaut: (app, CById, corporativo) => {
+        if (fnGuias.soloStatus != '') {
+            fnGuias.mostrarSoloStatus(app, CById);
+        } else {
             var status;
-            app.request.setup({
-                headers: {
-                    'apikey': localStorage.getItem('apikey')
-                },
-                beforeSend: function () {
-                    app.preloader.show();
-                },
-                complete: function () {
-                    app.preloader.hide();
+            var prefijos = $$('#arrayprefijos').val();
+            if (prefijos != '') {
+                var arrayprefijos = prefijos.split(",");
+                var totalCliente = arrayprefijos.length;
+                if (totalCliente == 1) {
+                    var code_client = prefijos.substr(0, 3);
+                    var branch_number = prefijos.substr(3, 6);
+                    app.request.setup({
+                        headers: {
+                            'apikey': localStorage.getItem('apikey')
+                        },
+                        beforeSend: function () {
+                            app.preloader.show();
+                        },
+                        complete: function () {
+                            app.preloader.hide();
+                        }
+                    });
+                    app.request.get(
+                        config.URL_WS + 'api/v2/permiso/operador/proyecto/' + code_client + '/' + branch_number,
+                        function (datos) {
+                            if (datos.length > 0) {
+                                status = '<option value="">Seleccionar</option>';
+                                datos.forEach((valstaus, index) => {
+                                    status += '<option value="' + valstaus.idstatus_guia + '">' + valstaus.label + '</option>';
+                                });
+                                $$('#' + CById).html(status);
+                            }else{
+                                fnGuias.mostrarStatusCorporativo(app,CById,corporativo);
+                            }
+                        },
+                        'json'
+                    );
+                } else {
+                    fnGuias.mostrarStatusCorporativo(app,CById,corporativo);
                 }
-            });
-            app.request.get(
-                config.URL_WS + 'api/v2/status/default',
-                function (datos) {
-                    if (datos.length > 0) {
-                        status = '<option value="">Seleccionar</option>';
-                        datos.forEach((valstaus, index) => {
-                            status += '<option value="' + valstaus.id + '">' + valstaus.nombre + '</option>';
-                        });
-                        $$('#' + CById).html(status);
-                    }
-                },
-                'json'
-            );
+            }
         }
     },
-    mostrarCampos: (app, codCliente, braNumbre, status) => {
-        var tipoFimg = codCliente + braNumbre + status;
-        //console.log("status:" + status);
+    mostrarStatusCorporativo: (app, CById, corporativo) =>{
+        var status;
+        var valor_corporativo='';
+        if (corporativo > 0) {
+            valor_corporativo = '/' + corporativo;
+        }
+        app.request.setup({
+            headers: {
+                'apikey': localStorage.getItem('apikey')
+            },
+            beforeSend: function () {
+                app.preloader.show();
+            },
+            complete: function () {
+                app.preloader.hide();
+            }
+        });
+        app.request.get(
+            config.URL_WS + 'api/v2/status/default' + valor_corporativo,
+            function (datos) {
+                if (datos.length > 0) {
+                    status = '<option value="">Seleccionar</option>';
+                    datos.forEach((valstaus, index) => {
+                        status += '<option value="' + valstaus.id + '">' + valstaus.nombre + '</option>';
+                    });
+                    $$('#' + CById).html(status);
+                }
+            },
+            'json'
+        );
+
+    },
+    mostrarCampos: (app, codCliente, braNumbre, status,tipoFimg) => {
         switch (status) {
             case '2':
                 //Recolectado
-                //console.log("Recolectado");
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_recolectado').show();
-                fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
+                fnGuias.fnmostrarfototestigos(app,codCliente, braNumbre, status,tipoFimg);
                 break;
             case '3':
                 //En ruta
@@ -156,22 +179,24 @@ var fnGuias = {
                 //Entregado
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_entregado').show();
-                 if(fnGuias.soloStatus != '')
-                {
+                if (fnGuias.soloStatus != '') {
                     $$('#persona_recibe').hide();
                 }
-                fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
+                fnGuias.fnmostrarfototestigos(app,codCliente, braNumbre, status,tipoFimg);
                 break;
             case '5':
                 //Incidencia
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_incidencia').show();
-                fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
+                fnGuias.fnmostrarfototestigos(app,codCliente, braNumbre, status,tipoFimg);
                 break;
             case '6':
                 //Devuelto
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_devuelto').show();
+                if (codCliente === 'CVD') {
+                    fnGuias.fnmostrarfototestigos(app,codCliente, braNumbre, status,tipoFimg);
+                }
                 break;
             case '7':
                 //Ocurre
@@ -187,9 +212,39 @@ var fnGuias = {
                 //En conectado
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_conectado').show();
+                fnGuias.mostrarListadoOcurre(app);
+                if (codCliente === 'CVD' || codCliente === 'CEL' || codCliente === 'PUR' || codCliente === 'SAF') {
+                    fnGuias.fnmostrarfototestigos(app,codCliente, braNumbre, status,tipoFimg);
+                }
+                break;
+            case '14':
+                //Retorno
+                if (codCliente === 'CVD') {
+                    fnGuias.fnmostrarfototestigos(app,codCliente, braNumbre, status,tipoFimg);
+                }
+                break;
+            case '22':
+                //Recolectado
+                //console.log("Recolectado");
+                $$('.ocultar_campos').hide();
+                $$('.mostrar_recolectado').show();
+                fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
+                break;
+            case '23':
+                //Incidencia
+                $$('.ocultar_campos').hide();
+                $$('.mostrar_incidencia').show();
+                fnGuias.fnmostrarfototestigos(app,codCliente, braNumbre, status,tipoFimg);
+                break;
+            case '24':
+                //Incidencia
+                $$('.ocultar_campos').hide();
+                $$('.mostrar_incidencia').show();
+                fnGuias.fnmostrarfototestigos(app,codCliente, braNumbre, status,tipoFimg);
                 break;
             default:
                 $$('.ocultar_campos').hide();
+                break;
         }
     },
     mostrarImagen: (app, codCliente, braNumbre, status, tipo_aud) => {
@@ -222,8 +277,8 @@ var fnGuias = {
         );
     },
     fnmostrarCampos: (app, codCliente, braNumbre, status, tipoFimg) => {
-        $$('#mostarfotos').html('');
         var fotos = '';
+        $$('#mostarfotos').html('');
         app.request.setup({
             headers: {
                 'apikey': localStorage.getItem('apikey')
@@ -258,7 +313,7 @@ var fnGuias = {
                             '                                                </td>\n' +
                             '                                            </tr>\n' +
                             '                                        </table>\n' +
-                            '                                        <canvas id="myCanvas' + (index + 1) + '" data-foto1="0"  data-requerido="'+ val.required +'"></canvas>\n' +
+                            '                                        <canvas id="myCanvas' + (index + 1) + '" data-foto1="0"  data-requerido="' + val.required + '"></canvas>\n' +
                             '                                    </div>\n' +
                             '                                </div>\n' +
                             '                            </div>\n' +
@@ -305,6 +360,20 @@ var fnGuias = {
             },
             'json'
         );
+    },
+    fnmostrarfototestigos:(app, codCliente, braNumbre, status, tipoFimg)=>{
+        var prefijos = $$('#arrayprefijos').val();
+        if (prefijos != '') {
+            var arrayprefijos = prefijos.split(",");
+            var totalCliente = arrayprefijos.length;
+            if (totalCliente == 1) {
+                fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
+            } else {
+                fnGuias.fnmostrarCampos(app, 'null', 'null', status, 'null','corporativo');
+            }
+        } else {
+            fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
+        }
     },
     traducirIncidencia: function (incidencia) {
         var incidenciaResult = '';
@@ -435,7 +504,9 @@ var fnGuias = {
     leyendaGuia: (app, idguia, clientCode, braNumbre) => {
         var tipoguia = '';
         var guia_referencia = '';
-        var leyenda='';
+        var leyenda = '';
+        var mensaje;
+        var avisong;
 
         let url = config.URL_WS + 'api/v2/leyenda/' + idguia + '/' + clientCode + '/' + braNumbre;
         app.request.setup({
@@ -454,16 +525,19 @@ var fnGuias = {
             function (data) {
                 tipoguia = data.tipoguia;
                 guia_referencia = data.guia_referencia;
+                avisong=data.guia_referencia;
                 if (guia_referencia === undefined || guia_referencia === null || guia_referencia === '') {
                     guia_referencia = '';
                 } else {
-                    guia_referencia = '<span><br>Referencia: ' + data.guia_referencia + '</span>';
+                    guia_referencia = '<span>' + data.guia_referencia + '</span>';
                 }
+                mensaje=' - recuerda que es un servicio contra-entrega. Deberás recolectar el producto de la guía: ';
                 if (tipoguia != '') {
-                    if(tipoguia =='Guía de Devolución'){
+                    if (tipoguia == 'Guía de Devolución') {
                         leyenda += '<div class="alert alert-info"> ' + tipoguia + guia_referencia + '</div>';
-                    }else{
-                        leyenda += '<div class="alert alert-danger"> ' + tipoguia + guia_referencia + '</div>';
+                    } else {
+                        $$('#ngreferencia').val(avisong);
+                        leyenda += '<div class="alert alert-danger"> <strong>' + tipoguia + '</strong>'+ mensaje + '<strong>'+ guia_referencia +'</strong>' + '</div>';
                     }
                     $$('#leyenda').html(leyenda);
                 }
@@ -532,7 +606,8 @@ var fnGuias = {
             'json'
         );
     },
-    mostrarinfoGuia: (app, numguia, proyecto) => {
+    mostrarinfoGuia: (app, numguia, proyecto, center, corporativo,restrict) => {
+        var URL = '';
         $$('#status_guia_consulta').html("");
         $$('#espacio_proyecto').html("");
         $$('#espacio_destinatario').html("");
@@ -543,11 +618,16 @@ var fnGuias = {
         var tel_dest = '';
         var info_comp_dest = '';
         var dir2_dest = '';
+        if (center != '' || center != null || center != undefined && corporativo > 1) {
+            URL = config.URL_WS + 'api/v2/guideinfo/corporativo/' + numguia + '/' + center + '/' + corporativo+'/'+restrict;
+        } else {
+            URL = config.URL_WS + 'guideinfo/' + numguia;
+        }
         app.request.get(
-            config.URL_WS + 'guideinfo/' + numguia,
+            URL,
             function (data) {
                 var total = data.length;
-                if ( total > 0) {
+                if (total > 0) {
                     if (data[0].tel_dest != '' && !!data[0].tel_dest) {
                         tel_dest = 'Tel.: ' + data[0].tel_dest + '<br>';
                     }
@@ -558,7 +638,7 @@ var fnGuias = {
                     if (data[0].dir2_dest != '' && !!data[0].dir2_dest) {
                         dir2_dest = 'Dirección alternativa: ' + data[0].dir2_dest + '<br>';
                     }
-                    fnGuias.traducirStatus(app,data[0].status,'status_guia_consulta');
+                    fnGuias.traducirStatus(app, data[0].status, 'status_guia_consulta');
                     $$('#espacio_proyecto').html(proyecto);
                     fnGuias.leyendaGuia(app, data[0].id, data[0].client_code, data[0].branch_number);
                     $$('#espacio_destinatario').html(
@@ -599,20 +679,23 @@ var fnGuias = {
                     } else {
                         $$('#cont_paquete').html(data[0].cont_paquete);
                         $$('#cont_paquete').append('<br>');
-                        $$('#cont_paquete').append('Lote/id/etc: ' + data[0].ids_tokens);
+                        if (data[0].ids_tokens != '' && data[0].ids_tokens != '-') {
+                            $$('#cont_paquete').append('Lote/id/etc: ' + data[0].ids_tokens);
+                        }
+
                     }
                     if (data[0].status == 7) {
                         fnGuias.mostrarOcurre(app, data[0].id);
                     }
+                    fnGral.btnLlamada(data[0].loc_dest);
                 } else {
-                    app.dialog.alert('No existe la guía');
+                    app.dialog.alert('Lo sentimos, no se encontró información');
                 }
             },
             'json'
         );
     },
-    ColocarDatosFirma : (app, numguia, proyecto) =>
-    {
+    ColocarDatosFirma: (app, numguia, proyecto) => {
         $$("#no_pedido").val('');
         $$("#nombre").val("");
         $$("#direccion").val("");
@@ -631,35 +714,66 @@ var fnGuias = {
                 app.preloader.hide();
             }
         });
-         app.request.get(
+        app.request.get(
             config.URL_WS + 'guideinfo/' + numguia,
             function (data) {
                 var total = data.length;
-                
-                if ( total > 0) {
+
+                if (total > 0) {
                     //app.dialog.alert("Guia Encontrada");
                     if (data[0].tel_dest != '' && !!data[0].tel_dest) {
                         $$("#telefono").html(data[0].tel_dest);
                     }
                     $$("#no_pedido").val(data[0].num_order_guia);
-                    $$("#nombre").val(data[0].nombre_dest+' '+data[0].paterno_dest);
-                    $$("#direccion").val(data[0].dir1_dest+' '+data[0].dir2_dest);
+                    $$("#nombre").val(data[0].nombre_dest + ' ' + data[0].paterno_dest);
+                    $$("#direccion").val(data[0].dir1_dest + ' ' + data[0].dir2_dest);
                     $$("#estado").val(data[0].edo_dest);
                     $$("#municipio").val(data[0].mun_dest);
                     $$("#colonia").val(data[0].asent_dest);
                     $$("#cp").val(data[0].cp_dest);
-                    
+
 
                     //$$("#created_at").val(fecha);
-                }
-                else
-                {
+                } else {
                     app.dialog.alert("No existe la guía");
                 }
             },
             'json'
         );
-    }
+    },
+    separarProyectos: (app, guias_masivas, corporativo) => {
+        var prefijos = [];
+        guias_masivas.forEach(function (elemento) {
+            var prefijo = elemento.substr(0, 7);
+            prefijos.push(prefijo);
+        });
+        var sinRepetidos = prefijos.filter(function (valor, indiceActual, arreglo) {
+            var indiceAlBuscar = arreglo.indexOf(valor);
+            if (indiceActual === indiceAlBuscar) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+        $$('#arrayprefijos').val(sinRepetidos);
+    },
+    avisoconfirmacion:(app,codCliente,braNumbre,status)=>{
+        var referencia = $$('#ngreferencia').val();
+        if(codCliente !='BCL' && braNumbre=='0002' && status ==4 && referencia !=''){
+            $$('.mostrar_aviso').show();
+            var Hhtml='<div class="item-content item-input">\n' +
+                '                            <div class="item-inner">\n' +
+                '                                <div class="item-input-wrap">\n' +
+                '                                    <input type="checkbox" class="form-check-input" id="aviso_check1" name="aviso_check1">\n' +
+                '                                    <label>Confirmo que recolecté al cliente el producto de la guía: '+ referencia +' </label>'+
+                '                                </div>\n' +
+                '                            </div>\n' +
+                '                        </div>';
+            $$('#avisoconfirmacion').html(Hhtml);
+        }else{
+            $$('.mostrar_aviso').hide();
+        }
 
+    }
 };
 export default fnGuias;

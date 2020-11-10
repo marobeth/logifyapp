@@ -40,7 +40,7 @@ var fnOcurre = {
             'json'
         );
     },
-    mostrarAlert: (app, iduserr) => {
+    mostrarAlert: (app) => {
         var iduser = localStorage.getItem('userid');
         if (iduser) {
             //var fecha = new Date();
