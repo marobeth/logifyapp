@@ -21,7 +21,7 @@ var funcionesCamara = {
             img.src = imageURI;
             $$('#' + idCanvas).data("foto1", 1);
         }, function captureError(error) {
-            console.debug("No se puede obtener una foto openCamera: " + error, "app");
+            console.debug("No se puede obtener una foto openCamera: " + error, "funcionesCamara");
         }, {
             limit: 1,
             quality: config.QUALITY,

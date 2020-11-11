@@ -250,7 +250,7 @@ function openCamera(idCanvas) {
         $$('#' + idCanvas).data("foto1", 1);
         navigator.camera.cleanup();
     }, function captureError(error) {
-        console.debug("No se puede obtener una foto openCamera: " + error, "app");
+        console.debug("No se puede obtener una foto openCamera 1: " + error, "app");
     }, {
         limit: 1,
         quality: 50,
@@ -1065,7 +1065,7 @@ var app = new Framework7({
             if (f7.device.cordova) {
                 // Init cordova APIs (see cordova-app.js)
                 cordovaApp.init(f7);
-                alertas();
+                //fnOcurre.mostrarAlert(app);
             }
         }
     },
@@ -1843,8 +1843,6 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                         guiaslista.forEach(function (v, i) {
                             guiaMasivaInd += v+'<br>';
                         });
-                        $$('#visualizar').html(guiaMasivaInd);
-
                     }else{
                         app.dialog.alert("Guías guardados correctamente", function () {
                             $$('#btn_buscar_sucursal').click();
@@ -1896,11 +1894,6 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                             });
                         }*/
         }
-    });
-
-    $$('#btn_local_destino').on('click', function () {
-        var destino = $$('#location').val();
-        cordova.InAppBrowser.open('https://www.google.com/maps/dir/?api=1&destination=' + destino, '_blank', 'location=yes');
     });
 });
 /**
@@ -1969,7 +1962,6 @@ $$(document).on('page:init', '.page[data-name="escanear"]', function (e) {
                                 'json'
                             );
                         }else{
-                            alert("Entre"+num_guia);
                             var guias_actuales = $$('#hidden_guias_scan').val();
                             if (guias_actuales.includes(num_guia)) {
                                 app.dialog.alert("Ya habías agregado esta guía");
@@ -2096,6 +2088,10 @@ $$(document).on('page:init', '.page[data-name="consultar"]', function (e) {
                 app.dialog.alert('El número de caracteres no corresponden, favor de verificar');
             }
         }
+    });
+    $$('#btn_local_destino').on('click', function () {
+        var destino = $$('#location').val();
+        cordova.InAppBrowser.open('https://www.google.com/maps/dir/?api=1&destination=' + destino, '_blank', 'location=yes');
     });
 });
 

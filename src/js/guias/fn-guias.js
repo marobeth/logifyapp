@@ -629,7 +629,8 @@ var fnGuias = {
                 var total = data.length;
                 if (total > 0) {
                     if (data[0].tel_dest != '' && !!data[0].tel_dest) {
-                        tel_dest = 'Tel.: ' + data[0].tel_dest + '<br>';
+                        tel_dest = 'Tel.: ' + data[0].tel_dest + '<br>' +
+                            'Realizar llamada <a class="external" href="tel:'+data[0].tel_dest+'"><i class="icon material-icons md-only">call</i></a><br>';
                     }
                     if (data[0].info_comp_dest != '' && !!data[0].info_comp_dest) {
                         info_comp_dest = 'Referencias: ' + data[0].info_comp_dest + '<br>';

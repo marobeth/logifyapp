@@ -7,7 +7,7 @@ var fnGral = {
             $$('.quitar').hide();
         }
     },
-    btnLlamada:(location)=> {
+    btnLlamada:(location,llamada)=> {
         if(location !=''){
             $$('#divtoolbar').show();
             $$('#location').val(location);
