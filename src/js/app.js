@@ -1065,7 +1065,6 @@ var app = new Framework7({
             if (f7.device.cordova) {
                 // Init cordova APIs (see cordova-app.js)
                 cordovaApp.init(f7);
-                //fnOcurre.mostrarAlert(app);
             }
         }
     },
@@ -1185,13 +1184,13 @@ $$(document).on('page:init', '.page[data-name="checkin"]', function (e) {
                     var data_am = data[2];
                     var data_ts = data[3];
                     var data_mkt = data[4];
+                    var data_tks = data[5];
 
                     var output_billetes = '';
                     data_billetes.forEach(function (v, i) {
                         output_billetes += '<li><a href="/cambiarstatus/' + v.num_guia + '">' + v.num_guia + '</a></li>';
                     });
                     $$('#lista_billetes').html(output_billetes);
-
 
                     var output_am = '';
                     data_am.forEach(function (v, i) {
@@ -1210,6 +1209,11 @@ $$(document).on('page:init', '.page[data-name="checkin"]', function (e) {
                         output_mkt += '<li><a href="/cambiarstatus/' + v.num_guia + '">' + v.num_guia + '</a></li>';
                     });
                     $$('#lista_mkt').html(output_mkt);
+                    var output_tks = '';
+                    data_tks.forEach(function (v, i) {
+                        output_tks += '<li><a href="/cambiarstatus/' + v.num_guia + '">' + v.num_guia + '</a></li>';
+                    });
+                    $$('#lista_tks').html(output_tks);
 
                     $$('#nombre_tienda').html(data_tienda.nombre);
                     $$('#edo_mun_tienda').html(data_tienda.estado + ' ' + data_tienda.municipio);
@@ -1280,12 +1284,9 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
             function (data) {
                 app.preloader.hide();
                 fnGuias.leyendaGuia(app, data['guia'][0].id, data['guia'][0].client_code, data['guia'][0].branch_number);
-                fnGuias.mostrarSttus(app, data['guia'][0].id, data['guia'][0].branch_number, data['guia'][0].client_code, 'status',corporativo);
-
+                fnGuias.mostrarSttus(app, data['guia'][0].id, data['guia'][0].branch_number, data['guia'][0].client_code, 'status', corporativo);
                 //console.log(data['guia'][0].num_guia);
-
                 $$('#num__guia').html("<b>" + data['guia'][0].num_guia + "</b>");
-
 
                 if (data['guia'][0].branch_number == '0004') {
                     var ouput_parsear_billetes = '';
@@ -1315,14 +1316,35 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                         fnGuiasHijos.btnScanHjs(app, data['guia'][0].num_guia);
                     }
                 }
+                if (data['guia'][0].branch_number == '0011') {
+                    var convenio = data['guia'][0].convenio;
+                    var total_tks = data['guia'][0].cont_paquete;
+                    var ver_tks = data['guia'][0].ids_tokens.split(",");
+                    var codigo = '<div class="list accordion-list">\n' +
+                        '<strong  class="text-color-primary">Total: '+ total_tks +'</strong>'+
+                        '<ul><li class="accordion-item"><a href="#" class="item-content item-link">\n' +
+                        '<div class="item-inner"><div class="item-title">'+ convenio +'</div></div></a>\n' +
+                        '<div class="accordion-item-content"><div class="block"><p>\n' +
+                        '<div class="list accordion-list"><ul>\n';
+                    ver_tks.forEach(function (val, index) {
+                        codigo += '<li> TICKET: <strong>' + val.trim() + '</strong></li>';
+                    });
+                    codigo += '<p></div>\n' +
+                        '</div>\n' +
+                        '</li>\n' +
+                        '</ul>\n' +
+                        '</div>\n' +
+                        '</ul></div>';
+                    $$('#fbillete').html(codigo);
+                }
                 fnGuiasHijos.MostrarNGH(app, 'NGHijos', data['guia'][0].num_guia);
                 fnGuias.LogIncidencias(app, data['guia'][0].client_code, data['guia'][0].id);
             },
             'json'
         );
     } else {
-        fnGuias.separarProyectos(app,num_guias,corporativo);
-        fnGuias.mostrarSttusdefaut(app, 'status',corporativo);
+        fnGuias.separarProyectos(app, num_guias, corporativo);
+        fnGuias.mostrarSttusdefaut(app, 'status', corporativo);
         var new_num_guias = '';
         num_guias.forEach(function (v, i) {
             $$('#lista_multiples_guias').append('<li>' + v + '</li>');
@@ -1624,6 +1646,8 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         $$('#totalImg').val('');
         $$('.ocultar_campos').hide();
         var status = $$('#status').val();
+        $$('#visualizar').html('');
+        $$('#mostrarlistado').hide();
         var numeroguia = num_guias[0];
         var codCliente = numeroguia.substring(0, 3);
         var braNumbre = numeroguia.substring(3, 7);
@@ -1843,6 +1867,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                         guiaslista.forEach(function (v, i) {
                             guiaMasivaInd += v+'<br>';
                         });
+                        $$('#visualizar').html(guiaMasivaInd);
                     }else{
                         app.dialog.alert("Guías guardados correctamente", function () {
                             $$('#btn_buscar_sucursal').click();
@@ -2087,11 +2112,9 @@ $$(document).on('page:init', '.page[data-name="consultar"]', function (e) {
             } else {
                 app.dialog.alert('El número de caracteres no corresponden, favor de verificar');
             }
+        }else{
+            app.dialog.alert('El número de caracteres no corresponden, favor de verificar');
         }
-    });
-    $$('#btn_local_destino').on('click', function () {
-        var destino = $$('#location').val();
-        cordova.InAppBrowser.open('https://www.google.com/maps/dir/?api=1&destination=' + destino, '_blank', 'location=yes');
     });
 });
 

@@ -81,6 +81,9 @@
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
     <allow-navigation href="*" />
+    <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application" xmlns:android="http://schemas.android.com/apk/res/android">
+        <application android:requestLegacyExternalStorage="true" />
+    </edit-config>
     <allow-intent href="market:*" />
     <splash density="land-hdpi" src="res/screen/android/drawable-hdpi/screen.png" />
     <splash density="land-mdpi" src="res/screen/android/drawable-mdpi/screen.png" />

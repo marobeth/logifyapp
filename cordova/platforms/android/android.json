@@ -249,10 +249,6 @@
           ],
           "application": [
             {
-              "xml": "<meta-data android:name=\"com.google.android.gms.version\" android:value=\"@integer/google_play_services_version\" />",
-              "count": 1
-            },
-            {
               "xml": "<meta-data android:name=\"com.google.android.gms.vision.DEPENDENCIES\" android:value=\"barcode\" />",
               "count": 1
             },
@@ -263,6 +259,21 @@
             {
               "xml": "<activity android:label=\"Read Barcode\" android:name=\"tl.cordova.google.mobile.vision.scanner.BarcodeCaptureActivity\" android:screenOrientation=\"portrait\" android:theme=\"@style/Theme.AppCompat.Light\" />",
               "count": 1
+            }
+          ],
+          "/manifest/application": [
+            {
+              "xml": "<application android:requestLegacyExternalStorage=\"true\" />",
+              "count": 1,
+              "mode": "merge",
+              "id": "config.xml",
+              "oldAttrib": {
+                "android:hardwareAccelerated": "true",
+                "android:icon": "@mipmap/ic_launcher",
+                "android:label": "@string/app_name",
+                "android:requestLegacyExternalStorage": "true",
+                "android:supportsRtl": "true"
+              }
             }
           ]
         }

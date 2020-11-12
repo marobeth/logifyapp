@@ -68,7 +68,7 @@ var fnGuias = {
                                     });
                                     $$('#' + CById).html(proyectoStatus);
                                 } else {
-                                    fnGuias.mostrarStatusCorporativo(app,CById,corporativo);
+                                    fnGuias.mostrarStatusCorporativo(app, CById, corporativo);
                                 }
                             },
                             'json'
@@ -118,21 +118,21 @@ var fnGuias = {
                                     status += '<option value="' + valstaus.idstatus_guia + '">' + valstaus.label + '</option>';
                                 });
                                 $$('#' + CById).html(status);
-                            }else{
-                                fnGuias.mostrarStatusCorporativo(app,CById,corporativo);
+                            } else {
+                                fnGuias.mostrarStatusCorporativo(app, CById, corporativo);
                             }
                         },
                         'json'
                     );
                 } else {
-                    fnGuias.mostrarStatusCorporativo(app,CById,corporativo);
+                    fnGuias.mostrarStatusCorporativo(app, CById, corporativo);
                 }
             }
         }
     },
-    mostrarStatusCorporativo: (app, CById, corporativo) =>{
+    mostrarStatusCorporativo: (app, CById, corporativo) => {
         var status;
-        var valor_corporativo='';
+        var valor_corporativo = '';
         if (corporativo > 0) {
             valor_corporativo = '/' + corporativo;
         }
@@ -162,13 +162,13 @@ var fnGuias = {
         );
 
     },
-    mostrarCampos: (app, codCliente, braNumbre, status,tipoFimg) => {
+    mostrarCampos: (app, codCliente, braNumbre, status, tipoFimg) => {
         switch (status) {
             case '2':
                 //Recolectado
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_recolectado').show();
-                fnGuias.fnmostrarfototestigos(app,codCliente, braNumbre, status,tipoFimg);
+                fnGuias.fnmostrarfototestigos(app, codCliente, braNumbre, status, tipoFimg);
                 break;
             case '3':
                 //En ruta
@@ -182,20 +182,23 @@ var fnGuias = {
                 if (fnGuias.soloStatus != '') {
                     $$('#persona_recibe').hide();
                 }
-                fnGuias.fnmostrarfototestigos(app,codCliente, braNumbre, status,tipoFimg);
+                fnGuias.fnmostrarfototestigos(app, codCliente, braNumbre, status, tipoFimg);
+                if(codCliente== 'CEL' && braNumbre=='0002'){
+                    $$('#persona_recibe').hide();
+                }
                 break;
             case '5':
                 //Incidencia
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_incidencia').show();
-                fnGuias.fnmostrarfototestigos(app,codCliente, braNumbre, status,tipoFimg);
+                fnGuias.fnmostrarfototestigos(app, codCliente, braNumbre, status, tipoFimg);
                 break;
             case '6':
                 //Devuelto
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_devuelto').show();
                 if (codCliente === 'CVD') {
-                    fnGuias.fnmostrarfototestigos(app,codCliente, braNumbre, status,tipoFimg);
+                    fnGuias.fnmostrarfototestigos(app, codCliente, braNumbre, status, tipoFimg);
                 }
                 break;
             case '7':
@@ -214,13 +217,13 @@ var fnGuias = {
                 $$('.mostrar_conectado').show();
                 fnGuias.mostrarListadoOcurre(app);
                 if (codCliente === 'CVD' || codCliente === 'CEL' || codCliente === 'PUR' || codCliente === 'SAF') {
-                    fnGuias.fnmostrarfototestigos(app,codCliente, braNumbre, status,tipoFimg);
+                    fnGuias.fnmostrarfototestigos(app, codCliente, braNumbre, status, tipoFimg);
                 }
                 break;
             case '14':
                 //Retorno
                 if (codCliente === 'CVD') {
-                    fnGuias.fnmostrarfototestigos(app,codCliente, braNumbre, status,tipoFimg);
+                    fnGuias.fnmostrarfototestigos(app, codCliente, braNumbre, status, tipoFimg);
                 }
                 break;
             case '22':
@@ -234,13 +237,13 @@ var fnGuias = {
                 //Incidencia
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_incidencia').show();
-                fnGuias.fnmostrarfototestigos(app,codCliente, braNumbre, status,tipoFimg);
+                fnGuias.fnmostrarfototestigos(app, codCliente, braNumbre, status, tipoFimg);
                 break;
             case '24':
                 //Incidencia
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_incidencia').show();
-                fnGuias.fnmostrarfototestigos(app,codCliente, braNumbre, status,tipoFimg);
+                fnGuias.fnmostrarfototestigos(app, codCliente, braNumbre, status, tipoFimg);
                 break;
             default:
                 $$('.ocultar_campos').hide();
@@ -361,7 +364,7 @@ var fnGuias = {
             'json'
         );
     },
-    fnmostrarfototestigos:(app, codCliente, braNumbre, status, tipoFimg)=>{
+    fnmostrarfototestigos: (app, codCliente, braNumbre, status, tipoFimg) => {
         var prefijos = $$('#arrayprefijos').val();
         if (prefijos != '') {
             var arrayprefijos = prefijos.split(",");
@@ -369,7 +372,7 @@ var fnGuias = {
             if (totalCliente == 1) {
                 fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
             } else {
-                fnGuias.fnmostrarCampos(app, 'null', 'null', status, 'null','corporativo');
+                fnGuias.fnmostrarCampos(app, 'null', 'null', status, 'null', 'corporativo');
             }
         } else {
             fnGuias.fnmostrarCampos(app, codCliente, braNumbre, status, tipoFimg);
@@ -525,19 +528,19 @@ var fnGuias = {
             function (data) {
                 tipoguia = data.tipoguia;
                 guia_referencia = data.guia_referencia;
-                avisong=data.guia_referencia;
+                avisong = data.guia_referencia;
                 if (guia_referencia === undefined || guia_referencia === null || guia_referencia === '') {
                     guia_referencia = '';
                 } else {
                     guia_referencia = '<span>' + data.guia_referencia + '</span>';
                 }
-                mensaje=' - recuerda que es un servicio contra-entrega. Deberás recolectar el producto de la guía: ';
+                mensaje = ' - recuerda que es un servicio contra-entrega. Deberás recolectar el producto de la guía: ';
                 if (tipoguia != '') {
                     if (tipoguia == 'Guía de Devolución') {
                         leyenda += '<div class="alert alert-info"> ' + tipoguia + guia_referencia + '</div>';
                     } else {
                         $$('#ngreferencia').val(avisong);
-                        leyenda += '<div class="alert alert-danger"> <strong>' + tipoguia + '</strong>'+ mensaje + '<strong>'+ guia_referencia +'</strong>' + '</div>';
+                        leyenda += '<div class="alert alert-danger"> <strong>' + tipoguia + '</strong>' + mensaje + '<strong>' + guia_referencia + '</strong>' + '</div>';
                     }
                     $$('#leyenda').html(leyenda);
                 }
@@ -606,7 +609,7 @@ var fnGuias = {
             'json'
         );
     },
-    mostrarinfoGuia: (app, numguia, proyecto, center, corporativo,restrict) => {
+    mostrarinfoGuia: (app, numguia, proyecto, center, corporativo, restrict) => {
         var URL = '';
         $$('#status_guia_consulta').html("");
         $$('#espacio_proyecto').html("");
@@ -618,8 +621,9 @@ var fnGuias = {
         var tel_dest = '';
         var info_comp_dest = '';
         var dir2_dest = '';
+        var mapa='';
         if (center != '' || center != null || center != undefined && corporativo > 1) {
-            URL = config.URL_WS + 'api/v2/guideinfo/corporativo/' + numguia + '/' + center + '/' + corporativo+'/'+restrict;
+            URL = config.URL_WS + 'api/v2/guideinfo/corporativo/' + numguia + '/' + center + '/' + corporativo + '/' + restrict;
         } else {
             URL = config.URL_WS + 'guideinfo/' + numguia;
         }
@@ -630,7 +634,7 @@ var fnGuias = {
                 if (total > 0) {
                     if (data[0].tel_dest != '' && !!data[0].tel_dest) {
                         tel_dest = 'Tel.: ' + data[0].tel_dest + '<br>' +
-                            'Realizar llamada <a class="external" href="tel:'+data[0].tel_dest+'"><i class="icon material-icons md-only">call</i></a><br>';
+                            'Realizar llamada <a class="external" href="tel:' + data[0].tel_dest + '"><i class="icon material-icons md-only">call</i></a><br>';
                     }
                     if (data[0].info_comp_dest != '' && !!data[0].info_comp_dest) {
                         info_comp_dest = 'Referencias: ' + data[0].info_comp_dest + '<br>';
@@ -638,6 +642,10 @@ var fnGuias = {
 
                     if (data[0].dir2_dest != '' && !!data[0].dir2_dest) {
                         dir2_dest = 'Dirección alternativa: ' + data[0].dir2_dest + '<br>';
+                    }
+                    if (data[0].loc_dest != '' && !!data[0].loc_dest) {
+                        mapa='<a class="external" href="geo:'+data[0].loc_dest+'?z=16&q='+data[0].loc_dest+'(GUIA)&mode=d">Ir a Maps</a><br><br>';
+                        mapa+='<a class="external" href="' + data[0].urlmapa + '">Ir a Maps</a><br>';
                     }
                     fnGuias.traducirStatus(app, data[0].status, 'status_guia_consulta');
                     $$('#espacio_proyecto').html(proyecto);
@@ -651,7 +659,7 @@ var fnGuias = {
                         data[0].mun_dest + ', ' +
                         data[0].edo_dest + ', ' +
                         data[0].cp_dest + '<br>' +
-                        tel_dest + info_comp_dest + dir2_dest
+                        tel_dest + info_comp_dest + dir2_dest + mapa
                     );
                     fnGuias.LogComentarios(app, data[0].id);
                     fnGuias.LogIncidencias(app, data[0].client_code, data[0].id);
@@ -688,7 +696,6 @@ var fnGuias = {
                     if (data[0].status == 7) {
                         fnGuias.mostrarOcurre(app, data[0].id);
                     }
-                    fnGral.btnLlamada(data[0].loc_dest);
                 } else {
                     app.dialog.alert('Lo sentimos, no se encontró información');
                 }
@@ -758,20 +765,20 @@ var fnGuias = {
         });
         $$('#arrayprefijos').val(sinRepetidos);
     },
-    avisoconfirmacion:(app,codCliente,braNumbre,status)=>{
+    avisoconfirmacion: (app, codCliente, braNumbre, status) => {
         var referencia = $$('#ngreferencia').val();
-        if(codCliente !='BCL' && braNumbre=='0002' && status ==4 && referencia !=''){
+        if (codCliente != 'BCL' && braNumbre == '0002' && status == 4 && referencia != '') {
             $$('.mostrar_aviso').show();
-            var Hhtml='<div class="item-content item-input">\n' +
+            var Hhtml = '<div class="item-content item-input">\n' +
                 '                            <div class="item-inner">\n' +
                 '                                <div class="item-input-wrap">\n' +
                 '                                    <input type="checkbox" class="form-check-input" id="aviso_check1" name="aviso_check1">\n' +
-                '                                    <label>Confirmo que recolecté al cliente el producto de la guía: '+ referencia +' </label>'+
+                '                                    <label>Confirmo que recolecté al cliente el producto de la guía: ' + referencia + ' </label>' +
                 '                                </div>\n' +
                 '                            </div>\n' +
                 '                        </div>';
             $$('#avisoconfirmacion').html(Hhtml);
-        }else{
+        } else {
             $$('.mostrar_aviso').hide();
         }
 

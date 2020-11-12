@@ -6,14 +6,6 @@ var fnGral = {
         if(iduser !='' && restrict==1){
             $$('.quitar').hide();
         }
-    },
-    btnLlamada:(location,llamada)=> {
-        if(location !=''){
-            $$('#divtoolbar').show();
-            $$('#location').val(location);
-        }else{
-            $$('#divtoolbar').hide();
-        }
     }
 
 };
