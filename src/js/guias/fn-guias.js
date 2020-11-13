@@ -52,6 +52,7 @@ var fnGuias = {
                 config.URL_WS + 'api/v2/status/default/' + idguia + '/' + clientcode + '/' + branchnumber,
                 function (datos) {
                     if (datos.length > 0) {
+                        var status;
                         status = '<option value="">Seleccionar</option>';
                         datos.forEach((valstaus, index) => {
                             status += '<option value="' + valstaus.id + '">' + valstaus.nombre + '</option>';
@@ -80,6 +81,7 @@ var fnGuias = {
         }
     },
     mostrarSoloStatus: (app, CById) => {
+        var status;
         if (fnGuias.soloStatus != '') {
             status = '<option value="">Seleccionar</option>';
             status += '<option value="4">Entregado</option>';
@@ -162,7 +164,7 @@ var fnGuias = {
         );
 
     },
-    mostrarCampos: (app, codCliente, braNumbre, status, tipoFimg) => {
+    mostrarCampos: (app, codCliente, braNumbre, status, tipoFimg,soloStatus) => {
         switch (status) {
             case '2':
                 //Recolectado
@@ -177,15 +179,13 @@ var fnGuias = {
                 break;
             case '4':
                 //Entregado
+                //console.log(soloStatus);
                 $$('.ocultar_campos').hide();
                 $$('.mostrar_entregado').show();
-                if (fnGuias.soloStatus != '') {
-                    $$('#persona_recibe').hide();
+                if(soloStatus == 4 || codCliente== 'CEL' && (braNumbre=='0002' || braNumbre == '0001') ){
+                    $$('.ocultar_persona').hide();
                 }
                 fnGuias.fnmostrarfototestigos(app, codCliente, braNumbre, status, tipoFimg);
-                if(codCliente== 'CEL' && braNumbre=='0002'){
-                    $$('#persona_recibe').hide();
-                }
                 break;
             case '5':
                 //Incidencia
@@ -537,7 +537,7 @@ var fnGuias = {
                 mensaje = ' - recuerda que es un servicio contra-entrega. Deberás recolectar el producto de la guía: ';
                 if (tipoguia != '') {
                     if (tipoguia == 'Guía de Devolución') {
-                        leyenda += '<div class="alert alert-info"> ' + tipoguia + guia_referencia + '</div>';
+                        leyenda += '<div class="alert alert-info"> ' + tipoguia + ' ' +guia_referencia + '</div>';
                     } else {
                         $$('#ngreferencia').val(avisong);
                         leyenda += '<div class="alert alert-danger"> <strong>' + tipoguia + '</strong>' + mensaje + '<strong>' + guia_referencia + '</strong>' + '</div>';
@@ -645,7 +645,6 @@ var fnGuias = {
                     }
                     if (data[0].loc_dest != '' && !!data[0].loc_dest) {
                         mapa='<a class="external" href="geo:'+data[0].loc_dest+'?z=16&q='+data[0].loc_dest+'(GUIA)&mode=d">Ir a Maps</a><br><br>';
-                        mapa+='<a class="external" href="' + data[0].urlmapa + '">Ir a Maps</a><br>';
                     }
                     fnGuias.traducirStatus(app, data[0].status, 'status_guia_consulta');
                     $$('#espacio_proyecto').html(proyecto);

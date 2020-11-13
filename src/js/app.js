@@ -1646,14 +1646,16 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         $$('#totalImg').val('');
         $$('.ocultar_campos').hide();
         var status = $$('#status').val();
-        $$('#visualizar').html('');
         $$('#mostrarlistado').hide();
+        $$('#totalGuias').html('');
+        $$('#visualizar').html('');
         var numeroguia = num_guias[0];
         var codCliente = numeroguia.substring(0, 3);
         var braNumbre = numeroguia.substring(3, 7);
         var tipoFimg = codCliente + '-' + braNumbre + '-' + status;
         var guiareferencia= $$('#guiareferencia').val('');
-        fnGuias.mostrarCampos(app,codCliente,braNumbre,status,tipoFimg);
+        var soloStatus=fnGuias.soloStatus;
+        fnGuias.mostrarCampos(app,codCliente,braNumbre,status,tipoFimg,soloStatus);
         fnGuias.avisoconfirmacion(app,codCliente,braNumbre,status,guiareferencia);
     });
 
@@ -1683,7 +1685,6 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
         if(!checkedaviso){
             checkedaviso='';
         }
-
         switch (status) {
             case 'Seleccionar':
                 app.dialog.alert('Seleccione un status');
@@ -1842,7 +1843,6 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                 }
             });
             //if (TtlLista == 1) {
-
             app.request.postJSON(
                 URL_WS + 'changestatus/' + $$('#num_gias').val(),
                 {
@@ -1867,6 +1867,7 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                         guiaslista.forEach(function (v, i) {
                             guiaMasivaInd += v+'<br>';
                         });
+                        $$('#totalGuias').html('<strong>Total: '+TtlLista+'</strong><br>');
                         $$('#visualizar').html(guiaMasivaInd);
                     }else{
                         app.dialog.alert("Guías guardados correctamente", function () {
@@ -1877,7 +1878,6 @@ $$(document).on('page:init', '.page[data-name="cambiarstatus"]', function (e) {
                     }
                 }, function (error) {
                     app.preloader.hide();
-
                     app.dialog.alert("Error: " + error, function () {
                         $$('#btn_buscar_sucursal').click();
                     });
