@@ -3,10 +3,14 @@
   <component name="ChangeListManager">
     <list default="true" id="232bfe81-5379-4a5a-8314-3fb762c606de" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cordova/config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/config.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cordova/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cordova/platforms/android/CordovaLib/CordovaLib.iml" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/CordovaLib/CordovaLib.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/app.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/assets/www/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cordova/www/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/www/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/java/mx/com/logify/logifyapp/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/java/mx/com/logify/logifyapp/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/res/xml/config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/cordova/platforms/android/app/src/main/res/xml/config.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -281,21 +285,18 @@
     <state x="0" y="23" width="1440" height="735" maximized="true" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.1440.801/1440.-157.1920.1057@1440.-157.1920.1057" timestamp="1604602362498" />
     <state x="0" y="23" width="1440" height="745" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.1440.806/1440.-157.1920.1057@1440.-157.1920.1057" timestamp="1604349602072" />
     <state x="0" y="23" width="1920" height="973" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.1920.973@0.23.1920.973" timestamp="1605283579917" />
-    <state x="59" y="88" width="1696" height="744" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.1920.977@0.23.1920.977" timestamp="1596860192151" />
     <state x="59" y="88" width="1696" height="745" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.1920.978@0.23.1920.978" timestamp="1599079889414" />
     <state x="0" y="23" width="800" height="493" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.800.535@0.23.800.535" timestamp="1604199159101" />
-    <state x="850" y="116" width="900" height="639" key="find.popup" timestamp="1605131601370">
+    <state x="502" y="215" width="929" height="639" key="find.popup" timestamp="1605912984230">
       <screen x="0" y="23" width="1920" height="973" />
     </state>
-    <state x="850" y="116" width="900" height="639" key="find.popup/0.23.1920.973@0.23.1920.973" timestamp="1605131601370" />
+    <state x="502" y="215" width="929" height="639" key="find.popup/0.23.1920.973@0.23.1920.973" timestamp="1605912984230" />
     <state x="623" y="154" width="824" height="641" key="find.popup/0.23.1920.975@0.23.1920.975" timestamp="1599243494846" />
-    <state x="623" y="155" width="824" height="641" key="find.popup/0.23.1920.977@0.23.1920.977" timestamp="1596870027773" />
-    <state x="625" y="237" width="670" height="674" key="search.everywhere.popup" timestamp="1605059552134">
+    <state x="625" y="237" width="670" height="674" key="search.everywhere.popup" timestamp="1605911701033">
       <screen x="0" y="23" width="1920" height="973" />
     </state>
     <state x="2065" y="57" width="670" height="674" key="search.everywhere.popup/0.23.1440.877/1440.-157.1920.973@1440.-157.1920.973" timestamp="1598494175536" />
-    <state x="2065" y="58" width="670" height="676" key="search.everywhere.popup/0.23.1440.877/1440.-157.1920.977@1440.-157.1920.977" timestamp="1596923141679" />
-    <state x="625" y="237" width="670" height="674" key="search.everywhere.popup/0.23.1920.973@0.23.1920.973" timestamp="1605059552134" />
+    <state x="625" y="237" width="670" height="674" key="search.everywhere.popup/0.23.1920.973@0.23.1920.973" timestamp="1605911701033" />
   </component>
   <component name="masterDetails">
     <states>

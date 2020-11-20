@@ -30,7 +30,7 @@
       "preserveAssetsPaths": false,
       "inlineAssets": true
     },
-    "pkg": "mx.com.logify.logifyapp",
+    "pkg": "com.graphicsandcode.logify",
     "cordova": {
       "folder": "cordova",
       "platforms": [
